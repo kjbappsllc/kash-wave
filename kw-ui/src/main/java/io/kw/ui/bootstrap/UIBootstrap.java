@@ -1,4 +1,4 @@
-package io.kw.ui;
+package io.kw.ui.bootstrap;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +14,7 @@ import java.net.URL;
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class UIBootstrap extends Application {
 
     private static Scene scene;
 
@@ -26,7 +26,7 @@ public class App extends Application {
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -36,7 +36,7 @@ public class App extends Application {
     }
 
     private static URL getResource(String filename) {
-        ClassLoader classLoader = App.class.getClassLoader();
+        ClassLoader classLoader = UIBootstrap.class.getClassLoader();
         URL resource = classLoader.getResource(filename);
         if (resource == null) {
             throw new IllegalArgumentException("Resource " + filename + " cannot be found");
