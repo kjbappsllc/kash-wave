@@ -1,4 +1,4 @@
-package io.kw.ui;
+package io.kw.ui.controllers;
 
 import java.io.IOException;
 
@@ -9,6 +9,6 @@ public class SecondaryController {
 
     @FXML
     private void switchToPrimary() throws IOException {
-        UIBootstrap.setRoot("primary");
+        System.out.println("Primary Button Clicked");
     }
 }
