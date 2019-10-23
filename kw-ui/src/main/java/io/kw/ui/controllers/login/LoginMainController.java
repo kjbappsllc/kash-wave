@@ -1,4 +1,4 @@
-package io.kw.ui.controllers;
+package io.kw.ui.controllers.login;
 
 import io.kw.ui.infrastructure.ResourceManager;
 import javafx.animation.Interpolator;
@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -14,7 +16,7 @@ import javax.inject.Inject;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class LoginMainController implements Initializable {
 
     @Inject
     ResourceManager resourceManager;
@@ -23,22 +25,24 @@ public class MainController implements Initializable {
     private VBox vbox;
 
     @FXML
+    private Pane pane;
+
+    @FXML
     void launchSignIn(ActionEvent event) {
-        transitionMask(0.45, vbox.getLayoutX() * 21, "SignIn");
+        transitionMask(480, "SignIn");
     }
 
     @FXML
-    void launchSignUp(ActionEvent event) {
-        transitionMask(0.45, 14, "SignUp");
-    }
+    void launchSignUp(ActionEvent event) { transitionMask(20, "SignUp"); }
+
+    @FXML
+    void closeApp(MouseEvent event) { System.exit(0); }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadViewToVBox("SignUp");
-    }
+    public void initialize(URL url, ResourceBundle resourceBundle) { transitionMask(480, "SignIn"); }
 
-    private void transitionMask(double duration, double offset, String view) {
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(duration), vbox);
+    private void transitionMask(double offset, String view) {
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.45), vbox);
         translateTransition.setToX(offset);
         translateTransition.setInterpolator(Interpolator.EASE_OUT);
         translateTransition.play();

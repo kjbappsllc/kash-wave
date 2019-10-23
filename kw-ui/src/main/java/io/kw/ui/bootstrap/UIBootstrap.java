@@ -1,13 +1,12 @@
 package io.kw.ui.bootstrap;
 
-import io.kw.ui.cdi.qualifiers.AppInitialized;
+import io.kw.ui.cdi.AppInitialized;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import javax.enterprise.inject.se.SeContainer;
 import javax.enterprise.inject.se.SeContainerInitializer;
 import javax.enterprise.util.AnnotationLiteral;
-import java.io.IOException;
 
 /**
  * JavaFX App

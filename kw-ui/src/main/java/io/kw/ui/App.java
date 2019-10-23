@@ -1,7 +1,7 @@
 package io.kw.ui;
 
 
-import io.kw.ui.cdi.qualifiers.AppInitialized;
+import io.kw.ui.cdi.AppInitialized;
 import io.kw.ui.infrastructure.ResourceManager;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,8 +18,8 @@ public class App {
     ResourceManager resourceManager;
 
     private void launch(@Observes @AppInitialized Stage stage) {
-        Parent main = resourceManager.loadView("Main");
-        if (main == null) System.exit(1);
+        Parent main = resourceManager.loadView("LoginMain");
+        if (main == null) System.exit(100);
         Scene scene = new Scene(main);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);

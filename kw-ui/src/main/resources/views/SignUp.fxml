@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="VBox" alignment="CENTER_LEFT" prefHeight="480.0" prefWidth="480.0" styleClass="white-pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.kw.ui.controllers.SignUpController">
+<VBox id="VBox" alignment="CENTER_LEFT" prefHeight="480.0" prefWidth="480.0" styleClass="white-pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.kw.ui.controllers.login.SignUpController">
     <children>
         <Label text="Sign Up" textFill="#f78c7b">
             <font>

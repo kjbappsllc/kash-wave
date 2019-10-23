@@ -16,7 +16,7 @@ public class ResourceManager {
 
     public Parent loadView(String filename) {
         try {
-            URL styleSheets = getClass().getClassLoader().getResource("views/Main.css");
+            URL styleSheets = getResource("views/Main.css");
             URL fxml = getResource("views/" + filename + ".fxml");
             if (styleSheets != null && fxml != null) {
                 Parent view = FXMLLoader.load(
@@ -28,7 +28,6 @@ public class ResourceManager {
                 view.getStylesheets().add(styleSheets.toString());
                 return view;
             }
-            throw new Exception("Unable to construct view " + filename);
         } catch (Exception e) {
             System.out.println("Error loading FXML file " + filename + ", Error: " + e.getMessage());
         }
@@ -38,9 +37,5 @@ public class ResourceManager {
     private URL getResource(String filename) {
         ClassLoader classLoader = ResourceManager.class.getClassLoader();
         return classLoader.getResource(filename);
-    }
-
-    private FXMLLoader createDefaultFXMLLoader() {
-        return new FXMLLoader();
     }
 }
