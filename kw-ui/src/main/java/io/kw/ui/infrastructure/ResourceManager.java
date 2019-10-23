@@ -1,14 +1,11 @@
 package io.kw.ui.infrastructure;
 
-import io.kw.ui.cdi.FXMLLoaderFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.net.URL;
 
 @ApplicationScoped
