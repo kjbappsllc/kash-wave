@@ -21,8 +21,6 @@ public class MainController implements Initializable {
     @FXML
     private VBox vbox;
 
-    private Parent currentView;
-
     @FXML
     void launchSignIn(ActionEvent event) {
         transitionMask(0.50, vbox.getLayoutX() * 21, "SignIn");
@@ -48,7 +46,7 @@ public class MainController implements Initializable {
     }
 
     private void loadViewToVBox(String view) {
-        currentView = resourceManager.loadView(view);
+        Parent currentView = resourceManager.loadView(view);
         vbox.getChildren().removeAll();
         vbox.getChildren().setAll(currentView);
     }
