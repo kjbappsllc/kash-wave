@@ -13,7 +13,7 @@ public class ResourceManager {
     @Inject
     FXMLLoader fxmlLoader;
 
-    public Parent loadFXML(String filename) {
+    public Parent loadView(String filename) {
         fxmlLoader.setLocation(getResource("views/" + filename + ".fxml"));
         try {
             return fxmlLoader.load();

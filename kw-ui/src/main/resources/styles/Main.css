@@ -1,0 +1,27 @@
+.pane {
+    -fx-background-color: #333333;
+}
+
+.trans-btn-white-brder {
+    -fx-background-color: transparent;
+    -fx-background-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: whitesmoke;
+}
+
+.white-pane {
+    -fx-background-color: white
+}
+
+.tf-box {
+    -fx-background-color: transparent;
+    -fx-border-color: #dedee4;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.tf {
+    -fx-background-color: transparent;
+}
+/* ([^\s].+\w:) */
