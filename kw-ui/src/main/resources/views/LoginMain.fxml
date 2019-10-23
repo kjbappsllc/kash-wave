@@ -14,32 +14,32 @@
    <children>
       <Pane id="pane" fx:id="pane" layoutY="140.0" prefHeight="400.0" prefWidth="980.0" styleClass="pane">
          <children>
-            <Label layoutX="46.0" layoutY="108.0" text="Don't Have An Account?" textFill="WHITE">
+            <Label layoutX="46.0" layoutY="108.0" text="Not Registered?" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="150.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Lorem ipsum vale sudo pide uno dos tres quatro cinco seis greido muy" textFill="WHITE" wrapText="true">
+            <Label layoutX="46.0" layoutY="150.0" lineSpacing="2.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Send a message to Keyshawn Butts to send an inquiry to get registered with Kash Wave. You will get your own personal API Key attached to a username and password." textFill="WHITE" wrapText="true">
                <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="681.0" layoutY="108.0" text="Have An Account?" textFill="WHITE">
+            <Label layoutX="681.0" layoutY="108.0" text="Registered?" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="681.0" layoutY="150.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Lorem ipsum val sudo pide uno dos tres quatro cinco seis greido muy" textFill="WHITE" wrapText="true">
+            <Label layoutX="681.0" layoutY="150.0" lineSpacing="2.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Sign in with your provided API username and password to gain access to Kash Wave." textFill="WHITE" wrapText="true">
                <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
-            <JFXButton layoutX="46.0" layoutY="246.0" onAction="#launchSignUp" prefHeight="35.0" prefWidth="120.0" styleClass="trans-btn-white-brder" text="Sign Up">
+            <JFXButton layoutX="46.0" layoutY="272.0" onAction="#launchSignUp" prefHeight="35.0" prefWidth="120.0" styleClass="trans-btn-white-brder" text="Sign Up">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXButton>
-            <JFXButton layoutX="681.0" layoutY="245.0" onAction="#launchSignIn" prefHeight="35.0" prefWidth="120.0" styleClass="trans-btn-white-brder" text="Sign In">
+            <JFXButton layoutX="681.0" layoutY="270.0" onAction="#launchSignIn" prefHeight="35.0" prefWidth="120.0" styleClass="trans-btn-white-brder" text="Sign In">
                <font>
                   <Font size="14.0" />
                </font>
