@@ -1,6 +1,7 @@
 package io.kw.ui.controllers;
 
 import io.kw.ui.infrastructure.ResourceManager;
+import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,12 +24,12 @@ public class MainController implements Initializable {
 
     @FXML
     void launchSignIn(ActionEvent event) {
-        transitionMask(0.50, vbox.getLayoutX() * 21, "SignIn");
+        transitionMask(0.45, vbox.getLayoutX() * 21, "SignIn");
     }
 
     @FXML
     void launchSignUp(ActionEvent event) {
-        transitionMask(0.50, 14, "SignUp");
+        transitionMask(0.45, 14, "SignUp");
     }
 
     @Override
@@ -39,6 +40,7 @@ public class MainController implements Initializable {
     private void transitionMask(double duration, double offset, String view) {
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(duration), vbox);
         translateTransition.setToX(offset);
+        translateTransition.setInterpolator(Interpolator.EASE_OUT);
         translateTransition.play();
         translateTransition.setOnFinished((e) -> {
             loadViewToVBox(view);

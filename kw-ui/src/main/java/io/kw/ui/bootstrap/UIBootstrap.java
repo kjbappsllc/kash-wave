@@ -17,7 +17,7 @@ public class UIBootstrap extends Application {
     private SeContainer container;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         container = SeContainerInitializer.newInstance().initialize();
         container.getBeanManager().fireEvent(stage, new AnnotationLiteral<AppInitialized>() {});
     }
