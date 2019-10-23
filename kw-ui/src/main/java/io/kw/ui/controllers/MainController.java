@@ -35,7 +35,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        transitionMask(0.45, vbox.getLayoutX() * 21, "SignIn");
+        loadViewToVBox("SignUp");
     }
 
     private void transitionMask(double duration, double offset, String view) {
@@ -43,9 +43,13 @@ public class MainController implements Initializable {
         translateTransition.setToX(offset);
         translateTransition.play();
         translateTransition.setOnFinished((e) -> {
-            currentView = resourceManager.loadView(view);
-            vbox.getChildren().removeAll();
-            vbox.getChildren().setAll(currentView);
+            loadViewToVBox(view);
         });
+    }
+
+    private void loadViewToVBox(String view) {
+        currentView = resourceManager.loadView(view);
+        vbox.getChildren().removeAll();
+        vbox.getChildren().setAll(currentView);
     }
 }
