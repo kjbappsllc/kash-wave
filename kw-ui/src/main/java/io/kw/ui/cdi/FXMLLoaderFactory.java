@@ -7,8 +7,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 public class FXMLLoaderFactory {
-    @Inject
-    Instance<Object> instance;
+    @Inject Instance<Object> instance;
 
     @Produces
     public FXMLLoader createLoader() {

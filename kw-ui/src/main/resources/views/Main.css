@@ -1,3 +1,7 @@
+.main {
+    -fx-background-color:transparent;
+}
+
 .pane {
     -fx-background-color: #333333;
 }
@@ -8,6 +12,12 @@
     -fx-border-color: #cccccc;
     -fx-border-radius: 5px;
     -fx-border-width: 1.5px;
+    -fx-text-fill: whitesmoke;
+}
+
+.pink-btn {
+    -fx-background-color: #F78c7B;
+    -fx-background-radius:5px;
     -fx-text-fill: whitesmoke;
 }
 

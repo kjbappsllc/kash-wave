@@ -3,22 +3,20 @@ package io.kw.ui.infrastructure;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.net.URL;
 
-@ApplicationScoped
 public class ResourceManager {
 
     @Inject
-    FXMLLoader fxmlLoader;
+    FXMLLoader loader;
 
     public Parent loadView(String filename) {
-        fxmlLoader.setLocation(getResource("views/" + filename + ".fxml"));
         try {
-            return fxmlLoader.load();
+            Parent view = loader.load(getResource("views/" + filename + ".fxml"));
+            return view;
         } catch (Exception e) {
-            System.out.println("Error loading FXML file " + filename);
+            System.out.println("Error loading FXML file " + filename + ", Error: " + e.getMessage());
         }
         return null;
     }
