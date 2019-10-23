@@ -27,19 +27,23 @@ public class LoginMainController implements Initializable {
     @FXML
     private Pane pane;
 
+    private static int OFFSET = 35;
+
     @FXML
     void launchSignIn(ActionEvent event) {
-        transitionMask(480, "SignIn");
+        transitionMask((pane.getWidth() - vbox.getWidth()) - OFFSET, "SignIn");
     }
 
     @FXML
-    void launchSignUp(ActionEvent event) { transitionMask(20, "SignUp"); }
+    void launchSignUp(ActionEvent event) { transitionMask(OFFSET, "SignUp"); }
 
     @FXML
     void closeApp(MouseEvent event) { System.exit(0); }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) { transitionMask(480, "SignIn"); }
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        transitionMask(OFFSET, "SignUp");
+    }
 
     private void transitionMask(double offset, String view) {
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.45), vbox);
