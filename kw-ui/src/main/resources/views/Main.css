@@ -3,20 +3,20 @@
 }
 
 .pane {
-    -fx-background-color: #333333;
+    -fx-background-color: #31475D;
 }
 
 .trans-btn-white-brder {
     -fx-background-color: transparent;
     -fx-background-radius: 5px;
-    -fx-border-color: #cccccc;
+    -fx-border-color: #D2D2D2;
     -fx-border-radius: 5px;
-    -fx-border-width: 1.5px;
+    -fx-border-width: 2px;
     -fx-text-fill: whitesmoke;
 }
 
-.pink-btn {
-    -fx-background-color: #F78c7B;
+.primary-btn {
+    -fx-background-color: #58C08E;
     -fx-background-radius:5px;
     -fx-text-fill: whitesmoke;
 }
@@ -27,11 +27,11 @@
 
 .tf-box {
     -fx-background-color: transparent;
-    -fx-border-color: #dedee4;
+    -fx-border-color: #D2D2D2;
     -fx-border-width: 0px 0px 1px 0px;
 }
 
 .tf {
     -fx-background-color: transparent;
+    -fx-prompt-text-fill: #CEE9DA;
 }
-/* ([^\s].+\w:) */
