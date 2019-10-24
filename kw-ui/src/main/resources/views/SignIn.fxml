@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="VBox" alignment="CENTER_LEFT" prefHeight="480.0" prefWidth="480.0" styleClass="white-pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.kw.ui.controllers.login.SignInController">
+<VBox id="VBox" alignment="CENTER_LEFT" prefHeight="480.0" prefWidth="480.0" styleClass="white-pane" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.kw.ui.controllers.login.SignInController">
    <children>
       <Label text="Sign In" textFill="#f78c7b">
          <font>
@@ -24,32 +24,19 @@
             <Insets left="16.0" right="16.0" top="20.0" />
          </VBox.margin>
          <children>
-            <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Email" styleClass="tf" HBox.hgrow="ALWAYS">
+            <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="API Key" styleClass="tf" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <FontAwesomeIconView glyphName="USER" glyphStyle="-fx-fill:DEDEE4" size="1.5em" />
+            <FontAwesomeIconView glyphName="KEY" glyphStyle="-fx-fill:DEDEE4" size="1.5em" />
          </children></HBox>
-      <HBox alignment="CENTER_LEFT" layoutX="26.0" layoutY="263.0" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
-         <children>
-            <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Password" styleClass="tf" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </TextField>
-            <FontAwesomeIconView glyphName="LOCK" glyphStyle="-fx-fill:DEDEE4" size="1.5em" />
-         </children>
-         <VBox.margin>
-            <Insets left="15.0" right="15.0" top="20.0" />
-         </VBox.margin>
-      </HBox>
       <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="295.0" prefHeight="45.0" prefWidth="200.0">
          <VBox.margin>
             <Insets left="15.0" right="15.0" top="20.0" />
          </VBox.margin>
          <children>
-            <JFXButton alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" ripplerFill="WHITE" text="Forget Password?" textFill="#979797" HBox.hgrow="ALWAYS">
+            <JFXButton alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" ripplerFill="WHITE" text="Lost API Key?" textFill="#979797" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="15.0" />
                </font>

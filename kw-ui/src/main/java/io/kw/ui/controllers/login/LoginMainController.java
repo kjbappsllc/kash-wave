@@ -35,14 +35,14 @@ public class LoginMainController implements Initializable {
     }
 
     @FXML
-    void launchSignUp(ActionEvent event) { transitionMask(OFFSET, "SignUp"); }
+    void launchRequestRegister(ActionEvent event) { transitionMask(OFFSET, "RequestRegister"); }
 
     @FXML
     void closeApp(MouseEvent event) { System.exit(0); }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        transitionMask(OFFSET, "SignUp");
+        transitionMask(OFFSET, "RequestRegister");
     }
 
     private void transitionMask(double offset, String view) {
@@ -57,7 +57,9 @@ public class LoginMainController implements Initializable {
 
     private void loadViewToDisplay(String view) {
         Parent currentView = resourceManager.loadView(view);
-        vbox.getChildren().removeAll();
-        vbox.getChildren().setAll(currentView);
+        if (currentView != null) {
+            vbox.getChildren().removeAll();
+            vbox.getChildren().setAll(currentView);
+        }
     }
 }

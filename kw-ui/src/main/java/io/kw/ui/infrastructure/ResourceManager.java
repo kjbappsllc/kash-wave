@@ -31,6 +31,7 @@ public class ResourceManager {
         } catch (Exception e) {
             System.out.println("Error loading FXML file " + filename + ", Error: " + e.getMessage());
         }
+        System.out.println("Could not load FXML file " + filename);
         return null;
     }
 
