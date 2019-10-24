@@ -51,11 +51,11 @@ public class LoginMainController implements Initializable {
         translateTransition.setInterpolator(Interpolator.EASE_OUT);
         translateTransition.play();
         translateTransition.setOnFinished((e) -> {
-            loadViewToVBox(view);
+            loadViewToDisplay(view);
         });
     }
 
-    private void loadViewToVBox(String view) {
+    private void loadViewToDisplay(String view) {
         Parent currentView = resourceManager.loadView(view);
         vbox.getChildren().removeAll();
         vbox.getChildren().setAll(currentView);

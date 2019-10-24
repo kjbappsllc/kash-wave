@@ -18,7 +18,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="150.0" lineSpacing="2.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Send a message to Keyshawn Butts to send an inquiry to get registered with Kash Wave. You will get your own personal API Key attached to a username and password." textFill="WHITE" wrapText="true">
+            <Label layoutX="46.0" layoutY="150.0" lineSpacing="2.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Request your own personal API Key attached to a username and password to get registered." textFill="WHITE" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>

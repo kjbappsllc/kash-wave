@@ -61,6 +61,7 @@
                 <version>0.0.3</version>
                 <configuration>
                     <mainClass>io.kw.ui.bootstrap.UIBootstrap</mainClass>
+                    <launcher>launch</launcher>
                 </configuration>
             </plugin>
         </plugins>
