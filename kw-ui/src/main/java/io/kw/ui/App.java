@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 public class App {
 
     private static final Rectangle2D SCREEN_BOUNDS = Screen.getPrimary().getVisualBounds();
-    public static Stage mainStage;
+    private static Stage mainStage;
 
     @Inject
     ResourceManager resourceManager;
@@ -34,6 +34,10 @@ public class App {
         stage.initStyle(StageStyle.TRANSPARENT);
         setViewAsDraggable(main);
         stage.show();
+    }
+
+    public static Stage getMainStage() {
+        return mainStage;
     }
 
     public static void setViewAsDraggable(Parent root) {
