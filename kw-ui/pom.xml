@@ -51,6 +51,10 @@
             <artifactId>jfoenix</artifactId>
             <version>9.0.9</version>
         </dependency>
+        <dependency>
+            <groupId>io.kw</groupId>
+            <artifactId>kw-security</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

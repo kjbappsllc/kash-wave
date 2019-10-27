@@ -55,7 +55,7 @@
                   <Font size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton prefHeight="39.0" prefWidth="120.0" styleClass="primary-btn" text="Sign In">
+            <JFXButton onAction="#signIn" prefHeight="39.0" prefWidth="120.0" styleClass="primary-btn" text="Sign In">
                <font>
                   <Font size="15.0" />
                </font>
