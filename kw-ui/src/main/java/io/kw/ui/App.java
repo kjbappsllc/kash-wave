@@ -26,7 +26,7 @@ public class App {
 
     private void launch(@Observes @AppInitialized Stage stage) {
         mainStage = stage;
-        Parent main = resourceManager.loadView("LoginMain");
+        Parent main = resourceManager.loadView("Onboarding");
         if (main == null) System.exit(100);
         Scene scene = new Scene(main);
         scene.setFill(Color.TRANSPARENT);

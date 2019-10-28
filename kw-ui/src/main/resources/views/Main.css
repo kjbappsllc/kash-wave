@@ -2,10 +2,6 @@
     -fx-background-color:transparent;
 }
 
-.pane {
-    -fx-background-color: #333333;
-}
-
 .trans-btn-white-brder {
     -fx-background-color: transparent;
     -fx-background-radius: 5px;
@@ -21,8 +17,20 @@
     -fx-text-fill: whitesmoke;
 }
 
+.blue-pane {
+    -fx-background-color: #32475E;
+}
+
 .white-pane {
-    -fx-background-color: white
+    -fx-background-color: white;
+}
+
+.blue-bordered-pane {
+    -fx-border-color: #32475E;
+    -fx-border-radius: 5px;
+    -fx-border-width: 20px;
+    -fx-background-radius: 5px;
+    -fx-background-color: transparent;
 }
 
 .tf-box {
@@ -34,4 +42,12 @@
 .tf {
     -fx-background-color: transparent;
     -fx-prompt-text-fill: #CEE9DA;
+}
+
+.v-bar-5 {
+    -fx-background-color: #58C08E;
+    -fx-border-color: transparent;
+    -fx-min-width: 5px;
+    -fx-pref-width: 5px;
+    -fx-max-width: 5px;
 }
