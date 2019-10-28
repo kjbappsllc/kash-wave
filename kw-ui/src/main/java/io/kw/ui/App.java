@@ -1,6 +1,5 @@
 package io.kw.ui;
 
-import io.kw.security.auth.AuthManager;
 import io.kw.ui.cdi.AppInitialized;
 import io.kw.ui.infrastructure.ResourceManager;
 import javafx.geometry.Rectangle2D;

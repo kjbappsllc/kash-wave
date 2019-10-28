@@ -1,9 +1,0 @@
-{
-  "realm": "KashWaveAuth",
-  "auth-server-url": "http://localhost:8080/auth",
-  "ssl-required": "external",
-  "resource": "kash-wave",
-  "public-client": true,
-  "use-resource-role-mappings": true,
-  "enable-pkce": true
-}
