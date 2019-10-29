@@ -59,7 +59,11 @@ public class App {
         });
     }
 
-    public static void minimizeApp() {
+    public static void minimizeApplication() {
         mainStage.setIconified(true);
+    }
+
+    public static void closeApplication() {
+        System.exit(0);
     }
 }
