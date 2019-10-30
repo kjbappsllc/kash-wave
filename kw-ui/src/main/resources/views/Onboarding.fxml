@@ -14,7 +14,7 @@
    <children>
       <Pane id="pane" fx:id="pane" layoutX="190.0" layoutY="130.0" prefHeight="420.0" prefWidth="600.0" styleClass="blue-bordered-pane">
          <children>
-            <VBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="420.0" prefWidth="300.0" styleClass="blue-pane">
+            <VBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="420.0" prefWidth="300.0" style="-fx-background-radius: 5 0 0 5;" styleClass="blue-pane">
                <children>
                   <Label text="Kash Wave" textFill="WHITE">
                      <font>
@@ -23,7 +23,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox layoutX="300.0" prefHeight="420.0" prefWidth="300.0" styleClass="white-pane">
+            <VBox layoutX="300.0" prefHeight="420.0" prefWidth="300.0" style="-fx-background-radius: 0 5 5 0;" styleClass="white-pane">
                <children>
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="280.0">
                      <children>

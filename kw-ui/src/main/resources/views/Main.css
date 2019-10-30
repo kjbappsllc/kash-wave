@@ -28,7 +28,7 @@
 .blue-bordered-pane {
     -fx-border-color: #32475E;
     -fx-border-radius: 5px;
-    -fx-border-width: 20px;
+    -fx-border-width: 1px;
     -fx-background-radius: 5px;
     -fx-background-color: transparent;
 }
