@@ -142,6 +142,7 @@ public class PriceStreamingEngine {
                     if (!isNewBarFormed(timeframe, newPrice)) {
                         bars.get(0).setClose(newPrice);
                         bars.get(0).setHigh(newPrice);
+                        bars.get(0).setLow(newPrice);
                     }
                     System.out.println("Updated Bar: " + bars.get(0));
                     tickReceivedEvent.fire(bars);

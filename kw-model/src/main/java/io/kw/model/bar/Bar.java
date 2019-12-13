@@ -23,4 +23,11 @@ public class Bar implements Serializable {
             high = price;
         }
     }
+
+    public void setLow(final Price price) {
+        if (Objects.nonNull(price) && getLow().getMid().compareTo(price.getMid()) > 0) {
+            System.out.println("Price is lower than current low, updating to new low");
+            low = price;
+        }
+    }
 }
