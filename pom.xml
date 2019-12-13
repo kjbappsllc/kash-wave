@@ -19,7 +19,7 @@
         <lombok.version>1.18.10</lombok.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <weld.version>3.1.2.Final</weld.version>
-        <quarkus.version>1.0.0.Final</quarkus.version>
+        <quarkus.version>1.0.1.Final</quarkus.version>
     </properties>
 
     <dependencyManagement>
@@ -40,13 +40,6 @@
                 <groupId>org.jboss.weld.se</groupId>
                 <artifactId>weld-se-shaded</artifactId>
                 <version>${weld.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.quarkus</groupId>
-                <artifactId>quarkus-bom</artifactId>
-                <version>0.26.1</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
