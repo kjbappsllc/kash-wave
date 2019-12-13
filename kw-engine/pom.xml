@@ -9,18 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>kw-service-clients</artifactId>
+    <artifactId>kw-engine</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest-client</artifactId>
+            <groupId>io.kw</groupId>
+            <artifactId>kw-model</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-jackson</artifactId>
+            <groupId>io.kw</groupId>
+            <artifactId>kw-service-clients</artifactId>
         </dependency>
     </dependencies>
-
-
 </project>
