@@ -1,5 +1,6 @@
 package io.kw.ui;
 
+import animatefx.animation.FadeIn;
 import io.kw.ui.cdi.AppInitialized;
 import io.kw.ui.infrastructure.ResourceManager;
 import javafx.geometry.Rectangle2D;
@@ -34,6 +35,7 @@ public class App {
         stage.initStyle(StageStyle.TRANSPARENT);
         setViewAsDraggable(main);
         stage.show();
+        new FadeIn(main).play();
     }
 
     public static Stage getMainStage() {
