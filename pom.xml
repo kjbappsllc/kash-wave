@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>kw-ui</module>
         <module>kw-service-clients</module>
         <module>kw-model</module>
         <module>kw-engine</module>
+        <module>kw-ui</module>
     </modules>
 
     <properties>
@@ -84,6 +84,18 @@
                         <release>${java.version}</release>
                         <target>${java.version}</target>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>io.quarkus</groupId>
+                    <artifactId>quarkus-maven-plugin</artifactId>
+                    <version>${quarkus.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

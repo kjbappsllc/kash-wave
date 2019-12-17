@@ -1,6 +1,6 @@
-package io.kw.ui.bootstrap;
+package io.kw.ui.gui.bootstrap;
 
-import io.kw.ui.cdi.AppInitialized;
+import io.kw.ui.gui.cdi.AppInitialized;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -1,4 +1,4 @@
-package io.kw.ui.infrastructure;
+package io.kw.ui.gui.infrastructure;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

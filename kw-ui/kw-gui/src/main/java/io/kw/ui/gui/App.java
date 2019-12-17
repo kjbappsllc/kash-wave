@@ -1,8 +1,8 @@
-package io.kw.ui;
+package io.kw.ui.gui;
 
 import animatefx.animation.FadeIn;
-import io.kw.ui.cdi.AppInitialized;
-import io.kw.ui.infrastructure.ResourceManager;
+import io.kw.ui.gui.cdi.AppInitialized;
+import io.kw.ui.gui.infrastructure.ResourceManager;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

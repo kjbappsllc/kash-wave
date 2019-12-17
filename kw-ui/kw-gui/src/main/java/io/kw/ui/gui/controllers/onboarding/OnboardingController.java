@@ -1,16 +1,11 @@
-package io.kw.ui.controllers.onboarding;
+package io.kw.ui.gui.controllers.onboarding;
 
-import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import io.kw.ui.App;
+import io.kw.ui.gui.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,7 +27,6 @@ public class OnboardingController implements Initializable {
 
     @FXML
     void getStartedPressed(ActionEvent event) {
-
     }
 
     @Override
