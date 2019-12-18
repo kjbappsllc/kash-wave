@@ -1,6 +1,6 @@
 package io.kw.ui.gui.bootstrap;
 
-import io.kw.ui.gui.cdi.AppInitialized;
+import io.kw.ui.gui.cdi.GuiInitialized;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,7 +18,7 @@ public class UIBootstrap extends Application {
     @Override
     public void start(Stage stage) {
         container = SeContainerInitializer.newInstance().initialize();
-        container.getBeanManager().fireEvent(stage, new AnnotationLiteral<AppInitialized>() {});
+        container.getBeanManager().fireEvent(stage, new AnnotationLiteral<GuiInitialized>() {});
     }
 
     @Override
@@ -29,5 +29,4 @@ public class UIBootstrap extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

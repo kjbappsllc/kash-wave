@@ -9,7 +9,7 @@ import java.util.Objects;
 @Builder
 @Data
 public class Bar implements Serializable {
-    private @NonNull long volume;
+    private long volume;
     private @NonNull Price open;
     private @NonNull Price close;
     private @NonNull Price high;

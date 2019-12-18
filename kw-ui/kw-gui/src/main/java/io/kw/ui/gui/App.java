@@ -1,7 +1,7 @@
 package io.kw.ui.gui;
 
 import animatefx.animation.FadeIn;
-import io.kw.ui.gui.cdi.AppInitialized;
+import io.kw.ui.gui.cdi.GuiInitialized;
 import io.kw.ui.gui.infrastructure.ResourceManager;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -25,7 +25,7 @@ public class App {
     @Inject
     ResourceManager resourceManager;
 
-    private void launch(@Observes @AppInitialized Stage stage) {
+    private void launch(@Observes @GuiInitialized Stage stage) {
         mainStage = stage;
         Parent main = resourceManager.loadView("Onboarding");
         if (main == null) System.exit(100);

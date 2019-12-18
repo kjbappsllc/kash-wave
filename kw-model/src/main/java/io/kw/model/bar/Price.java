@@ -16,7 +16,7 @@ public class Price implements Serializable {
     private @NonNull BigDecimal bid;
     private @NonNull BigDecimal ask;
     private @NonNull Instant timestamp;
-    private @NonNull int precision;
+    private int precision;
 
     public BigDecimal getMid() {
         if (Objects.nonNull(getBid()) &&
