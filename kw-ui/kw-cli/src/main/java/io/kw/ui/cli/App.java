@@ -19,16 +19,16 @@ public class App {
     @Inject
     PriceStreamingEngine priceStreamingEngine;
 
-    public void onAppStart(@Observes ContainerInitialized event,
-                           @Parameters List<String> args) {
+    void onAppStart(@Observes ContainerInitialized event,
+                    @Parameters List<String> args) {
         System.out.println("Working: " + args);
-        priceStreamingEngine.startPricingStream(
-                new CurrencyPair(
-                        Currency.EUR,
-                        Currency.USD,
-                        new BigDecimal("0.2")
-                ),
-                Timeframe.M5
-        );
+//        priceStreamingEngine.startPricingStream(
+//                new CurrencyPair(
+//                        Currency.EUR,
+//                        Currency.USD,
+//                        new BigDecimal("0.2")
+//                ),
+//                Timeframe.M5
+//        );
     }
 }

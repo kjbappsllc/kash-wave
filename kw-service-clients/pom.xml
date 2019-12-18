@@ -21,6 +21,4 @@
             <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
     </dependencies>
-
-
 </project>
