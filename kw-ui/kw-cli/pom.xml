@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-arc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.kw</groupId>
             <artifactId>kw-engine</artifactId>
         </dependency>
@@ -21,12 +25,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <mainClass>io.kw.ui.cli.bootstrap.UIBootstrap</mainClass>
-                </configuration>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
