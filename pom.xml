@@ -6,7 +6,7 @@
 
     <groupId>io.kw</groupId>
     <artifactId>kash-wave</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -47,17 +47,17 @@
             <dependency>
                 <groupId>io.kw</groupId>
                 <artifactId>kw-model</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.kw</groupId>
                 <artifactId>kw-service-clients</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.kw</groupId>
                 <artifactId>kw-engine</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
