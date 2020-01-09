@@ -4,6 +4,8 @@ import io.kw.engine.core.PriceStreamingEngine;
 import io.kw.model.bar.Timeframe;
 import io.kw.model.currency.Currency;
 import io.kw.model.currency.CurrencyPair;
+import io.kw.ui.cli.view.TerminalView;
+import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,17 +17,10 @@ import java.math.BigDecimal;
 public class App {
 
     @Inject
-    PriceStreamingEngine priceStreamingEngine;
+    TerminalView terminalView;
 
-    void onAppStart(@Observes StartupEvent event) {
-        System.out.println("Working: ");
-        priceStreamingEngine.startPricingStream(
-                new CurrencyPair(
-                        Currency.EUR,
-                        Currency.USD,
-                        new BigDecimal("0.2")
-                ),
-                Timeframe.M5
-        );
+    public void onAppStart(@Observes StartupEvent e) {
+        System.out.println("Starting Application: " + e);
+        terminalView.initView();
     }
 }

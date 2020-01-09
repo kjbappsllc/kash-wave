@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.kw.engine.cdi.qualifiers.DataInitialized;
 import io.kw.engine.cdi.qualifiers.DefaultMapper;
 import io.kw.engine.cdi.qualifiers.TickReceived;
-import io.kw.serviceClients.historical.oanda.OandaHistoricalPricesClient;
-import io.kw.serviceClients.historical.oanda.responses.HistoricalPricesResponse;
 import io.kw.model.bar.Bar;
 import io.kw.model.bar.Price;
 import io.kw.model.bar.Timeframe;
 import io.kw.model.currency.CurrencyPair;
 import io.kw.model.datatype.DataBuffer;
+import io.kw.serviceClients.historical.oanda.OandaHistoricalPricesClient;
+import io.kw.serviceClients.historical.oanda.responses.HistoricalPricesResponse;
 import io.kw.serviceClients.pricing.oanda.OandaPriceStreamingClient;
 import io.kw.serviceClients.pricing.oanda.responses.PriceStreamingResponse;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -25,6 +25,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -51,8 +54,12 @@ public class PriceStreamingEngine {
     Event<DataBuffer<Bar>> dataInitializedEvent;
 
     private static final String API_TOKEN_HEADER = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
-    private Thread priceFeedThread;
+    private ExecutorService priceFeedService;
     private DataBuffer<Bar> bars = new DataBuffer<>();
+
+    public PriceStreamingEngine() {
+        priceFeedService = Executors.newSingleThreadExecutor();
+    }
 
     public void startPricingStream(CurrencyPair pair, Timeframe timeframe) {
         System.out.println("Started the Pricing Stream");
@@ -69,8 +76,21 @@ public class PriceStreamingEngine {
     }
 
     public void stopPricingStream() {
-        if (Objects.nonNull(priceFeedThread))
-            priceFeedThread.interrupt();
+        try {
+            System.out.println("Attempt to shutdown price feed");
+            priceFeedService.shutdown();
+            priceFeedService.awaitTermination(3, TimeUnit.SECONDS);
+        }
+        catch (InterruptedException e) {
+            System.err.println("tasks interrupted");
+        }
+        finally {
+            if (!priceFeedService.isTerminated()) {
+                System.err.println("Canceling non-finished tasks");
+            }
+            priceFeedService.shutdownNow();
+            System.out.println("Shutdown finished");
+        }
     }
 
     private List<Bar> getHistoricalBars(CurrencyPair pair, Timeframe timeframe) {
@@ -125,7 +145,7 @@ public class PriceStreamingEngine {
     }
 
     private void runAsyncPriceFeed(InputStream pricingStream, Timeframe timeframe) {
-        priceFeedThread = new Thread(() -> {
+        priceFeedService.submit(() -> {
             String priceStringData;
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pricingStream));
             while (!Thread.interrupted()) {
@@ -150,7 +170,6 @@ public class PriceStreamingEngine {
             }
             try { bufferedReader.close(); } catch (Exception e) {/* catch all */}
         });
-        priceFeedThread.start();
     }
 
     private boolean isNewBarFormed(Timeframe timeframe, Price newPrice) {
