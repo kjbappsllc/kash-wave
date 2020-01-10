@@ -1,4 +1,4 @@
-package io.kw.model.datatype;
+package io.kw.model;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.util.AbstractList;
 import java.util.Collection;
 
 @NoArgsConstructor
-public class DataBuffer<T> extends AbstractList<T> {
+public final class DataBuffer<T> extends AbstractList<T> {
     private Object [] series = new Object[0];
     private int size = 0;
     @Setter private boolean reversedIndexing = true;

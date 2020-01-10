@@ -1,8 +1,8 @@
 package io.kw.engine.indicators;
 
 import io.kw.engine.core.IndicatorEngine;
-import io.kw.model.bar.Bar;
-import io.kw.model.datatype.DataBuffer;
+import io.kw.model.Bar;
+import io.kw.model.DataBuffer;
 
 public final class SimpleMA extends IndicatorEngine.Indicator {
 

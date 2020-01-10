@@ -1,4 +1,4 @@
-package io.kw.model.bar;
+package io.kw.model;
 
 import lombok.*;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Data
-public class Price implements Serializable {
+public final class Price {
     private @NonNull BigDecimal bid;
     private @NonNull BigDecimal ask;
     private @NonNull Instant timestamp;

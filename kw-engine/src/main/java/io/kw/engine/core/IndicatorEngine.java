@@ -2,8 +2,8 @@ package io.kw.engine.core;
 
 import io.kw.engine.cdi.qualifiers.DataInitialized;
 import io.kw.engine.cdi.qualifiers.TickReceived;
-import io.kw.model.bar.Bar;
-import io.kw.model.datatype.DataBuffer;
+import io.kw.model.Bar;
+import io.kw.model.DataBuffer;
 
 import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;

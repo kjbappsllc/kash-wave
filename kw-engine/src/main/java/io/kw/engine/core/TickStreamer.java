@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.kw.engine.cdi.qualifiers.DataInitialized;
 import io.kw.engine.cdi.qualifiers.DefaultMapper;
 import io.kw.engine.cdi.qualifiers.TickReceived;
-import io.kw.model.bar.Bar;
-import io.kw.model.bar.Price;
-import io.kw.model.bar.Timeframe;
-import io.kw.model.currency.CurrencyPair;
-import io.kw.model.datatype.DataBuffer;
 import io.kw.serviceClients.historical.oanda.OandaHistoricalPricesClient;
 import io.kw.serviceClients.historical.oanda.responses.HistoricalPricesResponse;
+import io.kw.model.Bar;
+import io.kw.model.Price;
+import io.kw.model.Timeframe;
+import io.kw.model.CurrencyPair;
+import io.kw.model.DataBuffer;
 import io.kw.serviceClients.pricing.oanda.OandaPriceStreamingClient;
 import io.kw.serviceClients.pricing.oanda.responses.PriceStreamingResponse;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class PriceStreamingEngine {
+public class TickStreamer {
 
     @Inject
     @RestClient
@@ -57,11 +57,11 @@ public class PriceStreamingEngine {
     private ExecutorService priceFeedService;
     private DataBuffer<Bar> bars = new DataBuffer<>();
 
-    public PriceStreamingEngine() {
+    public TickStreamer() {
         priceFeedService = Executors.newSingleThreadExecutor();
     }
 
-    public void startPricingStream(CurrencyPair pair, Timeframe timeframe) {
+    public void startStream(CurrencyPair pair, Timeframe timeframe) {
         System.out.println("Started the Pricing Stream");
         if (Objects.isNull(bars) || bars.size() <= 0) {
             bars.addAll(getHistoricalBars(pair, timeframe));
@@ -75,16 +75,14 @@ public class PriceStreamingEngine {
         runAsyncPriceFeed(pricingStream, timeframe);
     }
 
-    public void stopPricingStream() {
+    public void endStream() {
         try {
             System.out.println("Attempt to shutdown price feed");
             priceFeedService.shutdown();
             priceFeedService.awaitTermination(3, TimeUnit.SECONDS);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             System.err.println("tasks interrupted");
-        }
-        finally {
+        } finally {
             if (!priceFeedService.isTerminated()) {
                 System.err.println("Canceling non-finished tasks");
             }

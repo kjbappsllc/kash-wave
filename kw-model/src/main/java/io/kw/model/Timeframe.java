@@ -1,4 +1,4 @@
-package io.kw.model.bar;
+package io.kw.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

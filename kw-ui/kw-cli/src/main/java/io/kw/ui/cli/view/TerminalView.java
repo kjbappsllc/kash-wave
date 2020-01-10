@@ -4,10 +4,10 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import io.kw.engine.core.PriceStreamingEngine;
-import io.kw.model.bar.Timeframe;
-import io.kw.model.currency.Currency;
-import io.kw.model.currency.CurrencyPair;
+import io.kw.engine.core.TickStreamer;
+import io.kw.model.Currency;
+import io.kw.model.CurrencyPair;
+import io.kw.model.Timeframe;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ import java.util.*;
 public class TerminalView {
 
     @Inject
-    PriceStreamingEngine priceStreamingEngine;
+    TickStreamer priceStreamingEngine;
 
     public void initView() {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();

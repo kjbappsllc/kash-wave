@@ -1,4 +1,4 @@
-package io.kw.model.currency;
+package io.kw.model;
 
 import java.util.HashMap;
 import java.util.Map;

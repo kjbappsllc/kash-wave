@@ -1,4 +1,4 @@
-package io.kw.model.bar;
+package io.kw.model;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Builder
 @Data
-public class Bar implements Serializable {
+public final class Bar {
     private long volume;
     private @NonNull Price open;
     private @NonNull Price close;
