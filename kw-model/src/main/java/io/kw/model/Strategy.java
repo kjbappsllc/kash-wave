@@ -1,4 +1,3 @@
 package io.kw.model;
 
-public abstract class Strategy {
-}
+public interface Strategy extends PriceObserver {}

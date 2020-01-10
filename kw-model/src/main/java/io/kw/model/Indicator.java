@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Indicator {
+public abstract class Indicator implements PriceObserver {
     private final @NonNull List<DataBuffer<BigDecimal>> lineBuffers;
     private final @NonNull int bufferNum;
     public Indicator(final int bufferNum) {
@@ -25,9 +25,7 @@ public abstract class Indicator {
         return lineBuffers.get(bufferNum).get(index);
     }
 
-    List<DataBuffer<BigDecimal>> getLineBuffers() {
-        return Collections.unmodifiableList(lineBuffers);
-    }
+    List<DataBuffer<BigDecimal>> getLineBuffers() { return Collections.unmodifiableList(lineBuffers); }
 
     protected final void addValue(int bufferNum, BigDecimal value) {
         checkIfValidBufferIndex(bufferNum);
@@ -38,9 +36,6 @@ public abstract class Indicator {
         checkIfValidBufferIndex(bufferNum);
         lineBuffers.get(bufferNum).update(index, value);
     }
-
-    protected abstract void onCalculate(DataBuffer<Bar> bars);
-    protected abstract void onInit(DataBuffer<Bar> bars);
 
     private void checkIfValidBufferIndex(int bufferNum) {
         if (bufferNum < 0 || bufferNum >= this.bufferNum) {
