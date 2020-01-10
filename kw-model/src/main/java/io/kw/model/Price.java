@@ -16,6 +16,7 @@ public final class Price {
     private @NonNull BigDecimal bid;
     private @NonNull BigDecimal ask;
     private @NonNull Instant timestamp;
+    private @NonNull CurrencyPair currencyPair;
     private int precision;
 
     public BigDecimal getMid() {

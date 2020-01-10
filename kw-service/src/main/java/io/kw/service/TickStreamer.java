@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,16 +34,8 @@ public class TickStreamer {
     OandaPriceStreamingClient oandaPriceStreamingClient;
 
     @Inject
-    @RestClient
-    OandaHistoricalPricesClient oandaHistoricalPricesClient;
-
-    @Inject
     @DefaultMapper
     ObjectMapper mapper;
-
-    @Inject
-    @DataInitialized
-    Event<DataBuffer<Bar>> dataInitializedEvent;
 
     @Inject
     @TickReceived
@@ -49,22 +43,24 @@ public class TickStreamer {
 
     private static final String API_TOKEN_HEADER = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
     private ExecutorService priceFeedExecutor;
+    private HashMap<String, CurrencyPair> currencies;
 
     public TickStreamer() {
         priceFeedExecutor = Executors.newSingleThreadExecutor();
+        currencies = new HashMap<>();
     }
 
-    public void startStream(CurrencyPair pair, Timeframe timeframe) {
+    public void startStream(CurrencyPair ...pairs) {
         System.out.println("Started the Pricing Stream");
-        DataBuffer<Bar> historicalBuffer = new DataBuffer<>();
-        historicalBuffer.addAll(getHistoricalBars(pair, timeframe));
-        dataInitializedEvent.fire(historicalBuffer);
+        Arrays.stream(pairs).forEach(currencyPair -> {
+            currencies.put(currencyPair.getPairName("_"), currencyPair);
+        });
         InputStream pricingStream = oandaPriceStreamingClient.getPrices(
                 API_TOKEN_HEADER,
                 "101-001-9159383-001",
-                pair.getPairName("_")
+                pairs[0].getPairName("_")
         );
-        runAsyncPriceFeed(pricingStream, timeframe);
+        runAsyncPriceFeed(pricingStream);
     }
 
     public void endStream() {
@@ -83,58 +79,7 @@ public class TickStreamer {
         }
     }
 
-    private List<Bar> getHistoricalBars(CurrencyPair pair, Timeframe timeframe) {
-        HistoricalPricesResponse historicalPrices = oandaHistoricalPricesClient.getHistoricalBars(
-                API_TOKEN_HEADER,
-                pair.getPairName("_"),
-                "BA",
-                timeframe.toString(),
-                250
-        );
-        return historicalPrices
-                .getCandles()
-                .stream()
-                .map(candle -> {
-                            Instant parsedTime = Instant.parse(candle.getTime());
-                            return Bar.builder()
-                                    .high(Price.builder()
-                                            .ask(new BigDecimal(candle.getAsk().getH()))
-                                            .bid(new BigDecimal(candle.getBid().getH()))
-                                            .timestamp(parsedTime)
-                                            .precision(5)
-                                            .build()
-                                    )
-                                    .close(Price.builder()
-                                            .ask(new BigDecimal(candle.getAsk().getC()))
-                                            .bid(new BigDecimal(candle.getBid().getC()))
-                                            .timestamp(parsedTime)
-                                            .precision(5)
-                                            .build()
-                                    )
-                                    .low(Price.builder()
-                                            .ask(new BigDecimal(candle.getAsk().getL()))
-                                            .bid(new BigDecimal(candle.getBid().getL()))
-                                            .timestamp(parsedTime)
-                                            .precision(5)
-                                            .build()
-                                    )
-                                    .open(Price.builder()
-                                            .ask(new BigDecimal(candle.getAsk().getO()))
-                                            .bid(new BigDecimal(candle.getBid().getO()))
-                                            .timestamp(parsedTime)
-                                            .precision(5)
-                                            .build()
-                                    )
-                                    .timestamp(parsedTime)
-                                    .volume(candle.getVolume())
-                                    .timeframe(timeframe)
-                                    .build();
-                        }
-                )
-                .collect(Collectors.toList());
-    }
-
-    private void runAsyncPriceFeed(InputStream pricingStream, Timeframe timeframe) {
+    private void runAsyncPriceFeed(InputStream pricingStream) {
         priceFeedExecutor.submit(() -> {
             String priceStringData;
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pricingStream));
@@ -146,6 +91,7 @@ public class TickStreamer {
                             .ask(new BigDecimal(mappedPricingResponse.getAsks().get(0).getPrice()))
                             .bid(new BigDecimal(mappedPricingResponse.getBids().get(0).getPrice()))
                             .timestamp(Instant.parse(mappedPricingResponse.getTime()))
+                            .currencyPair(currencies.get(mappedPricingResponse.getInstrument()))
                             .precision(5)
                             .build();
                     System.out.println("Received Price Event From Broker: " + newTick);
@@ -154,21 +100,5 @@ public class TickStreamer {
             }
             try { bufferedReader.close(); } catch (Exception e) {/* catch all */}
         });
-    }
-
-    private boolean isNewBarFormed(Timeframe timeframe, Price newPrice) {
-        if (Timeframe.hasTimeChanged(timeframe, bars.get(0).getTimestamp(), newPrice.getTimestamp())) {
-            bars.add(Bar.builder()
-                    .close(newPrice)
-                    .open(newPrice)
-                    .low(newPrice)
-                    .high(newPrice)
-                    .timeframe(timeframe)
-                    .timestamp(newPrice.getTimestamp().truncatedTo(timeframe.getTruncatedUnit()))
-                    .build()
-            );
-            return true;
-        }
-        return false;
     }
 }

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 public final class CurrencyPair implements Serializable {
     private @NonNull Currency base;
     private @NonNull Currency quote;
-    private BigDecimal marginRate;
 
     public CurrencyPair setBase(Currency base) {
         this.base = base;
