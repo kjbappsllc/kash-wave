@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>io.kw</groupId>
-            <artifactId>kw-service-clients</artifactId>
+            <artifactId>kw-service</artifactId>
         </dependency>
 
         <dependency>

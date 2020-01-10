@@ -1,4 +1,4 @@
-package io.kw.engine.cdi.qualifiers;
+package io.kw.service.cdi.qualifiers;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Documented;
@@ -13,4 +13,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Retention(RUNTIME)
 @Target({TYPE, METHOD, FIELD, PARAMETER})
-public @interface TickReceived {}
+public @interface DataInitialized {}

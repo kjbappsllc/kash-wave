@@ -1,4 +1,4 @@
-package io.kw.engine.cdi.qualifiers;
+package io.kw.service.cdi.qualifiers;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Documented;

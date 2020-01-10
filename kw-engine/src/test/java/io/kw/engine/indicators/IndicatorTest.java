@@ -1,13 +1,15 @@
-package io.kw.model;
+package io.kw.engine.indicators;
 
-import lombok.NoArgsConstructor;
+import io.kw.model.Bar;
+import io.kw.model.DataBuffer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class IndicatorTest {
 

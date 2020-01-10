@@ -1,16 +1,23 @@
-package io.kw.model;
+package io.kw.engine.indicators;
 
+import io.kw.model.Bar;
+import io.kw.model.DataBuffer;
+import io.kw.service.cdi.qualifiers.DataInitialized;
+import io.kw.service.cdi.qualifiers.TickReceived;
 import lombok.NonNull;
 
+import javax.annotation.Priority;
+import javax.enterprise.event.Observes;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Indicator implements PriceObserver {
+public abstract class Indicator {
     private final @NonNull List<DataBuffer<BigDecimal>> lineBuffers;
     private final @NonNull int bufferNum;
+
     public Indicator(final int bufferNum) {
         checkIfBufferNumInRange(bufferNum);
         this.bufferNum = bufferNum;
@@ -48,4 +55,15 @@ public abstract class Indicator implements PriceObserver {
             throw new IllegalArgumentException("Amount of buffers is not in the range [0..16]");
         }
     }
+
+    private void _onInit(@Observes @DataInitialized @Priority(0) DataBuffer<Bar> bars) {
+        this.onInit(bars);
+    }
+
+    private void _onCalculate(@Observes @TickReceived @Priority(0) DataBuffer<Bar> bars) {
+        this.onCalculate(bars);
+    }
+
+    protected abstract void onInit(DataBuffer<Bar> bars);
+    protected abstract void onCalculate(DataBuffer<Bar> bars);
 }

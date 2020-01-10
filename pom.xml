@@ -60,6 +60,11 @@
                 <artifactId>kw-engine</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.kw</groupId>
+                <artifactId>kw-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

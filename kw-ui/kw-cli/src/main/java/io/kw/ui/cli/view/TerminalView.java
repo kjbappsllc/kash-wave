@@ -4,10 +4,10 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import io.kw.engine.core.TickStreamer;
 import io.kw.model.Currency;
 import io.kw.model.CurrencyPair;
 import io.kw.model.Timeframe;
+import io.kw.service.TickStreamer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -59,7 +59,7 @@ public class TerminalView {
 
             contentPanel.addComponent(new Label("Button (centered)"));
             contentPanel.addComponent(new Button("Button", () -> {
-                priceStreamingEngine.startPricingStream(
+                priceStreamingEngine.startStream(
                         new CurrencyPair(
                                 Currency.EUR,
                                 Currency.USD,
