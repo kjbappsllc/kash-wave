@@ -3,7 +3,7 @@ package io.kw.engine.indicators;
 import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
 
-public final class ATR extends IndicatorEngine.Indicator {
+public final class ATR extends Indicator {
 
     public ATR() {
         super(2);

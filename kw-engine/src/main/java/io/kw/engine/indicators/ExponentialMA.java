@@ -3,7 +3,7 @@ package io.kw.engine.indicators;
 import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
 
-public final class ExponentialMA extends IndicatorEngine.Indicator {
+public final class ExponentialMA extends Indicator {
 
     public ExponentialMA() {
         super(2);

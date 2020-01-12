@@ -53,10 +53,8 @@ public class TickStreamService {
     }
 
     public void startStream(String apiToken, String accountId, CurrencyPair ...pairs) {
-        System.out.println("Started the Pricing Stream");
-        Arrays.stream(pairs).forEach(currencyPair -> {
-            currencies.put(currencyPair.getPairName("_"), currencyPair);
-        });
+        System.out.println("Starting the Pricing Stream");
+        Arrays.stream(pairs).forEach(currencyPair -> currencies.put(currencyPair.getPairName("_"), currencyPair));
         InputStream pricingStream = oandaPriceStreamingClient.getPrices(
                 apiToken,
                 accountId,
@@ -68,7 +66,7 @@ public class TickStreamService {
     public void endStream() {
         Try.run(() -> {
             priceFeedExecutor.shutdown();
-            priceFeedExecutor.awaitTermination(3, TimeUnit.SECONDS);
+            priceFeedExecutor.awaitTermination(1, TimeUnit.SECONDS);
         }).andFinally(() -> {
             if (!priceFeedExecutor.isTerminated()) System.err.println("Canceling non-finished tasks");
             priceFeedExecutor.shutdownNow();
@@ -96,6 +94,7 @@ public class TickStreamService {
                 }
             }
             Try.run(bufferedReader::close);
+            endStream();
         });
     }
 }

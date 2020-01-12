@@ -1,8 +1,11 @@
 package io.kw.engine.core;
 
 import io.kw.model.*;
+import io.kw.service.cdi.qualifiers.TickReceived;
 
+import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import java.util.HashMap;
 
 @ApplicationScoped
@@ -10,6 +13,10 @@ public class TickAggregator {
     private HashMap<CurrencyPair, DataBuffer<Bar>> bars;
     TickAggregator() {
         bars = new HashMap<>();
+    }
+
+    private void tickReceived(@Observes @TickReceived @Priority(0) Price tick) {
+        System.out.println("Aggregating tick information");
     }
 
     private boolean isNewBarFormed(Timeframe timeframe, Price newPrice) {
