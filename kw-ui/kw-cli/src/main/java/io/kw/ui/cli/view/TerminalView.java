@@ -7,7 +7,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import io.kw.model.Currency;
 import io.kw.model.CurrencyPair;
 import io.kw.model.Timeframe;
-import io.kw.service.TickStreamer;
+import io.kw.service.TickStreamService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ import java.util.*;
 public class TerminalView {
 
     @Inject
-    TickStreamer priceStreamingEngine;
+    TickStreamService priceStreamingEngine;
 
     public void initView() {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();

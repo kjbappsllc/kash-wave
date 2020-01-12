@@ -24,6 +24,7 @@
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <weld.version>3.1.2.Final</weld.version>
         <quarkus.version>1.1.1.Final</quarkus.version>
+        <vavr.version>0.10.2</vavr.version>
     </properties>
 
     <dependencyManagement>
@@ -65,6 +66,11 @@
                 <artifactId>kw-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.vavr</groupId>
+                <artifactId>vavr</artifactId>
+                <version>${vavr.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -72,6 +78,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>

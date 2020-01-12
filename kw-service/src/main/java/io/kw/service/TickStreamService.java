@@ -9,6 +9,8 @@ import io.kw.serviceClients.historical.oanda.OandaHistoricalPricesClient;
 import io.kw.serviceClients.historical.oanda.responses.HistoricalPricesResponse;
 import io.kw.serviceClients.pricing.oanda.OandaPriceStreamingClient;
 import io.kw.serviceClients.pricing.oanda.responses.PriceStreamingResponse;
+import io.vavr.control.Try;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -28,7 +30,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class TickStreamer {
+public class TickStreamService {
+
     @Inject
     @RestClient
     OandaPriceStreamingClient oandaPriceStreamingClient;
@@ -41,64 +44,58 @@ public class TickStreamer {
     @TickReceived
     Event<Price> tickReceivedEvent;
 
-    private static final String API_TOKEN_HEADER = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
     private ExecutorService priceFeedExecutor;
     private HashMap<String, CurrencyPair> currencies;
 
-    public TickStreamer() {
+    public TickStreamService() {
         priceFeedExecutor = Executors.newSingleThreadExecutor();
         currencies = new HashMap<>();
     }
 
-    public void startStream(CurrencyPair ...pairs) {
+    public void startStream(String apiToken, String accountId, CurrencyPair ...pairs) {
         System.out.println("Started the Pricing Stream");
         Arrays.stream(pairs).forEach(currencyPair -> {
             currencies.put(currencyPair.getPairName("_"), currencyPair);
         });
         InputStream pricingStream = oandaPriceStreamingClient.getPrices(
-                API_TOKEN_HEADER,
-                "101-001-9159383-001",
+                apiToken,
+                accountId,
                 pairs[0].getPairName("_")
         );
         runAsyncPriceFeed(pricingStream);
     }
 
     public void endStream() {
-        try {
-            System.out.println("Attempt to shutdown price feed");
+        Try.run(() -> {
             priceFeedExecutor.shutdown();
             priceFeedExecutor.awaitTermination(3, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            System.err.println("tasks interrupted");
-        } finally {
-            if (!priceFeedExecutor.isTerminated()) {
-                System.err.println("Canceling non-finished tasks");
-            }
+        }).andFinally(() -> {
+            if (!priceFeedExecutor.isTerminated()) System.err.println("Canceling non-finished tasks");
             priceFeedExecutor.shutdownNow();
-            System.out.println("Shutdown finished");
-        }
+        });
     }
 
     private void runAsyncPriceFeed(InputStream pricingStream) {
         priceFeedExecutor.submit(() -> {
-            String priceStringData;
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pricingStream));
             while (!Thread.interrupted()) {
-                try {
-                    if ((priceStringData = bufferedReader.readLine()) == null) break;
-                    PriceStreamingResponse mappedPricingResponse = mapper.readValue(priceStringData, PriceStreamingResponse.class);
-                    var newTick = Price.builder()
-                            .ask(new BigDecimal(mappedPricingResponse.getAsks().get(0).getPrice()))
-                            .bid(new BigDecimal(mappedPricingResponse.getBids().get(0).getPrice()))
-                            .timestamp(Instant.parse(mappedPricingResponse.getTime()))
-                            .currencyPair(currencies.get(mappedPricingResponse.getInstrument()))
-                            .precision(5)
-                            .build();
-                    System.out.println("Received Price Event From Broker: " + newTick);
-                    tickReceivedEvent.fire(newTick);
-                } catch (Exception e) {/* Filter out Heartbeats */}
+                Try<String> bufferData = Try.of(bufferedReader::readLine);
+                if (bufferData.isSuccess()) {
+                    String data = bufferData.get();
+                    if (data == null) break;
+                    Try<PriceStreamingResponse> mappedResponse = Try.of(() -> mapper.readValue(data, PriceStreamingResponse.class));
+                    mappedResponse.onSuccess(streamingResponse -> tickReceivedEvent.fire(
+                            Price.builder()
+                                    .ask(new BigDecimal(streamingResponse.getAsks().get(0).getPrice()))
+                                    .bid(new BigDecimal(streamingResponse.getBids().get(0).getPrice()))
+                                    .timestamp(Instant.parse(streamingResponse.getTime()))
+                                    .currencyPair(currencies.get(streamingResponse.getInstrument()))
+                                    .precision(5)
+                                    .build()
+                    ));
+                }
             }
-            try { bufferedReader.close(); } catch (Exception e) {/* catch all */}
+            Try.run(bufferedReader::close);
         });
     }
 }
