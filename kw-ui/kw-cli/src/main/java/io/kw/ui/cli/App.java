@@ -1,6 +1,8 @@
 package io.kw.ui.cli;
 
-import io.kw.ui.cli.view.TerminalView;
+import io.kw.model.Currency;
+import io.kw.model.CurrencyPair;
+import io.kw.service.TickStreamService;
 import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,10 +13,16 @@ import javax.inject.Inject;
 public class App {
 
     @Inject
-    TerminalView terminalView;
+    TickStreamService streamService;
+
+    String apiToken = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
+    String accountID = "101-001-9159383-001";
 
     public void onAppStart(@Observes StartupEvent e) {
-        System.out.println("Starting Application: " + e);
-        terminalView.initView();
+        streamService.startStream(
+                apiToken,
+                accountID,
+                new CurrencyPair(Currency.EUR, Currency.USD)
+        );
     }
 }

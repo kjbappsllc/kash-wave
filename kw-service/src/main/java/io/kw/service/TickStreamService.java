@@ -2,15 +2,11 @@ package io.kw.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.kw.model.*;
-import io.kw.service.cdi.qualifiers.DataInitialized;
 import io.kw.service.cdi.qualifiers.DefaultMapper;
 import io.kw.service.cdi.qualifiers.TickReceived;
-import io.kw.serviceClients.historical.oanda.OandaHistoricalPricesClient;
-import io.kw.serviceClients.historical.oanda.responses.HistoricalPricesResponse;
 import io.kw.serviceClients.pricing.oanda.OandaPriceStreamingClient;
 import io.kw.serviceClients.pricing.oanda.responses.PriceStreamingResponse;
 import io.vavr.control.Try;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,11 +19,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TickStreamService {
@@ -80,9 +74,10 @@ public class TickStreamService {
                 Try<String> bufferData = Try.of(bufferedReader::readLine);
                 if (bufferData.isSuccess()) {
                     String data = bufferData.get();
+                    System.out.println("RECEIVED PRICE FROM BROKER: " + data);
                     if (data == null) break;
                     Try<PriceStreamingResponse> mappedResponse = Try.of(() -> mapper.readValue(data, PriceStreamingResponse.class));
-                    mappedResponse.onSuccess(streamingResponse -> tickReceivedEvent.fire(
+                    mappedResponse.andThenTry(streamingResponse -> tickReceivedEvent.fire(
                             Price.builder()
                                     .ask(new BigDecimal(streamingResponse.getAsks().get(0).getPrice()))
                                     .bid(new BigDecimal(streamingResponse.getBids().get(0).getPrice()))

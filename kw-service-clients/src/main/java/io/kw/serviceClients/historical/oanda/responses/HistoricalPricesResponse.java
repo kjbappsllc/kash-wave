@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class HistoricalPricesResponse implements Serializable {
+public class HistoricalPricesResponse {
     private List<Candles> candles;
 
     @NoArgsConstructor

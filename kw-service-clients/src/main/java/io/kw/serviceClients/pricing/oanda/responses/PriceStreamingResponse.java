@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PriceStreamingResponse implements Serializable {
+public class PriceStreamingResponse {
     private String type;
     private String instrument;
     private String time;

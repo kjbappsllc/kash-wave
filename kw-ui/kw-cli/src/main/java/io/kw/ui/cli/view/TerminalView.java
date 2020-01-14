@@ -4,22 +4,13 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import io.kw.model.Currency;
-import io.kw.model.CurrencyPair;
-import io.kw.model.Timeframe;
-import io.kw.service.TickStreamService;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 
 @ApplicationScoped
 public class TerminalView {
-
-    @Inject
-    TickStreamService priceStreamingEngine;
 
     public void initView() {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -58,16 +49,7 @@ public class TerminalView {
                             .setLayoutData(GridLayout.createHorizontallyFilledLayoutData(1)));
 
             contentPanel.addComponent(new Label("Button (centered)"));
-            contentPanel.addComponent(new Button("Button", () -> {
-                priceStreamingEngine.startStream(
-                        new CurrencyPair(
-                                Currency.EUR,
-                                Currency.USD,
-                                new BigDecimal("0.2")
-                        ),
-                        Timeframe.M5
-                );
-            }));
+            contentPanel.addComponent(new Button("Button", () -> {}));
 
             contentPanel.addComponent(
                     new EmptySpace()

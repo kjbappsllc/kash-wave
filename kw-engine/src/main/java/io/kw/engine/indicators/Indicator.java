@@ -2,12 +2,8 @@ package io.kw.engine.indicators;
 
 import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
-import io.kw.service.cdi.qualifiers.DataInitialized;
-import io.kw.service.cdi.qualifiers.TickReceived;
 import lombok.NonNull;
 
-import javax.annotation.Priority;
-import javax.enterprise.event.Observes;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -54,14 +50,6 @@ public abstract class Indicator {
         if (bufferNum > 16) {
             throw new IllegalArgumentException("Amount of buffers is not in the range [0..16]");
         }
-    }
-
-    private void _onInit(@Observes @DataInitialized @Priority(0) DataBuffer<Bar> bars) {
-        this.onInit(bars);
-    }
-
-    private void _onCalculate(@Observes @TickReceived @Priority(0) DataBuffer<Bar> bars) {
-        this.onCalculate(bars);
     }
 
     protected abstract void onInit(DataBuffer<Bar> bars);
