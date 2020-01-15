@@ -10,8 +10,10 @@ import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public final class TickAggregator {
@@ -45,14 +47,15 @@ public final class TickAggregator {
         barMap.entrySet()
                 .parallelStream()
                 .forEach(pairTime -> {
-                    var isNewBar = isNewBarFormed (
-                            pairTime.getValue().get(0),
-                            pairTime.getKey()._2(),
-                            tick
-                    );
-
-                    if (isNewBar) {
-                        System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
+                    if (pairTime.getKey()._1() == tick.getCurrencyPair()) {
+                        var isNewBar = isNewBarFormed (
+                                pairTime.getValue().get(0),
+                                pairTime.getKey()._2(),
+                                tick
+                        );
+                        if (isNewBar) {
+                            System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
+                        }
                     }
                 });
     }

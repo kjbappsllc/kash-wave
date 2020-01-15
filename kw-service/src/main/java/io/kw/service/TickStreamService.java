@@ -88,8 +88,7 @@ public class TickStreamService {
                     ));
                 }
             }
-            Try.run(bufferedReader::close);
-            endStream();
+            Try.run(bufferedReader::close).andFinally(this::endStream);
         });
     }
 }
