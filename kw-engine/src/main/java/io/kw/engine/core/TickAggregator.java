@@ -10,8 +10,8 @@ import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
 public final class TickAggregator {
@@ -19,10 +19,10 @@ public final class TickAggregator {
     @Inject
     HistoricalPricesService historicalPricesService;
 
-    private HashMap<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> barMap;
+    private ConcurrentHashMap<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> barMap;
 
     TickAggregator() {
-        barMap = new HashMap<>();
+        barMap = new ConcurrentHashMap<>();
     }
 
     public CompletableFuture<Boolean> attemptAddNewPair(String apiKey, CurrencyPair pair, Timeframe tf) {
@@ -41,22 +41,27 @@ public final class TickAggregator {
 
     private void tickReceived(@Observes @TickReceived @Priority(0) Price tick) {
         System.out.println("Aggregating tick information: " + tick);
-        System.out.println(this.hashCode());
+        System.out.println("Instance: " + this.hashCode());
+        barMap.entrySet()
+                .parallelStream()
+                .forEach(pairTime -> {
+                    var isNewBar = isNewBarFormed (
+                            pairTime.getValue().get(0),
+                            pairTime.getKey()._2(),
+                            tick
+                    );
+
+                    if (isNewBar) {
+                        System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
+                    }
+                });
     }
 
-    private boolean isNewBarFormed(Timeframe timeframe, Price newPrice) {
-//        if (Timeframe.hasTimeChanged(timeframe, bars.get(0).getTimestamp(), newPrice.getTimestamp())) {
-//            bars.add(Bar.builder()
-//                    .close(newPrice)
-//                    .open(newPrice)
-//                    .low(newPrice)
-//                    .high(newPrice)
-//                    .timeframe(timeframe)
-//                    .timestamp(newPrice.getTimestamp().truncatedTo(timeframe.getTruncatedUnit()))
-//                    .build()
-//            );
-//            return true;
-//        }
-        return false;
+    private boolean isNewBarFormed(Bar currentBar, Timeframe timeframe, Price newPrice) {
+        return Timeframe.hasTimeChanged (
+                timeframe,
+                currentBar.getTimestamp(),
+                newPrice.getTimestamp()
+        );
     }
 }
