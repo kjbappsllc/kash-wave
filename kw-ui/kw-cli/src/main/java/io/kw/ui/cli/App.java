@@ -1,8 +1,10 @@
 package io.kw.ui.cli;
 
 import io.kw.engine.KWEngine;
+import io.kw.engine.strategies.MACross;
 import io.kw.model.Currency;
 import io.kw.model.CurrencyPair;
+import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -19,11 +21,12 @@ public class App {
     String accountID = "101-001-9159383-001";
 
     public void onAppStart(@Observes StartupEvent e) {
-        engine.streamPrices(
+        MACross maCross = new MACross();
+        engine.startStrategy(
+                maCross,
                 apiToken,
                 accountID,
-                new CurrencyPair(Currency.EUR, Currency.USD),
-                new CurrencyPair(Currency.GBP, Currency.USD)
+                new CurrencyPair(Currency.EUR, Currency.USD)
         );
     }
 }

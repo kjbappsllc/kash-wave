@@ -1,5 +1,6 @@
 package io.kw.engine.core;
 
+import io.kw.engine.strategies.Strategy;
 import io.kw.model.*;
 import io.kw.service.HistoricalPricesService;
 import io.kw.service.cdi.qualifiers.TickReceived;
@@ -13,7 +14,6 @@ import javax.inject.Inject;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TickAggregator {
@@ -34,11 +34,11 @@ public class TickAggregator {
         return CompletableFuture.supplyAsync(() -> {
             DataBuffer<Bar> historicalBars = historicalPricesService.retrieveHistoricalData(apiKey, tf, pair);
             barMap.put(Tuple.of(pair, tf), historicalBars);
-            return Boolean.TRUE;
+            return true;
         }).exceptionally(exception -> {
             System.out.println("Problem adding Pair to List, Exception: " + exception.getLocalizedMessage());
             exception.printStackTrace();
-            return Boolean.FALSE;
+            return false;
         });
     }
 
@@ -47,18 +47,47 @@ public class TickAggregator {
         System.out.println("Instance: " + this.hashCode());
         barMap.entrySet()
                 .parallelStream()
+                .filter(pairTime -> isObservedCurrency(tick, pairTime))
                 .forEach(pairTime -> {
-                    if (pairTime.getKey()._1() == tick.getCurrencyPair()) {
-                        var isNewBar = isNewBarFormed (
-                                pairTime.getValue().get(0),
-                                pairTime.getKey()._2(),
-                                tick
-                        );
-                        if (isNewBar) {
-                            System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
-                        }
+                    if (isNewBarFormed(
+                            pairTime.getValue().get(0),
+                            pairTime.getKey()._2(),
+                            tick
+                    )) {
+                        createNewBar(tick, pairTime);
+                    } else {
+                        updateBar(tick, pairTime);
                     }
                 });
+    }
+
+    private void updateBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
+        Bar currentBar = pairTime.getValue().get(0);
+        long currentTickVolume = currentBar.getVolume();
+        currentBar.setVolume(currentTickVolume + 1);
+        currentBar.setHigh(tick);
+        currentBar.setLow(tick);
+        currentBar.setClose(tick);
+    }
+
+    private boolean isObservedCurrency(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
+        return pairTime.getKey()._1() == tick.getCurrencyPair();
+    }
+
+    private void createNewBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
+        System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
+        System.out.println("OLD BAR - " + pairTime.getValue().get(0));
+        Timeframe timeframe = pairTime.getKey()._2();
+        Bar newBar = Bar.builder()
+                .close(tick)
+                .low(tick)
+                .high(tick)
+                .open(tick)
+                .volume(1)
+                .timeframe(timeframe)
+                .timestamp(tick.getTimestamp().truncatedTo(timeframe.getTruncatedUnit()))
+                .build();
+        pairTime.getValue().add(newBar);
     }
 
     private boolean isNewBarFormed(Bar currentBar, Timeframe timeframe, Price newPrice) {

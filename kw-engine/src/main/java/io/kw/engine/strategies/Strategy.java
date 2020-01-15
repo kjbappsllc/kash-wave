@@ -1,10 +1,8 @@
 package io.kw.engine.strategies;
 
-import io.kw.model.Bar;
-import io.kw.model.DataBuffer;
-import io.kw.service.cdi.qualifiers.DataInitialized;
-import io.kw.service.cdi.qualifiers.TickReceived;
+import lombok.ToString;
 
-import javax.enterprise.event.Observes;
-
-public abstract class Strategy { }
+@ToString
+public abstract class Strategy {
+    public abstract void onCalculate();
+}

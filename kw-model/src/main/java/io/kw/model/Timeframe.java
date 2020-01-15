@@ -18,7 +18,7 @@ public enum Timeframe implements Serializable {
     M30(ChronoUnit.MINUTES, 30), H1(ChronoUnit.HOURS, 1), H2(ChronoUnit.HOURS, 2),
     H4(ChronoUnit.HOURS, 4), D(ChronoUnit.DAYS, 1), W(ChronoUnit.WEEKS, 1),
     M(ChronoUnit.MONTHS, 1);
-    private ChronoUnit truncatedUnit;
+    public ChronoUnit truncatedUnit;
     private int timePassed;
 
     public static boolean hasTimeChanged(Timeframe timeframe, Instant previous, Instant current) {
