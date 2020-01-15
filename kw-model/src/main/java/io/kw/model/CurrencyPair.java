@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 public final class CurrencyPair implements Serializable {
     private @NonNull Currency base;
     private @NonNull Currency quote;

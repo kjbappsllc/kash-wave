@@ -8,7 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/instruments")
-@RegisterRestClient
+@RegisterRestClient(configKey = "historical-api")
 @Singleton
 public interface OandaHistoricalPricesClient {
     @GET

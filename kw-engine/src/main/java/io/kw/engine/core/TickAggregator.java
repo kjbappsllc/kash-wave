@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public final class TickAggregator {
+public class TickAggregator {
 
     @Inject
     HistoricalPricesService historicalPricesService;
@@ -36,12 +36,13 @@ public final class TickAggregator {
             barMap.put(Tuple.of(pair, tf), historicalBars);
             return Boolean.TRUE;
         }).exceptionally(exception -> {
-            System.out.println("Problem adding Pair to List");
+            System.out.println("Problem adding Pair to List, Exception: " + exception.getLocalizedMessage());
+            exception.printStackTrace();
             return Boolean.FALSE;
         });
     }
 
-    private void tickReceived(@Observes @TickReceived @Priority(0) Price tick) {
+    void tickReceived(@Observes @TickReceived @Priority(0) Price tick) {
         System.out.println("Aggregating tick information: " + tick);
         System.out.println("Instance: " + this.hashCode());
         barMap.entrySet()

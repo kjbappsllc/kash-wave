@@ -5,12 +5,14 @@ import io.kw.serviceClients.historical.oanda.OandaHistoricalPricesClient;
 import io.kw.serviceClients.historical.oanda.responses.HistoricalPricesResponse;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 public class HistoricalPricesService {
 
     @Inject
@@ -43,21 +45,25 @@ public class HistoricalPricesService {
                             .high(priceBuilder
                                     .ask(new BigDecimal(candle.getAsk().getH()))
                                     .bid(new BigDecimal(candle.getBid().getH()))
+                                    .currencyPair(pair)
                                     .build()
                             )
                             .close(priceBuilder
                                     .ask(new BigDecimal(candle.getAsk().getC()))
                                     .bid(new BigDecimal(candle.getBid().getC()))
+                                    .currencyPair(pair)
                                     .build()
                             )
                             .low(priceBuilder
                                     .ask(new BigDecimal(candle.getAsk().getL()))
                                     .bid(new BigDecimal(candle.getBid().getL()))
+                                    .currencyPair(pair)
                                     .build()
                             )
                             .open(priceBuilder
                                     .ask(new BigDecimal(candle.getAsk().getO()))
                                     .bid(new BigDecimal(candle.getBid().getO()))
+                                    .currencyPair(pair)
                                     .build()
                             ).build();
                 }).collect(Collectors.toList());
