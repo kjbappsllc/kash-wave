@@ -9,6 +9,7 @@ import io.kw.service.TickStreamService;
 import io.vavr.control.Try;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -20,11 +21,17 @@ public class KWEngine {
     @Inject
     TickAggregator tickAggregator;
 
-    public void startStrategy(Strategy strategy, String apiKey, String accountID, CurrencyPair pair) {
+    @Inject
+    Instance<Strategy> strategy;
+
+    String apiKey = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
+    String accountID = "101-001-9159383-001";
+
+    public void startStrategy(Strategy strategy, CurrencyPair pair) {
         System.out.println("Start Strategy Called");
     }
 
-    private void streamPrices(String apiKey, String accountID, CurrencyPair interestedPair) {
+    private void streamPrices(CurrencyPair interestedPair) {
         Try.of(() -> tickAggregator.attemptAddNewPair(apiKey, interestedPair, Timeframe.M1).get())
                 .onSuccess(didAddPair -> {
                     if (didAddPair) {

@@ -17,16 +17,8 @@ public class App {
     @Inject
     KWEngine engine;
 
-    String apiToken = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
-    String accountID = "101-001-9159383-001";
-
     public void onAppStart(@Observes StartupEvent e) {
         MACross maCross = new MACross();
-        engine.startStrategy(
-                maCross,
-                apiToken,
-                accountID,
-                new CurrencyPair(Currency.EUR, Currency.USD)
-        );
+        engine.startStrategy(maCross, new CurrencyPair(Currency.EUR, Currency.USD));
     }
 }
