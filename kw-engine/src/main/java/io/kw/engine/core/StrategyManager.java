@@ -62,7 +62,11 @@ public class StrategyManager {
         strategies
                 .stream()
                 .filter(strategy -> strategy.getGuid().equals(data._1()))
-                .forEach(strategy -> strategy._onInit(data._2()));
+                .findFirst()
+        .ifPresentOrElse(
+                strategy -> strategy._onInit(data._2()),
+                () -> System.out.println("Issue with onInit of strategy")
+        );
     }
 
     private boolean strategyAlreadyExists(Strategy s) {

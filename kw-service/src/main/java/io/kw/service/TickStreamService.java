@@ -47,7 +47,6 @@ public class TickStreamService {
     }
 
     public void startStream(String apiToken, String accountId, CurrencyPair ...pairs) {
-        System.out.println("Starting the Pricing Stream");
         Arrays.stream(pairs).forEach(currencyPair -> currencies.put(currencyPair.getPairName("_"), currencyPair));
         InputStream pricingStream = oandaPriceStreamingClient.getPrices(
                 apiToken,

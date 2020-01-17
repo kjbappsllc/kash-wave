@@ -11,7 +11,7 @@ public class MACross extends Strategy {
 
     @Override
     public void onInit() {
-        System.out.println(this.getClass().getSimpleName() + " onCalculate Called");
+        System.out.println(this.getClass().getSimpleName() + " onInit Called");
     }
 
     @Override
