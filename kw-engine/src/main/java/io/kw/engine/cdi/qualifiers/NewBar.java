@@ -11,5 +11,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Qualifier
 @Documented
 @Retention(RUNTIME)
-@Target({TYPE, CONSTRUCTOR, FIELD, PARAMETER})
-public @interface StrategyImplementation {}
+@Target({TYPE, CONSTRUCTOR, FIELD, PARAMETER, METHOD})
+public @interface NewBar {}

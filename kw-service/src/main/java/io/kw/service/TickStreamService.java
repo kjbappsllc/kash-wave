@@ -74,7 +74,6 @@ public class TickStreamService {
                 Try<String> bufferData = Try.of(bufferedReader::readLine);
                 if (bufferData.isSuccess()) {
                     String data = bufferData.get();
-                    System.out.println("RECEIVED PRICE FROM BROKER: " + data);
                     if (data == null) break;
                     Try<PriceStreamingResponse> mappedResponse = Try.of(() -> mapper.readValue(data, PriceStreamingResponse.class));
                     mappedResponse.andThenTry(streamingResponse -> tickReceivedEvent.fire(
