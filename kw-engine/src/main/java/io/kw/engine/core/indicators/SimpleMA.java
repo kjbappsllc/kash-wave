@@ -4,18 +4,22 @@ import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
 
 public final class SimpleMA extends Indicator {
-
     public SimpleMA() {
         super(2);
     }
 
     @Override
-    protected void onCalculate(DataBuffer<Bar> bars) {
-        System.out.println("SimpleMA");
+    protected void _onInit() {
+
     }
 
     @Override
-    protected void onInit(DataBuffer<Bar> bars) {
-        System.out.println("SimpleMA Initialized");
+    protected void _onTick() {
+
+    }
+
+    @Override
+    protected void _onNewBar() {
+
     }
 }

@@ -46,7 +46,7 @@ public class StrategyManager {
                 .stream()
                 .filter(strategy -> strategy.getPair().equals(newTick._1()) &&
                         strategy.getTimeframe().equals(newTick._2()))
-                .forEach(strategy -> strategy._onTick(newTick._3()));
+                .forEach(strategy -> strategy.onTick(newTick._3()));
     }
 
     void onNewBar(@Observes @NewBar Tuple2<CurrencyPair, Timeframe> bar) {
@@ -64,7 +64,7 @@ public class StrategyManager {
                 .filter(strategy -> strategy.getGuid().equals(data._1()))
                 .findFirst()
         .ifPresentOrElse(
-                strategy -> strategy._onInit(data._2()),
+                strategy -> strategy.onInit(data._2()),
                 () -> System.out.println("Issue with onInit of strategy")
         );
     }

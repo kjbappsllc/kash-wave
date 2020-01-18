@@ -1,42 +1,66 @@
 package io.kw.engine.core.strategies;
 
+import io.kw.engine.core.BarObserver;
+import io.kw.engine.core.indicators.Indicator;
 import io.kw.model.Bar;
 import io.kw.model.CurrencyPair;
 import io.kw.model.DataBuffer;
 import io.kw.model.Timeframe;
 import io.vavr.control.Try;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
-@Data
 @RequiredArgsConstructor
-public abstract class Strategy {
+public abstract class Strategy extends BarObserver {
+
+    @Getter @Setter
     private @NonNull CurrencyPair pair;
+
+    @Getter @Setter
     private @NonNull Timeframe timeframe;
+
+    @Getter
+    private @NonNull List<Indicator> indicators;
+
+    @Getter
     private UUID guid = UUID.randomUUID();
-    private DataBuffer<Bar> bars;
+
+    @Getter @Setter
     private boolean didInitialize = false;
 
-    public final void _onTick(DataBuffer<Bar> bars) {
+    @Override
+    public final void onTick(DataBuffer<Bar> bars) {
         if (didInitialize) {
             setBars(bars);
-            this.onTick();
+            _onTick();
         }
     }
-    public final void _onInit(DataBuffer<Bar> bars) {
+
+    @Override
+    public final void onInit(DataBuffer<Bar> bars) {
         setBars(bars);
-        onInit();
+        _onInit();
         setDidInitialize(true);
     }
 
-    public final Bar getBar(int index) {
-        return Try.of(() -> bars.get(index)).getOrNull();
+    @Override
+    public final void onNewBar() {
+        _onNewBar();
     }
 
-    public abstract void onInit();
-    public abstract void onTick();
-    public abstract void onNewBar();
+    private void runAsyncIndicatorAction(Consumer<Indicator> task) {
+            Try.run(() ->
+                    CompletableFuture.allOf(indicators
+                    .stream()
+                    .map(indicator -> CompletableFuture.runAsync(() -> task.accept(indicator)))
+                    .toArray(CompletableFuture[]::new))
+                    .get()
+            ).onFailure(exception ->
+                    System.out.println("Running indicators failed: " + exception.getLocalizedMessage())
+            );
+    }
 }

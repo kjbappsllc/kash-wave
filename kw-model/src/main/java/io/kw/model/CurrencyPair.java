@@ -5,11 +5,8 @@ import lombok.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@ToString
-public final class CurrencyPair implements Serializable {
+public final class CurrencyPair {
     private @NonNull Currency base;
     private @NonNull Currency quote;
     public String getPairName(String delimiter) {

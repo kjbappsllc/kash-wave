@@ -1,5 +1,7 @@
 package io.kw.model;
 
+import lombok.ToString;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +13,9 @@ public enum Currency {
     JPY("JPY"),
     EUR("EUR");
 
+    @ToString.Include
     public final String label;
+
     private static final Map<String, Currency> LABEL_CACHE = new HashMap<>();
 
     static {
@@ -26,10 +30,5 @@ public enum Currency {
 
     public static Currency valueOfLabel(String label) {
         return LABEL_CACHE.get(label.toUpperCase());
-    }
-
-    @Override
-    public String toString() {
-        return label;
     }
 }

@@ -1,14 +1,15 @@
 package io.kw.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.Objects;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data

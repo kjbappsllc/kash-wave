@@ -3,24 +3,26 @@ package io.kw.engine.core.strategies;
 import io.kw.model.CurrencyPair;
 import io.kw.model.Timeframe;
 
+import java.util.List;
+
 public class MACross extends Strategy {
     public MACross(CurrencyPair pair, Timeframe tf) {
-        super(pair, tf);
-        System.out.println("MACross is initialized");
+        super(pair, tf, List.of());
+        System.out.println("MACross Constructor Called");
     }
 
     @Override
-    public void onInit() {
-        System.out.println(this.getClass().getSimpleName() + " onInit Called");
+    protected void _onInit() {
+        System.out.println("MACross ON INIT Called");
     }
 
     @Override
-    public void onTick() {
-        System.out.println("MACross onTick Called: " + getGuid());
+    protected void _onTick() {
+        System.out.println("MACross ON TICK Called");
     }
 
     @Override
-    public void onNewBar() {
-        System.out.println("MACross onNewBar Called: " + getGuid());
+    protected void _onNewBar() {
+        System.out.println("MACross ON NEW BAR Called");
     }
 }

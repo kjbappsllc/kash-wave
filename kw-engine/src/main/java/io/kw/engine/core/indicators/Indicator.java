@@ -1,5 +1,6 @@
 package io.kw.engine.core.indicators;
 
+import io.kw.engine.core.BarObserver;
 import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
 import lombok.NonNull;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Indicator {
+public abstract class Indicator extends BarObserver {
     private final @NonNull List<DataBuffer<BigDecimal>> lineBuffers;
     private final @NonNull int bufferNum;
 
@@ -52,6 +53,18 @@ public abstract class Indicator {
         }
     }
 
-    protected abstract void onInit(DataBuffer<Bar> bars);
-    protected abstract void onCalculate(DataBuffer<Bar> bars);
+    @Override
+    public void onInit(DataBuffer<Bar> bars) {
+
+    }
+
+    @Override
+    public void onTick(DataBuffer<Bar> bars) {
+
+    }
+
+    @Override
+    public void onNewBar() {
+
+    }
 }
