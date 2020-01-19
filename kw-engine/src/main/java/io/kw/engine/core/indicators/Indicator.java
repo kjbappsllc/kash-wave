@@ -5,6 +5,7 @@ import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
 import lombok.NonNull;
 
+import javax.enterprise.context.Dependent;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +58,7 @@ public abstract class Indicator extends BarObserver {
     public void onInit(DataBuffer<Bar> bars) {
         setBars(bars);
         _onInit();
+        setInitialized(true);
     }
 
     @Override
@@ -73,4 +75,6 @@ public abstract class Indicator extends BarObserver {
     public void onNewBar() {
         _onNewBar();
     }
+
+    protected abstract void validateInput();
 }

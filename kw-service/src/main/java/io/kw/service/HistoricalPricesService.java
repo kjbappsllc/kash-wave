@@ -22,7 +22,7 @@ public class HistoricalPricesService {
     public DataBuffer<Bar> retrieveHistoricalData(String apiToken, Timeframe tf, CurrencyPair pair) {
         HistoricalPricesResponse response = historicalPricesClient.getHistoricalBars(
                 apiToken,
-                pair.getPairName("_"),
+                pair.pairName("_"),
                 "BA",
                 tf.toString(),
                 250

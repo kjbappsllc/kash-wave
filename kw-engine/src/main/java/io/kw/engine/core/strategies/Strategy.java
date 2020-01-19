@@ -9,6 +9,7 @@ import io.kw.model.Timeframe;
 import io.vavr.control.Try;
 import lombok.*;
 
+import javax.enterprise.context.Dependent;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

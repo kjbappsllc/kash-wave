@@ -20,6 +20,8 @@ public abstract class BarObserver {
         return Try.of(() -> getBars().get(index)).getOrNull();
     }
 
+    public final int barCount() { return getBars().size(); }
+
     public abstract void onInit(DataBuffer<Bar> bars);
     public abstract void onTick(DataBuffer<Bar> bars);
     public abstract void onNewBar();

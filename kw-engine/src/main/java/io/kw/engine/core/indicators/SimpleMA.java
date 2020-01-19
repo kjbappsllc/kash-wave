@@ -1,12 +1,26 @@
 package io.kw.engine.core.indicators;
 
-import io.kw.model.Bar;
-import io.kw.model.DataBuffer;
+import lombok.ToString;
 
-public final class SimpleMA extends Indicator {
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.Queue;
 
-    public SimpleMA() {
-        super(2);
+@ToString
+public class SimpleMA extends Indicator {
+    public enum Lines { SMA }
+
+    @ToString.Exclude
+    private final Queue<BigDecimal> window = new LinkedList<>();
+
+    private final int period;
+
+    public SimpleMA(int period) {
+        super(1);
+        System.out.println("Simple MA Initialized");
+        this.period = period;
+        validateInput();
+
     }
 
     @Override
@@ -22,5 +36,12 @@ public final class SimpleMA extends Indicator {
     @Override
     protected void _onNewBar() {
 
+    }
+
+    @Override
+    protected void validateInput() {
+        if (period < 0) {
+            throw new IllegalArgumentException("Invalid Arguments " + this);
+        }
     }
 }
