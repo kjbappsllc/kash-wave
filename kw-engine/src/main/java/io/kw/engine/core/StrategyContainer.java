@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @ApplicationScoped
-public class StrategyManager {
+public class StrategyContainer {
 
     @Inject
     TickAggregator tickAggregator;

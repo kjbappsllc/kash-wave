@@ -13,9 +13,13 @@ public abstract class BarObserver {
     @Setter(AccessLevel.PROTECTED)
     private DataBuffer<Bar> bars;
 
+    @Getter @Setter
+    protected boolean initialized = false;
+
     public final Bar get(int index) {
         return Try.of(() -> getBars().get(index)).getOrNull();
     }
+
     public abstract void onInit(DataBuffer<Bar> bars);
     public abstract void onTick(DataBuffer<Bar> bars);
     public abstract void onNewBar();

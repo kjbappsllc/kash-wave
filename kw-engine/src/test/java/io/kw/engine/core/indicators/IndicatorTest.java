@@ -16,9 +16,14 @@ class IndicatorTest {
     private static class TestIndicator extends Indicator {
         public TestIndicator() {super(2);}
         @Override
-        public void onCalculate(DataBuffer<Bar> bars) { }
+        protected void _onInit() {
+        }
         @Override
-        public void onInit(DataBuffer<Bar> bars) { }
+        protected void _onTick() {
+        }
+        @Override
+        protected void _onNewBar() {
+        }
     }
 
     @Test

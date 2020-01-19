@@ -1,10 +1,8 @@
 package io.kw.engine;
 
-import io.kw.engine.core.StrategyManager;
-import io.kw.engine.core.TickAggregator;
+import io.kw.engine.core.StrategyContainer;
 import io.kw.engine.core.strategies.Strategy;
 import io.kw.model.CurrencyPair;
-import io.kw.model.Timeframe;
 import io.kw.service.TickStreamService;
 import io.vavr.control.Try;
 
@@ -18,13 +16,13 @@ public class KWEngine {
     TickStreamService tickStreamService;
 
     @Inject
-    StrategyManager strategyManager;
+    StrategyContainer strategyContainer;
 
     String apiKey = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
     String accountID = "101-001-9159383-001";
 
     public void startStrategy(Strategy s) {
-        Try.of(() -> strategyManager.initStrategy(s, apiKey).get())
+        Try.of(() -> strategyContainer.initStrategy(s, apiKey).get())
                 .onFailure(exception -> System.out.println("Error Trying to start strategy: " + exception))
                 .onSuccess(isSuccess -> {
                     System.out.println("Strategy Start Status: " + isSuccess);

@@ -29,30 +29,32 @@ public abstract class Strategy extends BarObserver {
     @Getter
     private UUID guid = UUID.randomUUID();
 
-    @Getter @Setter
-    private boolean didInitialize = false;
-
     @Override
     public final void onTick(DataBuffer<Bar> bars) {
-        if (didInitialize) {
+        if (isInitialized()) {
             setBars(bars);
+            mapIndicators(indicator -> indicator.onTick(bars));
             _onTick();
+            return;
         }
+        System.out.println("Strategy is not initialized yet. (OnTick)");
     }
 
     @Override
     public final void onInit(DataBuffer<Bar> bars) {
         setBars(bars);
+        mapIndicators(indicator -> indicator.onInit(bars));
         _onInit();
-        setDidInitialize(true);
+        setInitialized(true);
     }
 
     @Override
     public final void onNewBar() {
+        mapIndicators(Indicator::onNewBar);
         _onNewBar();
     }
 
-    private void runAsyncIndicatorAction(Consumer<Indicator> task) {
+    private void mapIndicators(Consumer<Indicator> task) {
             Try.run(() ->
                     CompletableFuture.allOf(indicators
                     .stream()
@@ -62,5 +64,6 @@ public abstract class Strategy extends BarObserver {
             ).onFailure(exception ->
                     System.out.println("Running indicators failed: " + exception.getLocalizedMessage())
             );
+        System.out.println("Populated Indicators.");
     }
 }

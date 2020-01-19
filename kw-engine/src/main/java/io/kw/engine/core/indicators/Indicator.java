@@ -55,16 +55,22 @@ public abstract class Indicator extends BarObserver {
 
     @Override
     public void onInit(DataBuffer<Bar> bars) {
-
+        setBars(bars);
+        _onInit();
     }
 
     @Override
     public void onTick(DataBuffer<Bar> bars) {
-
+        if (isInitialized()) {
+            setBars(bars);
+            _onTick();
+            return;
+        }
+        System.out.println("Indicator is not initialized yet. (OnTick)");
     }
 
     @Override
     public void onNewBar() {
-
+        _onNewBar();
     }
 }
