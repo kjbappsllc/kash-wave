@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Data
 public final class Price {
     private @NonNull BigDecimal bid;

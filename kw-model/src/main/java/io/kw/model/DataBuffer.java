@@ -1,62 +1,50 @@
 package io.kw.model;
 
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
-import java.util.AbstractList;
-import java.util.Arrays;
 import java.util.Collection;
 
 @NoArgsConstructor
-public final class DataBuffer<T> extends AbstractList<T> {
+@ToString(onlyExplicitlyIncluded = true)
+public final class DataBuffer<T> {
+
+    @ToString.Include
     private Object [] series = new Object[0];
     private int size = 0;
-    @Setter private boolean reversedIndexing = true;
 
-    @SafeVarargs
-    public static <U> DataBuffer<U> of(U ...data) {
-        DataBuffer<U> newBuffer = new DataBuffer<>();
-        newBuffer.addAll(Arrays.asList(data));
-        return newBuffer;
-    }
-    
-    @Override
-    public T get(final int index) {
-        @SuppressWarnings("unchecked") T retrievedData = (T) series[getTrueIndex(index)];
+    public T get(final int index, boolean isReversed) {
+        @SuppressWarnings("unchecked") T retrievedData = (T) series[getTrueIndex(index, isReversed)];
         return retrievedData;
     }
 
-    @Override
-    public boolean add(final T t) {
+    public void add(final T t) {
         if (canAllocateSpaceIfNeeded(1)) {
             series[size++] = t;
-            return true;
         }
-        return false;
     }
 
-    @Override
-    public boolean addAll(final Collection<? extends T> collection) {
+    public void updateByIndex(final int index, final T t) {
+        if (isValidTrueIndex(index)) {
+            series[index] = t;
+        }
+        throw new IndexOutOfBoundsException("Index " + index + " does not exist");
+    }
+
+    public void addAll(final Collection<? extends T> collection) {
         int otherSize = collection.size();
         if (canAllocateSpaceIfNeeded(otherSize)) {
             for (T t : collection) {
                 series[size++] = t;
             }
-            return true;
         }
-        return false;
     }
 
-    @Override
     public int size() {
         return size;
     }
 
-    public void update(final int index, final T value) {
-        series[getTrueIndex(index)] = value;
-    }
-
-    private int getTrueIndex(final int index) {
+    private int getTrueIndex(final int index, boolean reversedIndexing) {
         int trueIndex = reversedIndexing ? size - index - 1 : index;
         if (isValidIndex(index)) {
             return trueIndex;
@@ -66,6 +54,10 @@ public final class DataBuffer<T> extends AbstractList<T> {
 
     private boolean isValidIndex(final int index) {
         return index < size && index >= 0;
+    }
+
+    private boolean isValidTrueIndex(final int index) {
+        return index < series.length && index >= 0;
     }
 
     private boolean canAllocateSpaceIfNeeded(final int allocAmount) {

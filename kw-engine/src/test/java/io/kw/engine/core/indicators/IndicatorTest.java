@@ -1,6 +1,5 @@
 package io.kw.engine.core.indicators;
 
-import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

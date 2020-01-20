@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 public abstract class BarObserver {
-
     @Getter
     @Setter(AccessLevel.PROTECTED)
     private DataBuffer<Bar> bars;
@@ -16,13 +15,13 @@ public abstract class BarObserver {
     @Getter @Setter
     protected boolean initialized = false;
 
-    public final Bar getBar(int index) {
-        return Try.of(() -> getBars().get(index)).getOrNull();
+    public final Bar getBar(int index, boolean isReversed) {
+        return Try.of(() -> getBars().get(index, isReversed)).getOrNull();
     }
     public final int barCount() { return getBars().size(); }
 
-    public abstract void onInit(DataBuffer<Bar> bars);
-    public abstract void onTick(DataBuffer<Bar> bars);
+    public abstract void onInit(final DataBuffer<Bar> bars);
+    public abstract void onTick(final DataBuffer<Bar> bars);
     public abstract void onNewBar();
     protected abstract void _onInit();
     protected abstract void _onTick();

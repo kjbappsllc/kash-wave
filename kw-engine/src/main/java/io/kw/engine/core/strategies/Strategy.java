@@ -31,7 +31,7 @@ public abstract class Strategy extends BarObserver {
     private UUID guid = UUID.randomUUID();
 
     @Override
-    public final void onTick(DataBuffer<Bar> bars) {
+    public final void onTick(final DataBuffer<Bar> bars) {
         if (isInitialized()) {
             setBars(bars);
             mapIndicators(indicator -> indicator.onTick(bars));
@@ -42,7 +42,7 @@ public abstract class Strategy extends BarObserver {
     }
 
     @Override
-    public final void onInit(DataBuffer<Bar> bars) {
+    public final void onInit(final DataBuffer<Bar> bars) {
         setBars(bars);
         mapIndicators(indicator -> indicator.onInit(bars));
         _onInit();

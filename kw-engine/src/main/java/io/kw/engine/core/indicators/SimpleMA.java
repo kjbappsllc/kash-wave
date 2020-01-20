@@ -1,12 +1,12 @@
 package io.kw.engine.core.indicators;
 
-import io.kw.model.CurrencyPair;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.Supplier;
 
 @ToString
 public class SimpleMA extends Indicator {
@@ -39,21 +39,21 @@ public class SimpleMA extends Indicator {
 
     @Override
     protected void _onInit() {
-        if(getPrevCalculated() == 0) {
-            for(int i = 0; i < period - 1; i++) {
-                addData(getBar(i).close().getMid());
-                addValue(Lines.getBufNum(Lines.MA_BUF), BigDecimal.ZERO);
-            }
-            addData(getBar(period - 1).close().getMid());
-            addValue(Lines.getBufNum(Lines.MA_BUF), getAverage());
+        int limit = period - 1;
+        for(int i = 0; i < limit; i++) {
+            updateLineData(i, () -> BigDecimal.ZERO);
         }
+        updateLineData(limit, this::getAverage);
+        mainLoop(limit + 1);
         setPrevCalculated(barCount());
     }
 
     @Override
     protected void _onTick() {
-        int i, limit;
-        limit = getPrevCalculated() - 1;
+        int limit = getPrevCalculated() - 1;
+        if (getPrevCalculated() == barCount()) {
+
+        }
         setPrevCalculated(barCount());
     }
 
@@ -64,6 +64,12 @@ public class SimpleMA extends Indicator {
     protected void validateInput() {
         if (period < 0) {
             throw new IllegalArgumentException("Invalid Arguments " + this);
+        }
+    }
+
+    private void mainLoop(int start) {
+        for (int i = start; i < barCount(); i++) {
+            updateLineData(i, this::getAverage);
         }
     }
 
@@ -79,5 +85,15 @@ public class SimpleMA extends Indicator {
         if (window.isEmpty()) return BigDecimal.ZERO;
         BigDecimal divisor = BigDecimal.valueOf(window.size());
         return getSum().divide(divisor, 5, RoundingMode.HALF_UP);
+    }
+    private void updateLineData(int i, Supplier<BigDecimal> value) {
+        validateBar(i);
+        addData(getBar(i, false).close().getMid());
+        addValueToLine(Lines.getBufNum(Lines.MA_BUF), value.get());
+    }
+
+    private void validateBar(int i) {
+        if (getBar(i, false) == null)
+            throw new IndexOutOfBoundsException("Index : " + i + " is out of bounds");
     }
 }

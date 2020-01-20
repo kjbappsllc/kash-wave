@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 public abstract class Indicator extends BarObserver {
     private final @NonNull List<DataBuffer<BigDecimal>> lineBuffers;
-    private final @NonNull int bufferNum;
+    private final int bufferNum;
 
     @Getter(AccessLevel.PROTECTED) @Setter(AccessLevel.PROTECTED)
     private int prevCalculated = 0;
@@ -32,21 +32,21 @@ public abstract class Indicator extends BarObserver {
                 .collect(Collectors.toList());
     }
 
-    public BigDecimal getValue(int bufferNum, int index) {
+    public BigDecimal getLineValue(int bufferNum, int index) {
         checkIfValidBufferIndex(bufferNum);
-        return lineBuffers.get(bufferNum).get(index);
+        return lineBuffers.get(bufferNum).get(index, true);
     }
 
     List<DataBuffer<BigDecimal>> getLineBuffers() { return Collections.unmodifiableList(lineBuffers); }
 
-    protected final void addValue(int bufferNum, BigDecimal value) {
+    protected final void addValueToLine(int bufferNum, BigDecimal value) {
         checkIfValidBufferIndex(bufferNum);
         lineBuffers.get(bufferNum).add(value);
     }
 
-    protected final void setValue(int bufferNum, int index, BigDecimal value) {
+    protected final void setValueForLine(int bufferNum, int index, BigDecimal value) {
         checkIfValidBufferIndex(bufferNum);
-        lineBuffers.get(bufferNum).update(index, value);
+        lineBuffers.get(bufferNum).update(index, value, true);
     }
 
     private void checkIfValidBufferIndex(int bufferNum) {
@@ -62,14 +62,14 @@ public abstract class Indicator extends BarObserver {
     }
 
     @Override
-    public void onInit(DataBuffer<Bar> bars) {
+    public void onInit(final DataBuffer<Bar> bars) {
         setBars(bars);
         _onInit();
         setInitialized(true);
     }
 
     @Override
-    public void onTick(DataBuffer<Bar> bars) {
+    public void onTick(final DataBuffer<Bar> bars) {
         if (isInitialized()) {
             setBars(bars);
             _onTick();

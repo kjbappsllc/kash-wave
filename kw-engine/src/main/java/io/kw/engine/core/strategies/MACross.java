@@ -5,12 +5,14 @@ import io.kw.engine.core.indicators.SimpleMA;
 import io.kw.model.CurrencyPair;
 import io.kw.model.Timeframe;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
 public class MACross extends Strategy {
 
     @AllArgsConstructor
+    @Getter
     private enum Indicators {
         FAST_MA(0);
         public int index;

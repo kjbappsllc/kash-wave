@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import java.time.Instant;
 import java.util.Objects;
 
-@Builder
+@Builder(toBuilder = true)
 @Data
 @Accessors(fluent = true)
 public final class Bar {
