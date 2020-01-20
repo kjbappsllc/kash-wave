@@ -1,5 +1,6 @@
 package io.kw.engine.core.indicators;
 
+import io.kw.model.CurrencyPair;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -12,10 +13,10 @@ public class SimpleMA extends Indicator {
     @AllArgsConstructor
     @Getter
     public enum Lines {
-        SMA(0);
-        private int index;
-        public static int get(Lines line) {
-            return line.getIndex();
+        MA_BUF(0);
+        private int bufNum;
+        public static int getBufNum(Lines line) {
+            return line.getBufNum();
         }
     }
 
@@ -38,31 +39,26 @@ public class SimpleMA extends Indicator {
 
     @Override
     protected void _onInit() {
-//        limit=period;
-//        for(i=0; i<limit-1;i++)
-//            ExtLineBuffer[i]=0.0;
-//        //--- calculate first visible value
-//        double firstValue=0;
-//        for(i=begin;i<limit;i++)
-//            firstValue+=price[i];
-//        firstValue/=InpMAPeriod;
-//        ExtLineBuffer[limit-1]=firstValue;
+        if(getPrevCalculated() == 0) {
+            for(int i = 0; i < period - 1; i++) {
+                addData(getBar(i).close().getMid());
+                addValue(Lines.getBufNum(Lines.MA_BUF), BigDecimal.ZERO);
+            }
+            addData(getBar(period - 1).close().getMid());
+            addValue(Lines.getBufNum(Lines.MA_BUF), getAverage());
+        }
         setPrevCalculated(barCount());
     }
 
     @Override
     protected void _onTick() {
-//        int i, limit;
-//        limit = getPrevCalculated() - 1;
-//        for(i = limit; i < barCount(); i++)
-//            ExtLineBuffer[i]=ExtLineBuffer[i-1]+(price[i]-price[i-InpMAPeriod])/InpMAPeriod;
+        int i, limit;
+        limit = getPrevCalculated() - 1;
         setPrevCalculated(barCount());
     }
 
     @Override
-    protected void _onNewBar() {
-
-    }
+    protected void _onNewBar() {}
 
     @Override
     protected void validateInput() {
@@ -82,6 +78,6 @@ public class SimpleMA extends Indicator {
     private BigDecimal getAverage() {
         if (window.isEmpty()) return BigDecimal.ZERO;
         BigDecimal divisor = BigDecimal.valueOf(window.size());
-        return getSum().divide(divisor, 2, RoundingMode.HALF_UP);
+        return getSum().divide(divisor, 5, RoundingMode.HALF_UP);
     }
 }

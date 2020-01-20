@@ -2,6 +2,7 @@ package io.kw.engine.core.indicators;
 
 import io.kw.engine.core.BarObserver;
 import io.kw.model.Bar;
+import io.kw.model.CurrencyPair;
 import io.kw.model.DataBuffer;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -16,7 +16,7 @@ public abstract class BarObserver {
     @Getter @Setter
     protected boolean initialized = false;
 
-    public final Bar get(int index) {
+    public final Bar getBar(int index) {
         return Try.of(() -> getBars().get(index)).getOrNull();
     }
     public final int barCount() { return getBars().size(); }

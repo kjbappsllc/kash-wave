@@ -24,6 +24,11 @@ class IndicatorTest {
         @Override
         protected void _onNewBar() {
         }
+
+        @Override
+        protected void validateInput() {
+
+        }
     }
 
     @Test

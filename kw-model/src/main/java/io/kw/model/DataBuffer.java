@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.Collection;
 
 @NoArgsConstructor
@@ -11,6 +12,13 @@ public final class DataBuffer<T> extends AbstractList<T> {
     private Object [] series = new Object[0];
     private int size = 0;
     @Setter private boolean reversedIndexing = true;
+
+    @SafeVarargs
+    public static <U> DataBuffer<U> of(U ...data) {
+        DataBuffer<U> newBuffer = new DataBuffer<>();
+        newBuffer.addAll(Arrays.asList(data));
+        return newBuffer;
+    }
     
     @Override
     public T get(final int index) {
@@ -49,10 +57,11 @@ public final class DataBuffer<T> extends AbstractList<T> {
     }
 
     private int getTrueIndex(final int index) {
+        int trueIndex = reversedIndexing ? size - index - 1 : index;
         if (isValidIndex(index)) {
-            return reversedIndexing ? size - index - 1 : index;
+            return trueIndex;
         }
-        throw new IndexOutOfBoundsException();
+        throw new IndexOutOfBoundsException("Out of bounds with index: " + trueIndex);
     }
 
     private boolean isValidIndex(final int index) {
