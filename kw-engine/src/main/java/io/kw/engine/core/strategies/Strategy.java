@@ -67,4 +67,8 @@ public abstract class Strategy extends BarObserver {
             );
         System.out.println("Populated Indicators.");
     }
+
+    protected abstract void _onInit();
+    protected abstract void _onTick();
+    protected abstract void _onNewBar();
 }

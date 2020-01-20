@@ -3,7 +3,10 @@ package io.kw.engine.core.indicators;
 import io.kw.engine.core.BarObserver;
 import io.kw.model.Bar;
 import io.kw.model.DataBuffer;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import javax.enterprise.context.Dependent;
 import java.math.BigDecimal;
@@ -15,6 +18,9 @@ import java.util.stream.Stream;
 public abstract class Indicator extends BarObserver {
     private final @NonNull List<DataBuffer<BigDecimal>> lineBuffers;
     private final @NonNull int bufferNum;
+
+    @Getter(AccessLevel.PROTECTED) @Setter(AccessLevel.PROTECTED)
+    private int prevCalculated = 0;
 
     public Indicator(final int bufferNum) {
         checkIfBufferNumInRange(bufferNum);

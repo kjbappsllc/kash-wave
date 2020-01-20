@@ -19,7 +19,6 @@ public abstract class BarObserver {
     public final Bar get(int index) {
         return Try.of(() -> getBars().get(index)).getOrNull();
     }
-
     public final int barCount() { return getBars().size(); }
 
     public abstract void onInit(DataBuffer<Bar> bars);
