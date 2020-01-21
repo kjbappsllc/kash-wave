@@ -25,6 +25,7 @@
         <weld.version>3.1.2.Final</weld.version>
         <quarkus.version>1.1.1.Final</quarkus.version>
         <vavr.version>0.10.2</vavr.version>
+        <surefire.version>3.0.0-M4</surefire.version>
     </properties>
 
     <dependencyManagement>
@@ -120,6 +121,11 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -127,6 +133,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

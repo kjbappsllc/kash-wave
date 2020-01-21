@@ -23,11 +23,8 @@ public class SimpleMA extends Indicator {
     @ToString.Exclude
     private final Queue<BigDecimal> window = new LinkedList<>();
 
-    @ToString.Exclude
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE)
-    private BigDecimal sum = BigDecimal.ZERO;
-
     private final int period;
+    private final int precision = 5;
 
     public SimpleMA(int period) {
         super(1);
@@ -39,21 +36,24 @@ public class SimpleMA extends Indicator {
 
     @Override
     protected void _onInit() {
-        int limit = period - 1;
-        for(int i = 0; i < limit; i++) {
-            updateLineData(i, () -> BigDecimal.ZERO);
+        int limit = period;
+        for(int i = 0; i < limit - 1; i++) {
+            validateBar(i);
+            addValueToLine(Lines.getBufNum(Lines.MA_BUF), BigDecimal.ZERO.setScale(precision, RoundingMode.HALF_UP));
         }
-        updateLineData(limit, this::getAverage);
-        mainLoop(limit + 1);
+        BigDecimal firstVal = BigDecimal.ZERO;
+        for(int i = 0; i < limit; i++)
+            firstVal = firstVal.add(getBar(i, false).close().getMid()).setScale(precision, RoundingMode.HALF_UP);
+        firstVal = firstVal.divide(BigDecimal.valueOf(period), precision, RoundingMode.HALF_UP);
+        setValueForLine(Lines.getBufNum(Lines.MA_BUF), limit - 1, firstVal);
+        mainLoop(limit);
         setPrevCalculated(barCount());
     }
 
     @Override
     protected void _onTick() {
         int limit = getPrevCalculated() - 1;
-        if (getPrevCalculated() == barCount()) {
-
-        }
+        mainLoop(limit);
         setPrevCalculated(barCount());
     }
 
@@ -69,27 +69,16 @@ public class SimpleMA extends Indicator {
 
     private void mainLoop(int start) {
         for (int i = start; i < barCount(); i++) {
-            updateLineData(i, this::getAverage);
+            BigDecimal prevSMAVal = getLineValue(Lines.getBufNum(Lines.MA_BUF), i-1, false);
+            BigDecimal currPrice = getBar(i, false).close().getMid();
+            BigDecimal priceAtPeriodRange = getBar(i - period, false).close().getMid();
+            BigDecimal currentSMACalc = (currPrice.subtract(priceAtPeriodRange)).divide(BigDecimal.valueOf(period), precision, RoundingMode.HALF_UP);
+            setValueForLine(
+                    Lines.getBufNum(Lines.MA_BUF),
+                    i,
+                    prevSMAVal.add(currentSMACalc)
+            );
         }
-    }
-
-    private void addData(BigDecimal num) {
-        setSum(getSum().add(num));
-        window.add(num);
-        if (window.size() > period) {
-            setSum(getSum().subtract(window.remove()));
-        }
-    }
-
-    private BigDecimal getAverage() {
-        if (window.isEmpty()) return BigDecimal.ZERO;
-        BigDecimal divisor = BigDecimal.valueOf(window.size());
-        return getSum().divide(divisor, 5, RoundingMode.HALF_UP);
-    }
-    private void updateLineData(int i, Supplier<BigDecimal> value) {
-        validateBar(i);
-        addData(getBar(i, false).close().getMid());
-        addValueToLine(Lines.getBufNum(Lines.MA_BUF), value.get());
     }
 
     private void validateBar(int i) {

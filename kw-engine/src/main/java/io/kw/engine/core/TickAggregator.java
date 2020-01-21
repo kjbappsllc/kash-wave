@@ -67,7 +67,7 @@ public class TickAggregator {
                 .filter(pairTime -> isObservedCurrency(tick, pairTime))
                 .forEach(pairTime -> {
                     boolean newBarIsFormed = isNewBarFormed(
-                            pairTime.getValue().get(0),
+                            pairTime.getValue().get(0, true),
                             pairTime.getKey()._2(),
                             tick
                     );
@@ -88,7 +88,7 @@ public class TickAggregator {
     }
 
     private void updateCurrentBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
-        Bar currentBar = pairTime.getValue().get(0);
+        Bar currentBar = pairTime.getValue().get(0, true);
         long currentTickVolume = currentBar.volume();
         currentBar.volume(currentTickVolume + 1);
         currentBar.high(tick);

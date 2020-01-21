@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Collection;
+import java.util.Objects;
 
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
@@ -24,9 +25,11 @@ public final class DataBuffer<T> {
         }
     }
 
-    public void updateByIndex(final int index, final T t) {
+    public void updateByIndex(final int index, final T t, boolean isReversed) {
         if (isValidTrueIndex(index)) {
-            series[index] = t;
+            if (Objects.isNull(series[index])) size ++;
+            series[getTrueIndex(index, isReversed)] = t;
+            return;
         }
         throw new IndexOutOfBoundsException("Index " + index + " does not exist");
     }
@@ -46,14 +49,10 @@ public final class DataBuffer<T> {
 
     private int getTrueIndex(final int index, boolean reversedIndexing) {
         int trueIndex = reversedIndexing ? size - index - 1 : index;
-        if (isValidIndex(index)) {
+        if (isValidTrueIndex(index)) {
             return trueIndex;
         }
         throw new IndexOutOfBoundsException("Out of bounds with index: " + trueIndex);
-    }
-
-    private boolean isValidIndex(final int index) {
-        return index < size && index >= 0;
     }
 
     private boolean isValidTrueIndex(final int index) {
@@ -63,7 +62,7 @@ public final class DataBuffer<T> {
     private boolean canAllocateSpaceIfNeeded(final int allocAmount) {
         if (allocAmount <= 0) return false;
         if (availableSpace() < allocAmount) {
-            int STEP_SIZE = 16;
+            int STEP_SIZE = 24;
             int newSize = series.length + STEP_SIZE * (1 + (allocAmount - availableSpace()) / STEP_SIZE);
             Object[] newList = new Object[newSize];
             System.arraycopy(series,0, newList, 0, series.length);

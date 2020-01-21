@@ -32,9 +32,9 @@ public abstract class Indicator extends BarObserver {
                 .collect(Collectors.toList());
     }
 
-    public BigDecimal getLineValue(int bufferNum, int index) {
+    public BigDecimal getLineValue(int bufferNum, int index, boolean isReversed) {
         checkIfValidBufferIndex(bufferNum);
-        return lineBuffers.get(bufferNum).get(index, true);
+        return lineBuffers.get(bufferNum).get(index, isReversed);
     }
 
     List<DataBuffer<BigDecimal>> getLineBuffers() { return Collections.unmodifiableList(lineBuffers); }
@@ -46,7 +46,7 @@ public abstract class Indicator extends BarObserver {
 
     protected final void setValueForLine(int bufferNum, int index, BigDecimal value) {
         checkIfValidBufferIndex(bufferNum);
-        lineBuffers.get(bufferNum).update(index, value, true);
+        lineBuffers.get(bufferNum).updateByIndex(index, value, false);
     }
 
     private void checkIfValidBufferIndex(int bufferNum) {

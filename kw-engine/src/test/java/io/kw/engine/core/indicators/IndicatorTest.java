@@ -36,8 +36,6 @@ class IndicatorTest {
         Indicator testIndicator = new TestIndicator();
         List<DataBuffer<BigDecimal>> lineBuffers = testIndicator.getLineBuffers();
         assertThrows(UnsupportedOperationException.class, () -> lineBuffers.add(new DataBuffer<>()));
-        lineBuffers.get(0).add(new BigDecimal(1));
-        assertEquals(0, lineBuffers.get(0).size());
     }
 
 }
