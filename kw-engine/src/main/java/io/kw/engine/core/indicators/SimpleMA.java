@@ -20,18 +20,13 @@ public class SimpleMA extends Indicator {
         }
     }
 
-    @ToString.Exclude
-    private final Queue<BigDecimal> window = new LinkedList<>();
-
     private final int period;
     private final int precision = 5;
 
     public SimpleMA(int period) {
         super(1);
-        System.out.println("Simple MA Initialized");
         this.period = period;
         validateInput();
-
     }
 
     @Override
@@ -48,6 +43,7 @@ public class SimpleMA extends Indicator {
         setValueForLine(Lines.getBufNum(Lines.MA_BUF), limit - 1, firstVal);
         mainLoop(limit);
         setPrevCalculated(barCount());
+        setInitialized(true);
     }
 
     @Override

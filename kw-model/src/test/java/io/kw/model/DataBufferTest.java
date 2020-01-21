@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +38,7 @@ class DataBufferTest {
                 .volume(100);
     }
 
-    @DisplayName("Test DataBuffer: Regular Values")
+    @DisplayName("Test DataBuffer: Simple Values")
     @Test
     public void testDataBufferRegularValues() {
         DataBuffer<BigDecimal> buffer = new DataBuffer<>();
@@ -46,7 +50,7 @@ class DataBufferTest {
         assertEquals(BigDecimal.valueOf(2), buffer.get(1, true));
     }
 
-    @DisplayName("Test DataBuffer: Bar Values")
+    @DisplayName("Test DataBuffer: Complex Values")
     @Test
     public void testDataBufferBarValues() {
         DataBuffer<Bar> testBars = new DataBuffer<>();
@@ -62,7 +66,7 @@ class DataBufferTest {
         assertEquals(BigDecimal.valueOf(6), testBars.get(1, true).close().getBid());
     }
 
-    @DisplayName("Test DataBuffer integrity")
+    @DisplayName("Test DataBuffer Integrity")
     @Test
     public void testDataBufferIntegrity() {
         DataBuffer<Integer> buffer = new DataBuffer<>();
@@ -73,6 +77,40 @@ class DataBufferTest {
         buffer.updateByIndex(1, 3, false);
         assertEquals(2, buffer.size());
         assertEquals(3, buffer.get(1, false));
+        assertThrows(Exception.class, () -> buffer.updateByIndex(3, 4, false));
+        assertDoesNotThrow(() -> buffer.updateByIndex(2, 5, false));
+        assertEquals(3, buffer.size());
+        assertEquals(5, buffer.get(2, false));
+        assertEquals(5, buffer.get(0, true));
+        assertDoesNotThrow(() -> buffer.updateByIndex(0, 9, true));
+        assertEquals(9, buffer.get(0, true));
+        assertThrows(Exception.class, () -> buffer.updateByIndex(3, 2, true));
+        assertEquals(3, buffer.size());
+        buffer.clear();
+        assertEquals(0, buffer.size());
+        assertDoesNotThrow(() -> buffer.updateByIndex(0, 4, false));
+        assertDoesNotThrow(() -> buffer.updateByIndex(0, 7, true));
+        assertEquals(1, buffer.size());
+        assertEquals(7, buffer.get(0, false));
+        buffer.clear();
+        assertEquals(0, buffer.size());
+        buffer.add(9);
+        assertEquals(1, buffer.size());
+        assertEquals(9, buffer.get(0, false));
+        assertEquals(9, buffer.get(0, true));
+        buffer.addAll(List.of(5,6,7,8,10));
+        assertEquals(6, buffer.size());
+        assertEquals(9, buffer.get(0, false));
+        assertEquals(10, buffer.get(0, true));
+        buffer.clear();
+        buffer.addAll(
+                Stream
+                .generate(() -> 2)
+                .limit(DataBuffer.STEP_SIZE)
+                .collect(Collectors.toList())
+        );
+        assertDoesNotThrow(() -> buffer.updateByIndex(DataBuffer.STEP_SIZE, 5, false));
+        assertEquals(DataBuffer.STEP_SIZE + 1, buffer.size());
     }
 
     private Price setP(Price p, BigDecimal val) {

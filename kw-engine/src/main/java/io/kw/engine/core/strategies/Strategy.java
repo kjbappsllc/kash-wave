@@ -10,6 +10,7 @@ import io.vavr.control.Try;
 import lombok.*;
 
 import javax.enterprise.context.Dependent;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -55,16 +56,20 @@ public abstract class Strategy extends BarObserver {
         _onNewBar();
     }
 
+    protected BigDecimal getIndicatorVal(Indicator indicator, int lineNum, int valIndex) {
+        return indicator.getLineValue(lineNum, valIndex, true);
+    }
+
     private void mapIndicators(Consumer<Indicator> task) {
-            Try.run(() ->
-                    CompletableFuture.allOf(indicators
-                    .stream()
-                    .map(indicator -> CompletableFuture.runAsync(() -> task.accept(indicator)))
-                    .toArray(CompletableFuture[]::new))
-                    .get()
-            ).onFailure(exception ->
-                    System.out.println("Running indicators failed: " + exception.getLocalizedMessage())
-            );
+        Try.run(() ->
+                CompletableFuture.allOf(indicators
+                        .stream()
+                        .map(indicator -> CompletableFuture.runAsync(() -> task.accept(indicator)))
+                        .toArray(CompletableFuture[]::new))
+                        .get()
+        ).onFailure(exception ->
+                System.out.println("Running indicators failed: " + exception.getLocalizedMessage())
+        ).get();
         System.out.println("Populated Indicators.");
     }
 

@@ -72,10 +72,11 @@ public abstract class Indicator extends BarObserver {
     public void onTick(final DataBuffer<Bar> bars) {
         if (isInitialized()) {
             setBars(bars);
+            System.out.println("TICK FOR IND: " + bars.get(0, true).close().getMid());
             _onTick();
             return;
         }
-        System.out.println("Indicator is not initialized yet. (OnTick)");
+        System.out.println("Indicator " + this.toString() + " is not initialized yet. (OnTick)");
     }
 
     @Override
