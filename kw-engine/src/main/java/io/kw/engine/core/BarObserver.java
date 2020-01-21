@@ -6,8 +6,12 @@ import io.vavr.control.Try;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import java.math.RoundingMode;
 
 public abstract class BarObserver {
+
     @Getter(AccessLevel.PROTECTED) @Setter(AccessLevel.PROTECTED)
     private DataBuffer<Bar> bars;
 

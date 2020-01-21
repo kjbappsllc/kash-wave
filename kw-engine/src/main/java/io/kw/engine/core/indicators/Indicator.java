@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import javax.enterprise.context.Dependent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +48,10 @@ public abstract class Indicator extends BarObserver {
     protected final void setValueForLine(int bufferNum, int index, BigDecimal value) {
         checkIfValidBufferIndex(bufferNum);
         lineBuffers.get(bufferNum).updateByIndex(index, value, false);
+    }
+
+    protected BigDecimal scaleBD(BigDecimal val) {
+        return val.setScale(5, RoundingMode.HALF_UP);
     }
 
     private void checkIfValidBufferIndex(int bufferNum) {

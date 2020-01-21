@@ -23,8 +23,8 @@ public final class Price {
     public BigDecimal getMid() {
         if (Objects.nonNull(getBid()) &&
                 Objects.nonNull(getAsk())) {
-            return (getBid().add(getAsk())).divide(BigDecimal.valueOf(2), RoundingMode.HALF_EVEN);
+            return (getBid().add(getAsk())).divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP);
         }
-        return BigDecimal.ZERO;
+        return BigDecimal.ZERO.setScale(precision, RoundingMode.HALF_UP);
     }
 }
