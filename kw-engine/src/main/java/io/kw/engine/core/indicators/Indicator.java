@@ -2,14 +2,12 @@ package io.kw.engine.core.indicators;
 
 import io.kw.engine.core.BarObserver;
 import io.kw.model.Bar;
-import io.kw.model.CurrencyPair;
 import io.kw.model.DataBuffer;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import javax.enterprise.context.Dependent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
@@ -47,7 +45,7 @@ public abstract class Indicator extends BarObserver {
 
     protected final void setValueForLine(int bufferNum, int index, BigDecimal value) {
         checkIfValidBufferIndex(bufferNum);
-        lineBuffers.get(bufferNum).updateByIndex(index, value, false);
+        lineBuffers.get(bufferNum).insert(index, value, false);
     }
 
     protected BigDecimal scaleBD(BigDecimal val) {
