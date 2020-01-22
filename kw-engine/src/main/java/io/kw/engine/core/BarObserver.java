@@ -6,9 +6,6 @@ import io.vavr.control.Try;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
-
-import java.math.RoundingMode;
 
 public abstract class BarObserver {
 
@@ -19,7 +16,7 @@ public abstract class BarObserver {
     protected boolean initialized = false;
 
     protected final Bar getBar(int index, boolean isReversed) {
-        return Try.of(() -> getBars().get(index, isReversed)).getOrNull();
+        return Try.of(() -> getBars().at(index, isReversed)).getOrNull();
     }
     protected final int barCount() { return getBars().size(); }
 

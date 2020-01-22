@@ -1,17 +1,22 @@
 package io.kw.model;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 public class DataBuffer<T> {
 
-    public static int STEP_SIZE = 16;
+    @Getter @Setter
+    public int step = 16;
+
     private Object [] data = new Object[] { null };
 
     @ToString.Include
@@ -23,7 +28,7 @@ public class DataBuffer<T> {
 
     private int size = 0;
 
-    public T get(final int index) {
+    public T at(final int index) {
         if (!isWithinBounds(index))
             throw new IndexOutOfBoundsException("Index " + index + "is out of bounds with size " + size());
         @SuppressWarnings("unchecked") T retrievedData = (T) data[index];
@@ -73,13 +78,18 @@ public class DataBuffer<T> {
         size = 0;
     }
 
+    // Make a copy of the DataBuffer ********
+    public DataBuffer<T> copy(DataBuffer<T> other) {
+        return null;
+    }
+
     private boolean isValidMemLoc(int index) {
         int prev = index - 1;
         return prev == -1 || Objects.nonNull(data[prev]);
     }
 
     private boolean isValidIndex(final int index) {
-        return index < data.length && index >= 0;
+        return index < maxSize() && index >= 0;
     }
 
     private boolean isWithinBounds(final int index) {
@@ -89,16 +99,22 @@ public class DataBuffer<T> {
     private boolean canAllocateSpaceIfNeeded(final int allocAmount) {
         if (allocAmount <= 0) return false;
         if (availableSpace() < allocAmount) {
-            int newSize = data.length + STEP_SIZE * (1 + (allocAmount - availableSpace()) / STEP_SIZE);
+            int newSize = maxSize() + getStep() * (1 + (allocAmount - availableSpace()) / getStep());
             if (newSize < 0) return false;
             Object[] newList = new Object[newSize];
-            System.arraycopy(data,0, newList, 0, data.length);
+            System.arraycopy(data,0, newList, 0, maxSize());
             data = newList;
         }
         return availableSpace() >= allocAmount;
     }
 
+    // Sets a new (smaller) size of the array *******
+    private boolean resize(final int size) {
+        return true;
+    }
+
     private int availableSpace() {
         return data.length - size;
     }
+    private int maxSize() { return data.length; }
 }

@@ -1,20 +1,21 @@
-package io.kw.serviceClients.pricing.oanda;
+package io.kw.serviceClients.account.oanda;
 
+import io.kw.serviceClients.account.oanda.responses.PairsInfoResponse;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.InputStream;
 
 @Path("/accounts")
-@RegisterRestClient(configKey = "oanda-streaming-api")
+@RegisterRestClient(configKey = "api-base")
 @Singleton
-public interface OandaPriceStreamingClient {
+public interface OandaAccountsClient {
+
     @GET
-    @Path("/{accountID}/pricing/stream")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    InputStream getPrices(
+    @Path("/{accountID}/instruments")
+    @Produces(MediaType.APPLICATION_JSON)
+    PairsInfoResponse getPairInfoForAccount(
             @HeaderParam("Authorization") String apiToken,
             @PathParam("accountID") String accountID,
             @QueryParam("instruments") String instruments

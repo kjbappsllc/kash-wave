@@ -5,12 +5,17 @@ import lombok.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @ToString
 public final class CurrencyPair {
     private @NonNull Currency base;
     private @NonNull Currency quote;
-    public String pairName(String delimiter) {
+    private @NonNull String name;
+    private @NonNull int precision;
+    private @NonNull int pipLocation;
+    private @NonNull int marginRate;
+
+    public String pairName(char delimiter) {
         return base.toString() + delimiter + quote.toString();
     }
 }

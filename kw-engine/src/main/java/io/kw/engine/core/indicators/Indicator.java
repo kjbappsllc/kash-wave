@@ -33,7 +33,7 @@ public abstract class Indicator extends BarObserver {
 
     public BigDecimal getLineValue(int bufferNum, int index, boolean isReversed) {
         checkIfValidBufferIndex(bufferNum);
-        return lineBuffers.get(bufferNum).get(index, isReversed);
+        return lineBuffers.get(bufferNum).at(index, isReversed);
     }
 
     List<DataBuffer<BigDecimal>> getLineBuffers() { return Collections.unmodifiableList(lineBuffers); }
@@ -75,7 +75,7 @@ public abstract class Indicator extends BarObserver {
     public void onTick(final DataBuffer<Bar> bars) {
         if (isInitialized()) {
             setBars(bars);
-            System.out.println("TICK FOR IND: " + bars.get(0, true).close().getMid());
+            System.out.println("TICK FOR IND: " + bars.at(0, true).close().getMid());
             _onTick();
             return;
         }

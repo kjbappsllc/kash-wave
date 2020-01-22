@@ -1,6 +1,7 @@
 package io.kw.model;
 
-public class Series<T> extends DataBuffer<T> {
+public abstract class Series<T> extends DataBuffer<T> {
     protected CurrencyPair pair;
     protected Timeframe freq;
+    protected int bufferNum;
 }

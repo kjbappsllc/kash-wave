@@ -42,8 +42,8 @@ class DataBufferTest {
         DataBuffer<BigDecimal> buffer = new DataBuffer<>();
         buffer.add(BigDecimal.valueOf(2));
         buffer.add(BigDecimal.valueOf(3));
-        assertEquals(BigDecimal.valueOf(2), buffer.get(0));
-        assertEquals(BigDecimal.valueOf(3), buffer.get(1));
+        assertEquals(BigDecimal.valueOf(2), buffer.at(0));
+        assertEquals(BigDecimal.valueOf(3), buffer.at(1));
     }
 
     @DisplayName("Test DataBuffer: Complex Values")
@@ -56,8 +56,8 @@ class DataBufferTest {
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(5))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(6))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(7))));
-        assertEquals(BigDecimal.valueOf(2), testBars.get(0).close().getBid());
-        assertEquals(BigDecimal.valueOf(3), testBars.get(1).close().getBid());
+        assertEquals(BigDecimal.valueOf(2), testBars.at(0).close().getBid());
+        assertEquals(BigDecimal.valueOf(3), testBars.at(1).close().getBid());
     }
 
     @DisplayName("Test DataBuffer Integrity")
@@ -70,33 +70,33 @@ class DataBufferTest {
         assertEquals(2, buffer.size());
         buffer.addUpdate(1, 3);
         assertEquals(2, buffer.size());
-        assertEquals(3, buffer.get(1));
+        assertEquals(3, buffer.at(1));
         assertFalse(buffer.addUpdate(3, 4));
         assertTrue(buffer.addUpdate(2, 5));
         assertEquals(3, buffer.size());
-        assertEquals(5, buffer.get(2));
+        assertEquals(5, buffer.at(2));
         buffer.clear();
         assertEquals(0, buffer.size());
         assertTrue(buffer.addUpdate(0, 4));
         assertEquals(1, buffer.size());
-        assertEquals(4, buffer.get(0));
+        assertEquals(4, buffer.at(0));
         buffer.clear();
         assertEquals(0, buffer.size());
         buffer.add(9);
         assertEquals(1, buffer.size());
-        assertEquals(9, buffer.get(0));
+        assertEquals(9, buffer.at(0));
         assertTrue(buffer.addAll(List.of(5,6,7,8,10)));
         assertEquals(6, buffer.size());
-        assertEquals(9, buffer.get(0));
+        assertEquals(9, buffer.at(0));
         buffer.clear();
         buffer.addAll(
                 Stream
                 .generate(() -> 2)
-                .limit(DataBuffer.STEP_SIZE)
+                .limit(buffer.getStep())
                 .collect(Collectors.toList())
         );
-        assertTrue(buffer.addUpdate(DataBuffer.STEP_SIZE, 5));
-        assertEquals(DataBuffer.STEP_SIZE + 1, buffer.size());
+        assertTrue(buffer.addUpdate(buffer.getStep(), 5));
+        assertEquals(buffer.getStep() + 1, buffer.size());
     }
 
     @DisplayName("Test DataBuffer: ToString Exclude Nulls")

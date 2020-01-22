@@ -8,15 +8,17 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/instruments")
-@RegisterRestClient(configKey = "historical-api")
+@RegisterRestClient(configKey = "api-base")
 @Singleton
 public interface OandaHistoricalPricesClient {
     @GET
     @Path("/{instrument}/candles")
     @Produces(MediaType.APPLICATION_JSON)
-    HistoricalPricesResponse getHistoricalBars(@HeaderParam("Authorization") String apiToken,
-                                               @PathParam("instrument") String instrument,
-                                               @QueryParam("price") String priceType,
-                                               @QueryParam("granularity") String timeframe,
-                                               @QueryParam("count") Integer numCandles);
+    HistoricalPricesResponse getHistoricalBars(
+            @HeaderParam("Authorization") String apiToken,
+            @PathParam("instrument") String instrument,
+            @QueryParam("price") String priceType,
+            @QueryParam("granularity") String timeframe,
+            @QueryParam("count") Integer numCandles
+    );
 }

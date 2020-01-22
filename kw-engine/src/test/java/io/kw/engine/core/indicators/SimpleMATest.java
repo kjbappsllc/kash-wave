@@ -47,12 +47,12 @@ class SimpleMATest {
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(7))));
         simpleMA.onInit(testBars);
         DataBuffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
-        assertEquals(new BigDecimal("0.00000"), maBuf.get(0));
-        assertEquals(new BigDecimal("0.00000"), maBuf.get(1));
-        assertEquals(new BigDecimal("3.00000"), maBuf.get(2));
-        assertEquals(new BigDecimal("4.00000"), maBuf.get(3));
-        assertEquals(new BigDecimal("5.00000"), maBuf.get(4));
-        assertEquals(new BigDecimal("6.00000"), maBuf.get(5));
+        assertEquals(new BigDecimal("0.00000"), maBuf.at(0));
+        assertEquals(new BigDecimal("0.00000"), maBuf.at(1));
+        assertEquals(new BigDecimal("3.00000"), maBuf.at(2));
+        assertEquals(new BigDecimal("4.00000"), maBuf.at(3));
+        assertEquals(new BigDecimal("5.00000"), maBuf.at(4));
+        assertEquals(new BigDecimal("6.00000"), maBuf.at(5));
         testBars.addUpdate(testBars.size() - 1, barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal(20))));
         simpleMA.onTick(testBars);
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(30))));
@@ -77,14 +77,14 @@ class SimpleMATest {
         simpleMA.onInit(testBars);
         DataBuffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
         System.out.println(maBuf);
-        assertEquals(new BigDecimal("0.00000"), maBuf.get(0));
-        assertEquals(new BigDecimal("0.00000"), maBuf.get(1));
-        assertEquals(new BigDecimal("91.19333"), maBuf.get(2));
-        assertEquals(new BigDecimal("91.18333"), maBuf.get(3));
-        assertEquals(new BigDecimal("91.13667"), maBuf.get(4));
-        assertEquals(new BigDecimal("91.07667"), maBuf.get(5));
-        assertEquals(new BigDecimal("91.03000"), maBuf.get(6));
-        assertEquals(new BigDecimal("91.01333"), maBuf.get(7));
+        assertEquals(new BigDecimal("0.00000"), maBuf.at(0));
+        assertEquals(new BigDecimal("0.00000"), maBuf.at(1));
+        assertEquals(new BigDecimal("91.19333"), maBuf.at(2));
+        assertEquals(new BigDecimal("91.18333"), maBuf.at(3));
+        assertEquals(new BigDecimal("91.13667"), maBuf.at(4));
+        assertEquals(new BigDecimal("91.07667"), maBuf.at(5));
+        assertEquals(new BigDecimal("91.03000"), maBuf.at(6));
+        assertEquals(new BigDecimal("91.01333"), maBuf.at(7));
     }
 
     private Price setP(Price p, BigDecimal val) {

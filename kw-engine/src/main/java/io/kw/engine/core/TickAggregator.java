@@ -15,7 +15,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -67,7 +66,7 @@ public class TickAggregator {
                 .filter(pairTime -> isObservedCurrency(tick, pairTime))
                 .forEach(pairTime -> {
                     boolean newBarIsFormed = isNewBarFormed(
-                            pairTime.getValue().get(0, true),
+                            pairTime.getValue().at(0, true),
                             pairTime.getKey()._2(),
                             tick
                     );
@@ -88,7 +87,7 @@ public class TickAggregator {
     }
 
     private void updateCurrentBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
-        Bar currentBar = pairTime.getValue().get(0, true);
+        Bar currentBar = pairTime.getValue().at(0, true);
         long currentTickVolume = currentBar.volume();
         currentBar.volume(currentTickVolume + 1);
         currentBar.high(tick);
