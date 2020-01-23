@@ -45,7 +45,7 @@ class SimpleMATest {
     @DisplayName("Test If Callbacks Are Correct")
     public void testSimpleMA() {
         SimpleMA simpleMA = new SimpleMA(3);
-        DataBuffer<Bar> testBars = new DataBuffer<>();
+        Buffer<Bar> testBars = new Buffer<>();
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(2))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(3))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(4))));
@@ -53,7 +53,7 @@ class SimpleMATest {
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(6))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(7))));
         simpleMA.onInit(testBars);
-        DataBuffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
+        Buffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
         assertEquals(new BigDecimal("0.00000"), maBuf.at(0));
         assertEquals(new BigDecimal("0.00000"), maBuf.at(1));
         assertEquals(new BigDecimal("3.00000"), maBuf.at(2));
@@ -70,7 +70,7 @@ class SimpleMATest {
     @Test
     public void testWithDecimalNumbers() {
         SimpleMA simpleMA = new SimpleMA(3);
-        DataBuffer<Bar> testBars = new DataBuffer<>();
+        Buffer<Bar> testBars = new Buffer<>();
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("91.19000"))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("91.15000"))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("91.24000"))));
@@ -82,7 +82,7 @@ class SimpleMATest {
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("90.98000"))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("90.97000"))));
         simpleMA.onInit(testBars);
-        DataBuffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
+        Buffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
         System.out.println(maBuf);
         assertEquals(new BigDecimal("0.00000"), maBuf.at(0));
         assertEquals(new BigDecimal("0.00000"), maBuf.at(1));

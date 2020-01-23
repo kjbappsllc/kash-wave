@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DataBufferTest {
+class BufferTest {
 
     private Price.PriceBuilder priceBuilder;
     private Bar.BarBuilder barBuilder;
@@ -20,7 +20,14 @@ class DataBufferTest {
     @BeforeEach
     public void setUp() {
         priceBuilder = Price.builder()
-                .currencyPair(new CurrencyPair(Currency.EUR, Currency.USD))
+                .currencyPair(new CurrencyPair(
+                        Currency.EUR,
+                        Currency.USD,
+                        "EURUSD",
+                        5,
+                        -4,
+                        0.02
+                ))
                 .timestamp(Instant.now())
                 .precision(5)
                 .ask(BigDecimal.valueOf(1))
@@ -39,7 +46,7 @@ class DataBufferTest {
     @DisplayName("Test DataBuffer: Simple Values")
     @Test
     public void testDataBufferRegularValues() {
-        DataBuffer<BigDecimal> buffer = new DataBuffer<>();
+        Buffer<BigDecimal> buffer = new Buffer<>();
         buffer.add(BigDecimal.valueOf(2));
         buffer.add(BigDecimal.valueOf(3));
         assertEquals(BigDecimal.valueOf(2), buffer.at(0));
@@ -49,7 +56,7 @@ class DataBufferTest {
     @DisplayName("Test DataBuffer: Complex Values")
     @Test
     public void testDataBufferBarValues() {
-        DataBuffer<Bar> testBars = new DataBuffer<>();
+        Buffer<Bar> testBars = new Buffer<>();
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(2))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(3))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(4))));
@@ -63,7 +70,7 @@ class DataBufferTest {
     @DisplayName("Test DataBuffer Integrity")
     @Test
     public void testDataBufferIntegrity() {
-        DataBuffer<Integer> buffer = new DataBuffer<>();
+        Buffer<Integer> buffer = new Buffer<>();
         buffer.add(1);
         assertEquals(1, buffer.size());
         buffer.add(2);
@@ -102,7 +109,7 @@ class DataBufferTest {
     @DisplayName("Test DataBuffer: ToString Exclude Nulls")
     @Test
     public void testToString() {
-        DataBuffer<Integer> buffer = new DataBuffer<>();
+        Buffer<Integer> buffer = new Buffer<>();
         buffer.addUpdate(0, 1);
         assertFalse(buffer.toString().contains("null"));
     }

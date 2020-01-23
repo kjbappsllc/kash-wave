@@ -32,13 +32,13 @@ public class TickAggregator {
 
     @Inject
     @OnTick
-    Event<Tuple3<CurrencyPair, Timeframe, DataBuffer<Bar>>> onTickEvent;
+    Event<Tuple3<CurrencyPair, Timeframe, Buffer<Bar>>> onTickEvent;
 
     @Inject
     @OnInit
-    Event<Tuple2<UUID, DataBuffer<Bar>>> onInitEvent;
+    Event<Tuple2<UUID, Buffer<Bar>>> onInitEvent;
 
-    private ConcurrentHashMap<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> barMap;
+    private ConcurrentHashMap<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> barMap;
 
     TickAggregator() {
         barMap = new ConcurrentHashMap<>();
@@ -49,7 +49,7 @@ public class TickAggregator {
         if (barMap.containsKey(potentialNewPair))
             return CompletableFuture.completedFuture(true);
         return CompletableFuture.supplyAsync(() -> {
-            DataBuffer<Bar> historicalBars = historicalPricesService.retrieveHistoricalData(apiKey, tf, pair);
+            Buffer<Bar> historicalBars = historicalPricesService.retrieveHistoricalData(apiKey, tf, pair);
             barMap.put(Tuple.of(pair, tf), historicalBars);
             onInitEvent.fire(Tuple.of(guid, historicalBars));
             return true;
@@ -79,14 +79,14 @@ public class TickAggregator {
                 });
     }
 
-    private void fireEvents(Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime, boolean newBarIsFormed) {
+    private void fireEvents(Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime, boolean newBarIsFormed) {
         onTickEvent.fire(
                 Tuple.of(pairTime.getKey()._1(), pairTime.getKey()._2(), pairTime.getValue())
         );
         if (newBarIsFormed) newBarEvent.fire(Tuple.of(pairTime.getKey()._1(), pairTime.getKey()._2()));
     }
 
-    private void updateCurrentBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
+    private void updateCurrentBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
 //        Bar currentBar = pairTime.getValue().at(0, true);
 //        long currentTickVolume = currentBar.volume();
 //        currentBar.volume(currentTickVolume + 1);
@@ -95,11 +95,11 @@ public class TickAggregator {
 //        currentBar.close(tick);
     }
 
-    private boolean isObservedCurrency(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
+    private boolean isObservedCurrency(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
         return pairTime.getKey()._1() == tick.getCurrencyPair();
     }
 
-    private void createNewBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
+    private void createNewBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
         System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
         Timeframe timeframe = pairTime.getKey()._2();
         Bar newBar = Bar.builder()

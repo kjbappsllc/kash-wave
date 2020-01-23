@@ -8,15 +8,13 @@ import lombok.ToString;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
-public class DataBuffer<T> {
-
+public class Buffer<T> {
     @Getter @Setter
     public int step = 16;
-
+    private int size = 0;
     private Object [] data = new Object[] { null };
 
     @ToString.Include
@@ -25,8 +23,6 @@ public class DataBuffer<T> {
                 .filter(Objects::nonNull)
                 .toArray();
     }
-
-    private int size = 0;
 
     public T at(final int index) {
         if (!isWithinBounds(index))
@@ -73,14 +69,26 @@ public class DataBuffer<T> {
     }
 
     public void clear() {
-        Arrays.fill(data, null);
-        data = new Object[] { null };
+        Arrays.fill(data, 0, size(), null);
         size = 0;
     }
 
-    // Make a copy of the DataBuffer ********
-    public DataBuffer<T> copy(DataBuffer<T> other) {
-        return null;
+    public boolean resize(int desiredSize) {
+        if (desiredSize < 0)
+            return false;
+        int newSize = getStep() * (1 + desiredSize / getStep());
+        return true;
+    }
+
+    public boolean copy(Buffer<T> other) {
+        int otherSize = other.size();
+        clear();
+        if (maxSize() < otherSize) {
+            if (!canAllocateSpaceIfNeeded(otherSize)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isValidMemLoc(int index) {
@@ -108,13 +116,9 @@ public class DataBuffer<T> {
         return availableSpace() >= allocAmount;
     }
 
-    // Sets a new (smaller) size of the array *******
-    private boolean resize(final int size) {
-        return true;
-    }
-
     private int availableSpace() {
         return data.length - size;
     }
+
     private int maxSize() { return data.length; }
 }

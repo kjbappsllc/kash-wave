@@ -1,6 +1,6 @@
 package io.kw.engine.core.indicators;
 
-import io.kw.model.DataBuffer;
+import io.kw.model.Buffer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +34,8 @@ class IndicatorTest {
     @DisplayName("Test Indicator Integrity")
     public void testIntegrity() {
         Indicator testIndicator = new TestIndicator();
-        List<DataBuffer<BigDecimal>> lineBuffers = testIndicator.getLineBuffers();
-        assertThrows(UnsupportedOperationException.class, () -> lineBuffers.add(new DataBuffer<>()));
+        List<Buffer<BigDecimal>> lineBuffers = testIndicator.getLineBuffers();
+        assertThrows(UnsupportedOperationException.class, () -> lineBuffers.add(new Buffer<>()));
     }
 
 }

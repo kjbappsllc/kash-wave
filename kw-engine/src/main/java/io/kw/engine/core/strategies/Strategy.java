@@ -4,12 +4,11 @@ import io.kw.engine.core.BarObserver;
 import io.kw.engine.core.indicators.Indicator;
 import io.kw.model.Bar;
 import io.kw.model.CurrencyPair;
-import io.kw.model.DataBuffer;
+import io.kw.model.Buffer;
 import io.kw.model.Timeframe;
 import io.vavr.control.Try;
 import lombok.*;
 
-import javax.enterprise.context.Dependent;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +31,7 @@ public abstract class Strategy extends BarObserver {
     private UUID guid = UUID.randomUUID();
 
     @Override
-    public final void onTick(final DataBuffer<Bar> bars) {
+    public final void onTick(final Buffer<Bar> bars) {
         if (isInitialized()) {
             setBars(bars);
             mapIndicators(indicator -> indicator.onTick(bars));
@@ -43,7 +42,7 @@ public abstract class Strategy extends BarObserver {
     }
 
     @Override
-    public final void onInit(final DataBuffer<Bar> bars) {
+    public final void onInit(final Buffer<Bar> bars) {
         setBars(bars);
         mapIndicators(indicator -> indicator.onInit(bars));
         _onInit();

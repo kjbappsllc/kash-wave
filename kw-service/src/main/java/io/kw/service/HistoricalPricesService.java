@@ -19,10 +19,10 @@ public class HistoricalPricesService {
     @RestClient
     OandaHistoricalPricesClient historicalPricesClient;
 
-    public DataBuffer<Bar> retrieveHistoricalData(String apiToken, Timeframe tf, CurrencyPair pair) {
+    public Buffer<Bar> retrieveHistoricalData(String apiToken, Timeframe tf, CurrencyPair pair) {
         HistoricalPricesResponse response = historicalPricesClient.getHistoricalBars(
                 apiToken,
-                pair.pairName("_"),
+                pair.pairName('_'),
                 "BA",
                 tf.toString(),
                 250
@@ -68,9 +68,9 @@ public class HistoricalPricesService {
                             ).build();
                 }).collect(Collectors.toList());
 
-        DataBuffer<Bar> barDataBuffer = new DataBuffer<>();
-        barDataBuffer.addAll(historicalBars);
-        return barDataBuffer;
+        Buffer<Bar> barBuffer = new Buffer<>();
+        barBuffer.addAll(historicalBars);
+        return barBuffer;
     }
 
 }

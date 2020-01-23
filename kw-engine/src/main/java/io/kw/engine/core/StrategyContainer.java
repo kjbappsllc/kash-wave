@@ -6,7 +6,7 @@ import io.kw.engine.cdi.qualifiers.OnTick;
 import io.kw.engine.core.strategies.Strategy;
 import io.kw.model.Bar;
 import io.kw.model.CurrencyPair;
-import io.kw.model.DataBuffer;
+import io.kw.model.Buffer;
 import io.kw.model.Timeframe;
 import io.vavr.Tuple2;
 import io.vavr.Tuple3;
@@ -41,7 +41,7 @@ public class StrategyContainer {
         });
     }
 
-    void onTick(@Observes @OnTick Tuple3<CurrencyPair, Timeframe, DataBuffer<Bar>> newTick) {
+    void onTick(@Observes @OnTick Tuple3<CurrencyPair, Timeframe, Buffer<Bar>> newTick) {
         strategies
                 .stream()
                 .filter(strategy -> strategy.getPair().equals(newTick._1()) &&
@@ -58,7 +58,7 @@ public class StrategyContainer {
                 .forEach(Strategy::onNewBar);
     }
 
-    void onInit(@Observes @OnInit Tuple2<UUID, DataBuffer<Bar>> data) {
+    void onInit(@Observes @OnInit Tuple2<UUID, Buffer<Bar>> data) {
         strategies
                 .stream()
                 .filter(strategy -> strategy.getGuid().equals(data._1()))

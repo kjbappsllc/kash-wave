@@ -2,7 +2,7 @@ package io.kw.engine.core.indicators;
 
 import io.kw.engine.core.BarObserver;
 import io.kw.model.Bar;
-import io.kw.model.DataBuffer;
+import io.kw.model.Buffer;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class Indicator extends BarObserver {
-    private final @NonNull List<DataBuffer<BigDecimal>> lineBuffers;
+    private final @NonNull List<Buffer<BigDecimal>> lineBuffers;
     private final int bufferNum;
 
     @Getter(AccessLevel.PROTECTED) @Setter(AccessLevel.PROTECTED)
@@ -26,7 +26,7 @@ public abstract class Indicator extends BarObserver {
         checkIfBufferNumInRange(bufferNum);
         this.bufferNum = bufferNum;
         lineBuffers = Stream
-                .generate(DataBuffer<BigDecimal>::new)
+                .generate(Buffer<BigDecimal>::new)
                 .limit(bufferNum)
                 .collect(Collectors.toList());
     }
@@ -36,7 +36,7 @@ public abstract class Indicator extends BarObserver {
         return lineBuffers.get(bufferNum).at(index, isReversed);
     }
 
-    List<DataBuffer<BigDecimal>> getLineBuffers() { return Collections.unmodifiableList(lineBuffers); }
+    List<Buffer<BigDecimal>> getLineBuffers() { return Collections.unmodifiableList(lineBuffers); }
 
     protected final void addValueToLine(int bufferNum, BigDecimal value) {
         checkIfValidBufferIndex(bufferNum);
@@ -65,14 +65,14 @@ public abstract class Indicator extends BarObserver {
     }
 
     @Override
-    public void onInit(final DataBuffer<Bar> bars) {
+    public void onInit(final Buffer<Bar> bars) {
         setBars(bars);
         _onInit();
         setInitialized(true);
     }
 
     @Override
-    public void onTick(final DataBuffer<Bar> bars) {
+    public void onTick(final Buffer<Bar> bars) {
         if (isInitialized()) {
             setBars(bars);
             System.out.println("TICK FOR IND: " + bars.at(0, true).close().getMid());
