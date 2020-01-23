@@ -18,7 +18,14 @@ class SimpleMATest {
     @BeforeEach
     public void onInit() {
         priceBuilder = Price.builder()
-                .currencyPair(new CurrencyPair(Currency.EUR, Currency.USD))
+                .currencyPair(new CurrencyPair(
+                        Currency.EUR,
+                        Currency.USD,
+                        "EURUSD",
+                        5,
+                        -4,
+                        0.02
+                ))
                 .timestamp(Instant.now())
                 .precision(5)
                 .ask(BigDecimal.valueOf(1))

@@ -13,7 +13,7 @@ public final class CurrencyPair {
     private @NonNull String name;
     private @NonNull int precision;
     private @NonNull int pipLocation;
-    private @NonNull int marginRate;
+    private @NonNull double marginRate;
 
     public String pairName(char delimiter) {
         return base.toString() + delimiter + quote.toString();
