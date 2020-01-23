@@ -65,17 +65,17 @@ public class TickAggregator {
                 .parallelStream()
                 .filter(pairTime -> isObservedCurrency(tick, pairTime))
                 .forEach(pairTime -> {
-                    boolean newBarIsFormed = isNewBarFormed(
-                            pairTime.getValue().at(0, true),
-                            pairTime.getKey()._2(),
-                            tick
-                    );
-                    if (newBarIsFormed) {
-                        createNewBar(tick, pairTime);
-                    } else {
-                        updateCurrentBar(tick, pairTime);
-                    }
-                    fireEvents(pairTime, newBarIsFormed);
+//                    boolean newBarIsFormed = isNewBarFormed(
+//                            pairTime.getValue().at(0, true),
+//                            pairTime.getKey()._2(),
+//                            tick
+//                    );
+//                    if (newBarIsFormed) {
+//                        createNewBar(tick, pairTime);
+//                    } else {
+//                        updateCurrentBar(tick, pairTime);
+//                    }
+//                    fireEvents(pairTime, newBarIsFormed);
                 });
     }
 
@@ -87,12 +87,12 @@ public class TickAggregator {
     }
 
     private void updateCurrentBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
-        Bar currentBar = pairTime.getValue().at(0, true);
-        long currentTickVolume = currentBar.volume();
-        currentBar.volume(currentTickVolume + 1);
-        currentBar.high(tick);
-        currentBar.low(tick);
-        currentBar.close(tick);
+//        Bar currentBar = pairTime.getValue().at(0, true);
+//        long currentTickVolume = currentBar.volume();
+//        currentBar.volume(currentTickVolume + 1);
+//        currentBar.high(tick);
+//        currentBar.low(tick);
+//        currentBar.close(tick);
     }
 
     private boolean isObservedCurrency(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, DataBuffer<Bar>> pairTime) {
