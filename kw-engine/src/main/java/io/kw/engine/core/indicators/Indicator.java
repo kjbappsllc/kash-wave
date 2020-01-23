@@ -1,91 +1,28 @@
 package io.kw.engine.core.indicators;
 
-import io.kw.engine.core.BarObserver;
-import io.kw.model.Bar;
 import io.kw.model.Buffer;
+import io.kw.model.Series;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
-public abstract class Indicator extends BarObserver {
-    private final @NonNull List<Buffer<BigDecimal>> lineBuffers;
-    private final int bufferNum;
+public abstract class Indicator extends Series<Buffer<Double>> {
 
     @Getter(AccessLevel.PROTECTED) @Setter(AccessLevel.PROTECTED)
     private int prevCalculated = 0;
 
-    public Indicator(final int bufferNum) {
-        checkIfBufferNumInRange(bufferNum);
-        this.bufferNum = bufferNum;
-        lineBuffers = Stream
-                .generate(Buffer<BigDecimal>::new)
-                .limit(bufferNum)
-                .collect(Collectors.toList());
-    }
+    public Indicator() {}
 
-    public BigDecimal getLineValue(int bufferNum, int index, boolean isReversed) {
-        checkIfValidBufferIndex(bufferNum);
-        return lineBuffers.get(bufferNum).at(index, isReversed);
-    }
-
-    List<Buffer<BigDecimal>> getLineBuffers() { return Collections.unmodifiableList(lineBuffers); }
-
-    protected final void addValueToLine(int bufferNum, BigDecimal value) {
-        checkIfValidBufferIndex(bufferNum);
-        lineBuffers.get(bufferNum).add(value);
-    }
-
-    protected final void setValueForLine(int bufferNum, int index, BigDecimal value) {
-        checkIfValidBufferIndex(bufferNum);
-        lineBuffers.get(bufferNum).insert(index, value, false);
-    }
-
-    protected BigDecimal scaleBD(BigDecimal val) {
-        return val.setScale(5, RoundingMode.HALF_UP);
-    }
-
-    private void checkIfValidBufferIndex(int bufferNum) {
-        if (bufferNum < 0 || bufferNum >= this.bufferNum) {
-            throw new IndexOutOfBoundsException("There is not a buffer " + bufferNum);
-        }
-    }
-
-    private void checkIfBufferNumInRange(int bufferNum) {
-        if (bufferNum > 16) {
-            throw new IllegalArgumentException("Amount of buffers is not in the range [0..16]");
-        }
+    public int min(int bufferNum, int start, int length) {
+        Buffer<Double> buf = at(bufferNum);
+        int end = Math.min(getSize() - 1, start + length - 1);
+        return IntStream.range(start, end)
+                .reduce((i,j) -> buf.at(i) > buf.at(j) ? j : i)
+                .orElse(-1);
     }
 
     @Override
-    public void onInit(final Buffer<Bar> bars) {
-        setBars(bars);
-        _onInit();
-        setInitialized(true);
-    }
-
-    @Override
-    public void onTick(final Buffer<Bar> bars) {
-        if (isInitialized()) {
-            setBars(bars);
-            System.out.println("TICK FOR IND: " + bars.at(0, true).close().getMid());
-            _onTick();
-            return;
-        }
-        System.out.println("Indicator " + this.toString() + " is not initialized yet. (OnTick)");
-    }
-
-    @Override
-    public void onNewBar() {
-        _onNewBar();
-    }
-
-    protected abstract void validateInput();
+    protected void refreshData() {}
 }

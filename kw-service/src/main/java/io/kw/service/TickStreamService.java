@@ -47,11 +47,11 @@ public class TickStreamService {
     }
 
     public void startStream(String apiToken, String accountId, CurrencyPair ...pairs) {
-        Arrays.stream(pairs).forEach(currencyPair -> currencies.put(currencyPair.pairName("_"), currencyPair));
+        Arrays.stream(pairs).forEach(currencyPair -> currencies.put(currencyPair.pairName('_'), currencyPair));
         InputStream pricingStream = oandaPriceStreamingClient.getPrices(
                 apiToken,
                 accountId,
-                pairs[0].pairName("_")
+                pairs[0].pairName('_')
         );
         runAsyncPriceFeed(pricingStream);
     }

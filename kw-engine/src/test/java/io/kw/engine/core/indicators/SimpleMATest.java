@@ -44,7 +44,6 @@ class SimpleMATest {
     @Test
     @DisplayName("Test If Callbacks Are Correct")
     public void testSimpleMA() {
-        SimpleMA simpleMA = new SimpleMA(3);
         Buffer<Bar> testBars = new Buffer<>();
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(2))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(3))));
@@ -52,24 +51,11 @@ class SimpleMATest {
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(5))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(6))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(7))));
-        simpleMA.onInit(testBars);
-        Buffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
-        assertEquals(new BigDecimal("0.00000"), maBuf.at(0));
-        assertEquals(new BigDecimal("0.00000"), maBuf.at(1));
-        assertEquals(new BigDecimal("3.00000"), maBuf.at(2));
-        assertEquals(new BigDecimal("4.00000"), maBuf.at(3));
-        assertEquals(new BigDecimal("5.00000"), maBuf.at(4));
-        assertEquals(new BigDecimal("6.00000"), maBuf.at(5));
-        testBars.addUpdate(testBars.size() - 1, barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal(20))));
-        simpleMA.onTick(testBars);
-        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(30))));
-        simpleMA.onTick(testBars);
     }
 
     @DisplayName("Test With Decimal Numbers Where Precision Matters")
     @Test
     public void testWithDecimalNumbers() {
-        SimpleMA simpleMA = new SimpleMA(3);
         Buffer<Bar> testBars = new Buffer<>();
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("91.19000"))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("91.15000"))));
@@ -81,17 +67,6 @@ class SimpleMATest {
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("90.96000"))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("90.98000"))));
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("90.97000"))));
-        simpleMA.onInit(testBars);
-        Buffer<BigDecimal> maBuf = simpleMA.getLineBuffers().get(0);
-        System.out.println(maBuf);
-        assertEquals(new BigDecimal("0.00000"), maBuf.at(0));
-        assertEquals(new BigDecimal("0.00000"), maBuf.at(1));
-        assertEquals(new BigDecimal("91.19333"), maBuf.at(2));
-        assertEquals(new BigDecimal("91.18333"), maBuf.at(3));
-        assertEquals(new BigDecimal("91.13667"), maBuf.at(4));
-        assertEquals(new BigDecimal("91.07667"), maBuf.at(5));
-        assertEquals(new BigDecimal("91.03000"), maBuf.at(6));
-        assertEquals(new BigDecimal("91.01333"), maBuf.at(7));
     }
 
     private Price setP(Price p, BigDecimal val) {

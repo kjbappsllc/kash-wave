@@ -72,28 +72,28 @@ class BufferTest {
     public void testDataBufferIntegrity() {
         Buffer<Integer> buffer = new Buffer<>();
         buffer.add(1);
-        assertEquals(1, buffer.size());
+        assertEquals(1, buffer.getSize());
         buffer.add(2);
-        assertEquals(2, buffer.size());
+        assertEquals(2, buffer.getSize());
         buffer.addUpdate(1, 3);
-        assertEquals(2, buffer.size());
+        assertEquals(2, buffer.getSize());
         assertEquals(3, buffer.at(1));
         assertFalse(buffer.addUpdate(3, 4));
         assertTrue(buffer.addUpdate(2, 5));
-        assertEquals(3, buffer.size());
+        assertEquals(3, buffer.getSize());
         assertEquals(5, buffer.at(2));
         buffer.clear();
-        assertEquals(0, buffer.size());
+        assertEquals(0, buffer.getSize());
         assertTrue(buffer.addUpdate(0, 4));
-        assertEquals(1, buffer.size());
+        assertEquals(1, buffer.getSize());
         assertEquals(4, buffer.at(0));
         buffer.clear();
-        assertEquals(0, buffer.size());
+        assertEquals(0, buffer.getSize());
         buffer.add(9);
-        assertEquals(1, buffer.size());
+        assertEquals(1, buffer.getSize());
         assertEquals(9, buffer.at(0));
         assertTrue(buffer.addAll(List.of(5,6,7,8,10)));
-        assertEquals(6, buffer.size());
+        assertEquals(6, buffer.getSize());
         assertEquals(9, buffer.at(0));
         buffer.clear();
         buffer.addAll(
@@ -103,15 +103,28 @@ class BufferTest {
                 .collect(Collectors.toList())
         );
         assertTrue(buffer.addUpdate(buffer.getStep(), 5));
-        assertEquals(buffer.getStep() + 1, buffer.size());
+        assertEquals(buffer.getStep() + 1, buffer.getSize());
     }
 
-    @DisplayName("Test DataBuffer: ToString Exclude Nulls")
+    @DisplayName("Test DataBuffer: Copy Correctly")
     @Test
-    public void testToString() {
+    public void testCopying() {
         Buffer<Integer> buffer = new Buffer<>();
         buffer.addUpdate(0, 1);
-        assertFalse(buffer.toString().contains("null"));
+        buffer.add(2);
+        buffer.add(3);
+        Buffer<Integer> newBuffer = buffer.copy();
+        assertEquals(3, newBuffer.getSize());
+        assertEquals(1, newBuffer.at(0));
+        assertEquals(2, newBuffer.at(1));
+        assertEquals(3, newBuffer.at(2));
+        buffer.add(4);
+        assertThrows(Exception.class, () -> newBuffer.at(3));
+        buffer = new Buffer<>();
+        Buffer<Integer> newBuffer2 = buffer.copy();
+        assertTrue(newBuffer2.addUpdate(0, 2));
+        assertEquals(1, newBuffer2.getSize());
+
     }
 
     private Price setP(Price p, BigDecimal val) {

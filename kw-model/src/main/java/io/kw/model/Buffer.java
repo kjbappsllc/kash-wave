@@ -1,32 +1,27 @@
 package io.kw.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 @NoArgsConstructor
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 public class Buffer<T> {
     @Getter @Setter
     public int step = 16;
-    private int size = 0;
-    private Object [] data = new Object[] { null };
 
-    @ToString.Include
-    private Object [] data() {
-        return Arrays.stream(data)
-                .filter(Objects::nonNull)
-                .toArray();
-    }
+    @Getter
+    private int size = 0;
+
+    @Getter(AccessLevel.PROTECTED)
+    private Object [] data = new Object[] { null };
 
     public T at(final int index) {
         if (!isWithinBounds(index))
-            throw new IndexOutOfBoundsException("Index " + index + "is out of bounds with size " + size());
+            throw new IndexOutOfBoundsException("Index " + index + "is out of bounds with size " + getSize());
         @SuppressWarnings("unchecked") T retrievedData = (T) data[index];
         return retrievedData;
     }
@@ -64,31 +59,38 @@ public class Buffer<T> {
         return true;
     }
 
-    public int size() {
-        return size;
-    }
-
     public void clear() {
-        Arrays.fill(data, 0, size(), null);
+        Arrays.fill(data, 0, getSize(), null);
         size = 0;
     }
 
-    public boolean resize(int desiredSize) {
-        if (desiredSize < 0)
-            return false;
-        int newSize = getStep() * (1 + desiredSize / getStep());
-        return true;
+    public Buffer<T> copy() {
+        int newSize = getStep() * (1 + getSize() / getStep());
+        Object [] newArr = new Object[newSize];
+        System.arraycopy(data, 0, newArr, 0, getSize());
+        Buffer<T> newBuffer = new Buffer<>();
+        newBuffer.data = newArr;
+        newBuffer.size = getSize();
+        return newBuffer;
     }
 
-    public boolean copy(Buffer<T> other) {
-        int otherSize = other.size();
-        clear();
-        if (maxSize() < otherSize) {
-            if (!canAllocateSpaceIfNeeded(otherSize)) {
-                return false;
-            }
+    public Stream<T> streamFrom(int start, int length) {
+        int len = Math.min(getSize() - 1, start + length - 1);
+        @SuppressWarnings("unchecked")
+        T[] newObj = (T[]) Arrays.copyOfRange(getData(), start, len);
+        return Stream.of(newObj);
+    }
+
+    protected boolean canAllocateSpaceIfNeeded(final int allocAmount) {
+        if (allocAmount <= 0) return false;
+        if (availableSpace() < allocAmount) {
+            int newSize = maxSize() + getStep() * (1 + (allocAmount - availableSpace()) / getStep());
+            if (newSize < 0) return false;
+            Object[] newArr = new Object[newSize];
+            System.arraycopy(data,0, newArr, 0, maxSize());
+            data = newArr;
         }
-        return true;
+        return availableSpace() >= allocAmount;
     }
 
     private boolean isValidMemLoc(int index) {
@@ -101,19 +103,7 @@ public class Buffer<T> {
     }
 
     private boolean isWithinBounds(final int index) {
-        return index < size() && index >= 0;
-    }
-
-    private boolean canAllocateSpaceIfNeeded(final int allocAmount) {
-        if (allocAmount <= 0) return false;
-        if (availableSpace() < allocAmount) {
-            int newSize = maxSize() + getStep() * (1 + (allocAmount - availableSpace()) / getStep());
-            if (newSize < 0) return false;
-            Object[] newList = new Object[newSize];
-            System.arraycopy(data,0, newList, 0, maxSize());
-            data = newList;
-        }
-        return availableSpace() >= allocAmount;
+        return index < getSize() && index >= 0;
     }
 
     private int availableSpace() {

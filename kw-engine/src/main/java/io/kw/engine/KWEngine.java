@@ -26,10 +26,9 @@ public class KWEngine {
                 .onFailure(exception -> System.out.println("Error Trying to start strategy: " + exception))
                 .onSuccess(isSuccess -> {
                     System.out.println("Strategy Start Status: " + isSuccess);
-                    if (isSuccess)
-                        streamPrices(s.getPair());
                 });
     }
+
     private void streamPrices(CurrencyPair interestedPair) {
         System.out.println("Starting Stream ...");
         tickStreamService.startStream(
