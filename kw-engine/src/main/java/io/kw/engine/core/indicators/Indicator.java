@@ -9,9 +9,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.function.BiFunction;
-import java.util.function.IntBinaryOperator;
-import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 public abstract class Indicator extends Series<Buffer<Double>> {
@@ -21,12 +18,19 @@ public abstract class Indicator extends Series<Buffer<Double>> {
 
     public Indicator() {}
 
-    public int min(int bufferNum, int start, int length) {
-        return getIndexFromComparison(bufferNum, start, length, Function3.of((i, j, buf) -> buf.at(i) > buf.at(j) ? j : i));
+    public int min(int bufferNum, int from, int length) {
+        return getIndexFromComparison(bufferNum, from, length, Function3.of((i, j, buf) -> buf.at(i) > buf.at(j) ? j : i));
     }
 
-    public int max(int bufferNum, int start, int length) {
-        return getIndexFromComparison(bufferNum, start, length, Function3.of((i, j, buf) -> buf.at(i) < buf.at(j) ? j : i));
+    public int max(int bufferNum, int from, int length) {
+        return getIndexFromComparison(bufferNum, from, length, Function3.of((i, j, buf) -> buf.at(i) < buf.at(j) ? j : i));
+    }
+
+    public boolean createBuffers(int buffers) {
+        if (buffers <= 0)
+            return false;
+        IntStream.range(0, buffers).forEach(i -> addUpdate(i, new Buffer<>()));
+        return true;
     }
 
     private int getIndexFromComparison(int bufferNum, int start, int length, Function3<Integer, Integer, Buffer<Double>, Integer> comparison) {
@@ -40,5 +44,5 @@ public abstract class Indicator extends Series<Buffer<Double>> {
     @Override
     protected void refreshData() {}
 
-    abstract boolean initialize(CurrencyPair pair, Timeframe timeframe, Input [] params);
+    abstract boolean initialize(CurrencyPair pair, Timeframe timeframe, Object[] params);
 }
