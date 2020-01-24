@@ -40,5 +40,5 @@ public abstract class Indicator extends Series<Buffer<Double>> {
     @Override
     protected void refreshData() {}
 
-    abstract boolean initialize(CurrencyPair pair, Timeframe timeframe, Input<?> [] params);
+    abstract boolean initialize(CurrencyPair pair, Timeframe timeframe, Input [] params);
 }

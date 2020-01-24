@@ -5,8 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class Input <T> {
+public class Input {
     private String name;
     private String value;
-    private Class<T> caster;
 }
