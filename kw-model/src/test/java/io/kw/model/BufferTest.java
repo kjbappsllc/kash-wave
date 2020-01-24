@@ -124,7 +124,13 @@ class BufferTest {
         Buffer<Integer> newBuffer2 = buffer.copy();
         assertTrue(newBuffer2.addUpdate(0, 2));
         assertEquals(1, newBuffer2.getSize());
-
+        Buffer<Bar> barBuffer = new Buffer<>();
+        barBuffer.add(barBuilder.build());
+        Buffer<Bar> barBufferCopy = barBuffer.copy();
+        barBufferCopy.at(0).close(priceBuilder.precision(10).build());
+        System.out.println(barBuffer.at(0).close());
+        System.out.println(barBufferCopy.at(0).close());
+        assertNotEquals(barBufferCopy.at(0).close(), barBuffer.at(0).close());
     }
 
     private Price setP(Price p, BigDecimal val) {
