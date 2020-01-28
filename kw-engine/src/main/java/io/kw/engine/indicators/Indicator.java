@@ -1,22 +1,28 @@
-package io.kw.engine.core.indicators;
+package io.kw.engine.indicators;
 
-import io.kw.model.Buffer;
-import io.kw.model.CurrencyPair;
-import io.kw.model.Series;
-import io.kw.model.Timeframe;
+import io.kw.engine.core.DataSupplier;
+import io.kw.engine.core.IDataObserver;
+import io.kw.model.*;
 import io.vavr.Function3;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.inject.Inject;
 import java.util.stream.IntStream;
 
-public abstract class Indicator extends Series<Buffer<Double>> {
+public abstract class Indicator extends Series<Buffer<Double>> implements IDataObserver {
+
+    @Inject
+    DataSupplier supplier;
 
     @Getter(AccessLevel.PROTECTED) @Setter(AccessLevel.PROTECTED)
     private int prevCalculated = 0;
 
-    public Indicator() {}
+    public Indicator() {
+        supplier.supplyTo(this);
+        System.out.println("Instance of " + getClass().getSimpleName() + ": " + this.hashCode());
+    }
 
     public int min(int bufferNum, int from, int length) {
         return getIndexFromComparison(bufferNum, from, length, Function3.of((i, j, buf) -> buf.at(i) > buf.at(j) ? j : i));
@@ -41,8 +47,5 @@ public abstract class Indicator extends Series<Buffer<Double>> {
                 .orElse(-1);
     }
 
-    @Override
-    protected void refreshData() {}
-
-    abstract boolean initialize(CurrencyPair pair, Timeframe timeframe, Object[] params);
+    public abstract boolean create(CurrencyPair pair, Timeframe timeframe, Object[] params);
 }

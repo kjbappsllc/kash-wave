@@ -1,4 +1,4 @@
-package io.kw.engine.core.indicators;
+package io.kw.engine.indicators;
 
 import io.kw.model.*;
 import org.junit.jupiter.api.BeforeEach;

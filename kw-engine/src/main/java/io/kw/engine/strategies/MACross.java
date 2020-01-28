@@ -1,3 +1,3 @@
-package io.kw.engine.core.strategies;
+package io.kw.engine.strategies;
 
 public class MACross extends Strategy { }

@@ -1,10 +1,7 @@
 package io.kw.engine;
 
-import io.kw.engine.core.StrategyContainer;
-import io.kw.engine.core.strategies.Strategy;
 import io.kw.model.CurrencyPair;
 import io.kw.service.TickStreamService;
-import io.vavr.control.Try;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

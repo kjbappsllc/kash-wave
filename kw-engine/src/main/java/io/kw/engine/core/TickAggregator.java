@@ -101,15 +101,16 @@ public class TickAggregator {
 
     private void createNewBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
         System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
+        Price.PriceBuilder pBuilder = tick.toBuilder();
         Timeframe timeframe = pairTime.getKey()._2();
         Bar newBar = Bar.builder()
-                .close(tick)
-                .low(tick)
-                .high(tick)
-                .open(tick)
+                .close(pBuilder.build())
+                .low(pBuilder.build())
+                .high(pBuilder.build())
+                .open(pBuilder.build())
                 .volume(1)
                 .timeframe(timeframe)
-                .timestamp(tick.getTimestamp().truncatedTo(timeframe.getTruncatedUnit()))
+                .timestamp(pBuilder.build().getTimestamp().truncatedTo(timeframe.getTruncatedUnit()))
                 .build();
         pairTime.getValue().add(newBar);
     }
