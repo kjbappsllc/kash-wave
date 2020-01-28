@@ -1,9 +1,16 @@
 Kash Wave
 
-Application Purpose
+Note
 ---
-* The purpose of this application is to...
+* This is a highly volitile project. At any given time this project will not work out the box.
 
-Supported Brokers
+* For a good development experience, install the lombok plugin for any IDE you use.
+
+Overview
+---
+
+* This is meant to be a forex auto trader
+
+Supported Brokers%
 ---
 1) Oanda
