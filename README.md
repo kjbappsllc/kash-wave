@@ -11,6 +11,6 @@ Overview
 
 * This is meant to be a forex auto trader
 
-Supported Brokers%
+Supported Brokers
 ---
 1) Oanda
