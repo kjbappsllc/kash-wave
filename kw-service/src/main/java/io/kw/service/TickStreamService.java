@@ -36,7 +36,7 @@ public class TickStreamService {
 
     @Inject
     @TickReceived
-    Event<Price> tickReceivedEvent;
+    Event<Tick> tickReceivedEvent;
 
     private ExecutorService priceFeedExecutor;
     private HashMap<String, CurrencyPair> currencies;
@@ -76,7 +76,7 @@ public class TickStreamService {
                     if (data == null) break;
                     Try<PriceStreamingResponse> mappedResponse = Try.of(() -> mapper.readValue(data, PriceStreamingResponse.class));
                     mappedResponse.andThenTry(streamingResponse -> tickReceivedEvent.fire(
-                            Price.builder()
+                            Tick.builder()
                                     .ask(new BigDecimal(streamingResponse.getAsks().get(0).getPrice()))
                                     .bid(new BigDecimal(streamingResponse.getBids().get(0).getPrice()))
                                     .timestamp(Instant.parse(streamingResponse.getTime()))

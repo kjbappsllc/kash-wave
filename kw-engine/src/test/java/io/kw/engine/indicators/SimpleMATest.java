@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SimpleMATest {
 
-    private Price.PriceBuilder priceBuilder;
+    private Tick.PriceBuilder priceBuilder;
     private Bar.BarBuilder barBuilder;
 
     @BeforeEach
     public void onInit() {
-        priceBuilder = Price.builder()
+        priceBuilder = Tick.builder()
                 .currencyPair(new CurrencyPair(
                         Currency.EUR,
                         Currency.USD,
@@ -69,7 +69,7 @@ class SimpleMATest {
         testBars.add(barBuilder.build().close(setP(priceBuilder.build(), new BigDecimal("90.97000"))));
     }
 
-    private Price setP(Price p, BigDecimal val) {
+    private Tick setP(Tick p, BigDecimal val) {
         p.setAsk(val);
         p.setBid(val);
         return p;

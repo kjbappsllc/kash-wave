@@ -64,17 +64,6 @@ public class Buffer<T> {
         size = 0;
     }
 
-    // TODO: This Does Shallow Copy. Make Deep Copy
-    public Buffer<T> copy() {
-        int newSize = getStep() * (1 + getSize() / getStep());
-        Object [] newArr = new Object[newSize];
-        System.arraycopy(data, 0, newArr, 0, getSize());
-        Buffer<T> newBuffer = new Buffer<>();
-        newBuffer.data = newArr;
-        newBuffer.size = getSize();
-        return newBuffer;
-    }
-
     public Stream<T> streamFrom(int start, int length) {
         int len = Math.min(getSize() - 1, start + length - 1);
         @SuppressWarnings("unchecked")

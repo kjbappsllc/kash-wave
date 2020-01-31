@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BufferTest {
 
-    private Price.PriceBuilder priceBuilder;
+    private Tick.PriceBuilder priceBuilder;
     private Bar.BarBuilder barBuilder;
 
     @BeforeEach
     public void setUp() {
-        priceBuilder = Price.builder()
+        priceBuilder = Tick.builder()
                 .currencyPair(new CurrencyPair(
                         Currency.EUR,
                         Currency.USD,
@@ -30,8 +30,8 @@ class BufferTest {
                 ))
                 .timestamp(Instant.now())
                 .precision(5)
-                .ask(BigDecimal.valueOf(1))
-                .bid(BigDecimal.valueOf(1));
+                .ask(1)
+                .bid(1);
 
         barBuilder = Bar.builder()
                 .close(priceBuilder.build())
@@ -39,7 +39,7 @@ class BufferTest {
                 .low(priceBuilder.build())
                 .open(priceBuilder.build())
                 .timeframe(Timeframe.M5)
-                .timestamp(priceBuilder.build().getTimestamp())
+                .timestamp(priceBuilder.build().timestamp())
                 .volume(100);
     }
 
@@ -57,14 +57,14 @@ class BufferTest {
     @Test
     public void testDataBufferBarValues() {
         Buffer<Bar> testBars = new Buffer<>();
-        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(2))));
-        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(3))));
-        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(4))));
-        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(5))));
-        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(6))));
-        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), BigDecimal.valueOf(7))));
-        assertEquals(BigDecimal.valueOf(2), testBars.at(0).close().getBid());
-        assertEquals(BigDecimal.valueOf(3), testBars.at(1).close().getBid());
+        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), 2)));
+        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), 3)));
+        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), 4)));
+        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), 5)));
+        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), 6)));
+        testBars.add(barBuilder.build().close(setP(priceBuilder.build(), 7)));
+        assertEquals(2.00000, testBars.at(0).close().bid());
+        assertEquals(3.00000, testBars.at(1).close().bid());
     }
 
     @DisplayName("Test DataBuffer Integrity")
@@ -106,36 +106,9 @@ class BufferTest {
         assertEquals(buffer.getStep() + 1, buffer.getSize());
     }
 
-    @DisplayName("Test DataBuffer: Copy Correctly")
-    @Test
-    public void testCopying() {
-        Buffer<Integer> buffer = new Buffer<>();
-        buffer.addUpdate(0, 1);
-        buffer.add(2);
-        buffer.add(3);
-        Buffer<Integer> newBuffer = buffer.copy();
-        assertEquals(3, newBuffer.getSize());
-        assertEquals(1, newBuffer.at(0));
-        assertEquals(2, newBuffer.at(1));
-        assertEquals(3, newBuffer.at(2));
-        buffer.add(4);
-        assertThrows(Exception.class, () -> newBuffer.at(3));
-        buffer = new Buffer<>();
-        Buffer<Integer> newBuffer2 = buffer.copy();
-        assertTrue(newBuffer2.addUpdate(0, 2));
-        assertEquals(1, newBuffer2.getSize());
-        Buffer<Bar> barBuffer = new Buffer<>();
-        barBuffer.add(barBuilder.build());
-        Buffer<Bar> barBufferCopy = barBuffer.copy();
-        barBufferCopy.at(0).close(priceBuilder.precision(10).build());
-        System.out.println(barBuffer.at(0).close());
-        System.out.println(barBufferCopy.at(0).close());
-        // assertNotEquals(barBufferCopy.at(0).close(), barBuffer.at(0).close());
-    }
-
-    private Price setP(Price p, BigDecimal val) {
-        p.setAsk(val);
-        p.setBid(val);
+    private Tick setP(Tick p, double val) {
+        p.ask(val);
+        p.bid(val);
         return p;
     }
 }

@@ -34,7 +34,7 @@ public class HistoricalPricesService {
                 .map(candle -> {
                     Instant parsedTime = Instant.parse(candle.getTime());
                     int precision = 5;
-                    Price.PriceBuilder priceBuilder = Price.builder()
+                    Tick.PriceBuilder priceBuilder = Tick.builder()
                             .timestamp(parsedTime)
                             .precision(precision);
                     Bar.BarBuilder barBuilder = Bar.builder()

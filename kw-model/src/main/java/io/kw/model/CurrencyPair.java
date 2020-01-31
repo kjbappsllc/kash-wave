@@ -1,21 +1,21 @@
 package io.kw.model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
+import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+@Value
+@Builder
+@Accessors(fluent = true, chain = true)
+public class CurrencyPair {
+    @NonNull Currency base;
+    @NonNull Currency quote;
+    int precision;
+    int pipLocation;
+    double marginRate;
 
-@RequiredArgsConstructor
-@ToString
-public final class CurrencyPair {
-    private @NonNull Currency base;
-    private @NonNull Currency quote;
-    private @NonNull String name;
-    private @NonNull int precision;
-    private @NonNull int pipLocation;
-    private @NonNull double marginRate;
-
-    public String pairName(char delimiter) {
+    public String name(char delimiter) {
         return base.toString() + delimiter + quote.toString();
     }
 }

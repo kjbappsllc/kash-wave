@@ -26,6 +26,9 @@
         <quarkus.version>1.1.1.Final</quarkus.version>
         <vavr.version>0.10.2</vavr.version>
         <surefire.version>3.0.0-M4</surefire.version>
+        <apache.math.version>3.6.1</apache.math.version>
+        <apache.lang.version>3.9</apache.lang.version>
+        <akka.version>2.6.1</akka.version>
     </properties>
 
     <dependencyManagement>
@@ -72,6 +75,21 @@
                 <artifactId>vavr</artifactId>
                 <version>${vavr.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-math3</artifactId>
+                <version>${apache.math.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-actor_2.12</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -88,6 +106,18 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.12</artifactId>
         </dependency>
     </dependencies>
 

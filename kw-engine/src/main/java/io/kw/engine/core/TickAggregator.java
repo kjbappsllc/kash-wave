@@ -60,7 +60,7 @@ public class TickAggregator {
         });
     }
 
-    void tickReceived(@Observes @TickReceived @Priority(0) Price tick) {
+    void tickReceived(@Observes @TickReceived @Priority(0) Tick tick) {
         barMap.entrySet()
                 .parallelStream()
                 .filter(pairTime -> isObservedCurrency(tick, pairTime))
@@ -86,7 +86,7 @@ public class TickAggregator {
         if (newBarIsFormed) newBarEvent.fire(Tuple.of(pairTime.getKey()._1(), pairTime.getKey()._2()));
     }
 
-    private void updateCurrentBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
+    private void updateCurrentBar(Tick tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
 //        Bar currentBar = pairTime.getValue().at(0, true);
 //        long currentTickVolume = currentBar.volume();
 //        currentBar.volume(currentTickVolume + 1);
@@ -95,13 +95,13 @@ public class TickAggregator {
 //        currentBar.close(tick);
     }
 
-    private boolean isObservedCurrency(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
+    private boolean isObservedCurrency(Tick tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
         return pairTime.getKey()._1() == tick.getCurrencyPair();
     }
 
-    private void createNewBar(Price tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
+    private void createNewBar(Tick tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
         System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
-        Price.PriceBuilder pBuilder = tick.toBuilder();
+        Tick.PriceBuilder pBuilder = tick.toBuilder();
         Timeframe timeframe = pairTime.getKey()._2();
         Bar newBar = Bar.builder()
                 .close(pBuilder.build())
@@ -115,7 +115,7 @@ public class TickAggregator {
         pairTime.getValue().add(newBar);
     }
 
-    private boolean isNewBarFormed(Bar currentBar, Timeframe timeframe, Price newPrice) {
+    private boolean isNewBarFormed(Bar currentBar, Timeframe timeframe, Tick newPrice) {
         return Timeframe.hasTimeChanged (
                 timeframe,
                 currentBar.timestamp(),
