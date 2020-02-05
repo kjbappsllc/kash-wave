@@ -23,7 +23,7 @@
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <weld.version>3.1.2.Final</weld.version>
-        <quarkus.version>1.1.1.Final</quarkus.version>
+        <quarkus.version>1.2.0.Final</quarkus.version>
         <vavr.version>0.10.2</vavr.version>
         <surefire.version>3.0.0-M4</surefire.version>
         <apache.math.version>3.6.1</apache.math.version>

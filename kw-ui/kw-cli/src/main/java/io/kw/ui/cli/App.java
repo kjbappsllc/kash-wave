@@ -14,8 +14,6 @@ public class App {
     KWEngine engine;
 
     public void onAppStart(@Observes StartupEvent e) {
-        System.out.println();
-        engine.getAccount();
-        engine.closeTrade();
+        System.out.println("App Started");
     }
 }
