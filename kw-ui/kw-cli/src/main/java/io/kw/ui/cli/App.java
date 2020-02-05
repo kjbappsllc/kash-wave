@@ -15,5 +15,7 @@ public class App {
 
     public void onAppStart(@Observes StartupEvent e) {
         System.out.println();
+        engine.getAccount();
+        engine.closeTrade();
     }
 }

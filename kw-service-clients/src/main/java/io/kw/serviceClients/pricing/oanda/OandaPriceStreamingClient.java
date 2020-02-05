@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.InputStream;
 
 @Path("/accounts")
-@RegisterRestClient(configKey = "oanda-streaming-api")
+@RegisterRestClient(configKey = "streaming-base")
 @Singleton
 public interface OandaPriceStreamingClient {
     @GET

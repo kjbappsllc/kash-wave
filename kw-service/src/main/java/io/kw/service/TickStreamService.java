@@ -47,11 +47,11 @@ public class TickStreamService {
     }
 
     public void startStream(String apiToken, String accountId, CurrencyPair ...pairs) {
-        Arrays.stream(pairs).forEach(currencyPair -> currencies.put(currencyPair.pairName('_'), currencyPair));
+        Arrays.stream(pairs).forEach(currencyPair -> currencies.put(currencyPair.name('_'), currencyPair));
         InputStream pricingStream = oandaPriceStreamingClient.getPrices(
                 apiToken,
                 accountId,
-                pairs[0].pairName('_')
+                pairs[0].name('_')
         );
         runAsyncPriceFeed(pricingStream);
     }
@@ -74,16 +74,16 @@ public class TickStreamService {
                 if (bufferData.isSuccess()) {
                     String data = bufferData.get();
                     if (data == null) break;
-                    Try<PriceStreamingResponse> mappedResponse = Try.of(() -> mapper.readValue(data, PriceStreamingResponse.class));
-                    mappedResponse.andThenTry(streamingResponse -> tickReceivedEvent.fire(
-                            Tick.builder()
-                                    .ask(new BigDecimal(streamingResponse.getAsks().get(0).getPrice()))
-                                    .bid(new BigDecimal(streamingResponse.getBids().get(0).getPrice()))
-                                    .timestamp(Instant.parse(streamingResponse.getTime()))
-                                    .currencyPair(currencies.get(streamingResponse.getInstrument()))
-                                    .precision(5)
-                                    .build()
-                    ));
+//                    Try<PriceStreamingResponse> mappedResponse = Try.of(() -> mapper.readValue(data, PriceStreamingResponse.class));
+//                    mappedResponse.andThenTry(streamingResponse -> tickReceivedEvent.fire(
+//                            Tick.builder()
+//                                    .ask(new BigDecimal(streamingResponse.getAsks().get(0).getPrice()))
+//                                    .bid(new BigDecimal(streamingResponse.getBids().get(0).getPrice()))
+//                                    .timestamp(Instant.parse(streamingResponse.getTime()))
+//                                    .currencyPair(currencies.get(streamingResponse.getInstrument()))
+//                                    .precision(5)
+//                                    .build()
+//                    ));
                 }
             }
             Try.run(bufferedReader::close).andFinally(this::endStream);

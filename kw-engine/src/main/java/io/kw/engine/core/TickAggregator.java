@@ -96,30 +96,31 @@ public class TickAggregator {
     }
 
     private boolean isObservedCurrency(Tick tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
-        return pairTime.getKey()._1() == tick.getCurrencyPair();
+//        return pairTime.getKey()._1() == tick.getCurrencyPair();
+        return false;
     }
 
     private void createNewBar(Tick tick, Map.Entry<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> pairTime) {
         System.out.println("New Bar For Pair: " + pairTime.getKey()._1());
-        Tick.PriceBuilder pBuilder = tick.toBuilder();
-        Timeframe timeframe = pairTime.getKey()._2();
-        Bar newBar = Bar.builder()
-                .close(pBuilder.build())
-                .low(pBuilder.build())
-                .high(pBuilder.build())
-                .open(pBuilder.build())
-                .volume(1)
-                .timeframe(timeframe)
-                .timestamp(pBuilder.build().getTimestamp().truncatedTo(timeframe.getTruncatedUnit()))
-                .build();
-        pairTime.getValue().add(newBar);
+//        Tick.PriceBuilder pBuilder = tick.toBuilder();
+//        Timeframe timeframe = pairTime.getKey()._2();
+//        Bar newBar = Bar.builder()
+//                .close(pBuilder.build())
+//                .low(pBuilder.build())
+//                .high(pBuilder.build())
+//                .open(pBuilder.build())
+//                .volume(1)
+//                .timeframe(timeframe)
+//                .timestamp(pBuilder.build().getTimestamp().truncatedTo(timeframe.getTruncatedUnit()))
+//                .build();
+//        pairTime.getValue().add(newBar);
     }
 
     private boolean isNewBarFormed(Bar currentBar, Timeframe timeframe, Tick newPrice) {
         return Timeframe.hasTimeChanged (
                 timeframe,
                 currentBar.timestamp(),
-                newPrice.getTimestamp()
+                newPrice.timestamp()
         );
     }
 }

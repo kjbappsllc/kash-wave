@@ -1,5 +1,6 @@
 package io.kw.serviceClients.account.oanda;
 
+import io.kw.serviceClients.account.oanda.responses.AccountDetailsResponse;
 import io.kw.serviceClients.account.oanda.responses.PairsInfoResponse;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -19,5 +20,13 @@ public interface OandaAccountsClient {
             @HeaderParam("Authorization") String apiToken,
             @PathParam("accountID") String accountID,
             @QueryParam("instruments") String instruments
+    );
+
+    @GET
+    @Path("/{accountID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    AccountDetailsResponse getAccountDetails(
+            @HeaderParam("Authorization") String apiToken,
+            @PathParam("accountID") String accountID
     );
 }

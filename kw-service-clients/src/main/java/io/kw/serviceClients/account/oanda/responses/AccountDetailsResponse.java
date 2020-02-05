@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -21,6 +20,9 @@ public class AccountDetailsResponse {
     @Data
     public static class OandaAccount {
         String id;
+        String createdTime;
+        String dividendAdjustment;
+        String resettablePLTime;
         String alias;
         String currency;
         Integer createdByUserID;
@@ -31,7 +33,8 @@ public class AccountDetailsResponse {
         Integer pendingOrderCount;
         Boolean hedgingEnabled;
         String unrealizedPL;
-        String NAV;
+        @JsonProperty("NAV")
+        String nav;
         String marginUsed;
         String marginAvailable;
         String positionValue;
@@ -72,6 +75,7 @@ public class AccountDetailsResponse {
         String initialMarginRequired;
         String currentUnits;
         String unrealizedPL;
+        String realizedPL;
         String marginUsed;
         String averageClosePrice;
         List<String> closingTransactionIDs;
@@ -82,6 +86,7 @@ public class AccountDetailsResponse {
         String takeProfitOrderID;
         String stopLossOrderID;
         String trailingStopLossOrderID;
+        String dividendAdjustment;
     }
 
     @AllArgsConstructor
@@ -92,6 +97,16 @@ public class AccountDetailsResponse {
         String createTime;
         String state;
         ClientExtensions clientExtensions;
+        String type;
+        String tradeID;
+        String price;
+        String timeInForce;
+        String units;
+        String filledTime;
+        String instrument;
+        String guaranteed;
+        String triggerCondition;
+        String replacesOrderID;
     }
 
     @AllArgsConstructor
@@ -107,6 +122,7 @@ public class AccountDetailsResponse {
         String commission;
         String dividend;
         String guaranteedExecutionFees;
+        String dividendAdjustment;
         @JsonProperty("long")
         PositionSide longSide;
         @JsonProperty("short")
@@ -135,6 +151,7 @@ public class AccountDetailsResponse {
         String financing;
         String dividend;
         String guaranteedExecutionFees;
+        String dividendAdjustment;
     }
 
 }
