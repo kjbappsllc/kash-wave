@@ -2,10 +2,9 @@ package io.kw.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.kw.model.*;
-import io.kw.service.cdi.qualifiers.DefaultMapper;
-import io.kw.service.cdi.qualifiers.TickReceived;
+import io.kw.cdi.qualifiers.DefaultMapper;
+import io.kw.cdi.qualifiers.TickReceived;
 import io.kw.serviceClients.pricing.oanda.OandaPriceStreamingClient;
-import io.kw.serviceClients.pricing.oanda.responses.PriceStreamingResponse;
 import io.vavr.control.Try;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -15,8 +14,6 @@ import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;

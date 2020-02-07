@@ -1,9 +1,9 @@
-package io.kw.service.cdi.producers;
+package io.kw.cdi.producers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.kw.service.cdi.qualifiers.DefaultMapper;
+import io.kw.cdi.qualifiers.DefaultMapper;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

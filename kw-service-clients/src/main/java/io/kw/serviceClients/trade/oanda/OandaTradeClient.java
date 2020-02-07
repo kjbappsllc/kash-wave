@@ -1,12 +1,10 @@
 package io.kw.serviceClients.trade.oanda;
 
-
 import io.kw.serviceClients.trade.oanda.requests.CreateOrderRequest;
+import io.kw.serviceClients.trade.oanda.requests.PositionCloseRequest;
 import io.kw.serviceClients.trade.oanda.requests.TradeCloseRequest;
 import io.kw.serviceClients.trade.oanda.requests.TradeModifyRequest;
-import io.kw.serviceClients.trade.oanda.responses.CreateOrderResponse;
-import io.kw.serviceClients.trade.oanda.responses.TradeCloseResponse;
-import io.kw.serviceClients.trade.oanda.responses.TradeModifyResponse;
+import io.kw.serviceClients.trade.oanda.responses.*;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.inject.Singleton;
@@ -18,6 +16,14 @@ import javax.ws.rs.core.MediaType;
 @Singleton
 public interface OandaTradeClient {
 
+    @GET
+    @Path("/{accountID}/openPositions")
+    @Produces(MediaType.APPLICATION_JSON)
+    OpenPositionsResponse getOpenPositions(
+            @HeaderParam("Authorization") String apiToken,
+            @PathParam("accountID") String accountID
+    );
+
     @PUT
     @Path("/{accountID}/trades/{tradeSpecifier}/close")
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,6 +33,17 @@ public interface OandaTradeClient {
             @PathParam("accountID") String accountID,
             @PathParam("tradeSpecifier") String tradeID,
             TradeCloseRequest tradeCloseRequest
+    );
+
+    @PUT
+    @Path("/{accountID}/positions/{instrument}/close")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    PositionCloseResponse closePosition(
+            @HeaderParam("Authorization") String apiToken,
+            @PathParam("accountID") String accountID,
+            @PathParam("instrument") String instrument,
+            PositionCloseRequest positionCloseRequest
     );
 
     @PUT

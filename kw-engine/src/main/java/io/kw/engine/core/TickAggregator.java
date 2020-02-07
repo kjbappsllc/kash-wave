@@ -1,11 +1,11 @@
 package io.kw.engine.core;
 
-import io.kw.engine.cdi.qualifiers.NewBar;
-import io.kw.engine.cdi.qualifiers.OnInit;
-import io.kw.engine.cdi.qualifiers.OnTick;
+import io.kw.cdi.qualifiers.NewBar;
+import io.kw.cdi.qualifiers.OnInit;
+import io.kw.cdi.qualifiers.OnTick;
 import io.kw.model.*;
 import io.kw.service.HistoricalPricesService;
-import io.kw.service.cdi.qualifiers.TickReceived;
+import io.kw.cdi.qualifiers.TickReceived;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.Tuple3;

@@ -13,7 +13,7 @@ public class App {
     @Inject
     KWEngine engine;
 
-    public void onAppStart(@Observes StartupEvent e) {
+    void onAppStart(@Observes StartupEvent e) {
         System.out.println("App Started");
     }
 }
