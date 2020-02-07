@@ -1,8 +1,10 @@
 package io.kw.serviceClients.trade.oanda;
 
 
+import io.kw.serviceClients.trade.oanda.requests.CreateOrderRequest;
 import io.kw.serviceClients.trade.oanda.requests.TradeCloseRequest;
 import io.kw.serviceClients.trade.oanda.requests.TradeModifyRequest;
+import io.kw.serviceClients.trade.oanda.responses.CreateOrderResponse;
 import io.kw.serviceClients.trade.oanda.responses.TradeCloseResponse;
 import io.kw.serviceClients.trade.oanda.responses.TradeModifyResponse;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -34,5 +36,13 @@ public interface OandaTradeClient {
             @PathParam("accountID") String accountID,
             @PathParam("tradeSpecifier") String tradeID,
             TradeModifyRequest tradeModifyRequest
+    );
+
+    @POST
+    @Path("/{accountID}/orders")
+    CreateOrderResponse createOrder(
+            @HeaderParam("Authorization") String apiToken,
+            @PathParam("accountID") String accountID,
+            CreateOrderRequest createOrderRequest
     );
 }
