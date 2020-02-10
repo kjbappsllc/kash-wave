@@ -10,21 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class IndicatorTest {
 
-    private static class TestIndicator extends Indicator {
-        public TestIndicator() {}
-
-        @Override
-        boolean initialize(CurrencyPair pair, Timeframe timeframe, Object[] params) {
-            return true;
-        }
-    }
-
     @Test
     @DisplayName("Test Indicator Integrity")
     public void testIntegrity() {
-        TestIndicator indicator = new TestIndicator();
-        assertTrue(indicator.createBuffers(3));
-        assertEquals(3, indicator.getSize());
     }
 
 }
