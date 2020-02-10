@@ -14,7 +14,6 @@ public class CurrencyPair {
     int precision;
     int pipLocation;
     double marginRate;
-
     public String name(char delimiter) {
         return base.toString() + delimiter + quote.toString();
     }

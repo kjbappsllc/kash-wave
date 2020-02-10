@@ -1,22 +1,17 @@
 package io.kw.engine;
 
-import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import io.kw.engine.system.StreamingActor;
-import io.kw.model.CurrencyPair;
 import io.kw.service.TickStreamService;
 import io.kw.serviceClients.account.oanda.OandaAccountsClient;
-import io.kw.serviceClients.account.oanda.responses.AccountDetailsResponse;
 import io.kw.serviceClients.trade.oanda.OandaTradeClient;
-import io.kw.serviceClients.trade.oanda.requests.TradeCloseRequest;
-import io.kw.serviceClients.trade.oanda.responses.TradeCloseResponse;
+import io.kw.serviceClients.trade.oanda.requests.CreateOrderRequest;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
 
 @ApplicationScoped
 public class KWEngine {
@@ -41,5 +36,15 @@ public class KWEngine {
         ActorRef streamingActor = kwEngine.actorOf(Props.create(StreamingActor.class));
         streamingActor.tell("Hello", ActorRef.noSender());
         kwEngine.terminate();
+    }
+
+    public void makeTrade() {
+        tradeClient.createOrder(
+                apiKey,
+                accountID,
+                CreateOrderRequest
+                        .builder("EUR_USD", "100", "MARKET")
+                        .build()
+        );
     }
 }

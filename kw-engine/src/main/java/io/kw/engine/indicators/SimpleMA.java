@@ -14,14 +14,4 @@ public class SimpleMA extends Indicator {
     public boolean create(CurrencyPair pair, Timeframe timeframe, Object[] params) {
         return false;
     }
-
-    @Override
-    public void onInit() {
-
-    }
-
-    @Override
-    public void onTick(Buffer<Bar> bars) {
-
-    }
 }

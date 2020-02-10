@@ -10,10 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class TradeCloseResponse {
-    //orderCreateTransaction : (MarketOrderTransaction),
-    // orderFillTransaction : (OrderFillTransaction),
-    // orderCancelTransaction : (OrderCancelTransaction),
-    // relatedTransactionIDs : (Array[TransactionID]),
     String lastTransactionID;
     String errorMessage;
     String errorCode;

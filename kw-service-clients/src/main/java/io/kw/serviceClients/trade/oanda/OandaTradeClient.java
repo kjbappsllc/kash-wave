@@ -5,6 +5,8 @@ import io.kw.serviceClients.trade.oanda.requests.PositionCloseRequest;
 import io.kw.serviceClients.trade.oanda.requests.TradeCloseRequest;
 import io.kw.serviceClients.trade.oanda.requests.TradeModifyRequest;
 import io.kw.serviceClients.trade.oanda.responses.*;
+import io.kw.serviceClients.utils.EntityLoggingFilter;
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.inject.Singleton;
@@ -14,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/accounts")
 @RegisterRestClient(configKey = "api-base")
 @Singleton
+@RegisterProvider(EntityLoggingFilter.class)
 public interface OandaTradeClient {
 
     @GET
