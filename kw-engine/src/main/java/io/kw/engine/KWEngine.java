@@ -4,11 +4,8 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import io.kw.engine.system.StreamingActor;
+import io.kw.service.OrderService;
 import io.kw.service.TickStreamService;
-import io.kw.serviceClients.account.oanda.OandaAccountsClient;
-import io.kw.serviceClients.trade.oanda.OandaTradeClient;
-import io.kw.serviceClients.trade.oanda.requests.CreateOrderRequest;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -17,12 +14,7 @@ import javax.inject.Inject;
 public class KWEngine {
 
     @Inject
-    @RestClient
-    OandaAccountsClient accountsClient;
-
-    @Inject
-    @RestClient
-    OandaTradeClient tradeClient;
+    OrderService orderService;
 
     @Inject
     TickStreamService tickStreamService;
@@ -39,12 +31,6 @@ public class KWEngine {
     }
 
     public void makeTrade() {
-        tradeClient.createOrder(
-                apiKey,
-                accountID,
-                CreateOrderRequest
-                        .builder("EUR_USD", "100", "MARKET")
-                        .build()
-        );
+        orderService.createMarketOrder(apiKey, accountID, "EUR_USD", 1000);
     }
 }
