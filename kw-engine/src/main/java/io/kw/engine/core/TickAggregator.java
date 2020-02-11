@@ -1,10 +1,7 @@
 package io.kw.engine.core;
 
-import io.kw.cdi.qualifiers.NewBar;
-import io.kw.cdi.qualifiers.OnInit;
-import io.kw.cdi.qualifiers.OnTick;
 import io.kw.model.*;
-import io.kw.service.HistoricalPricesService;
+import io.kw.service.HistoryService;
 import io.kw.cdi.qualifiers.TickReceived;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -24,18 +21,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TickAggregator {
 
     @Inject
-    HistoricalPricesService historicalPricesService;
+    HistoryService historicalPricesService;
 
     @Inject
-    @NewBar
     Event<Tuple2<CurrencyPair, Timeframe>> newBarEvent;
 
     @Inject
-    @OnTick
     Event<Tuple3<CurrencyPair, Timeframe, Buffer<Bar>>> onTickEvent;
 
     @Inject
-    @OnInit
     Event<Tuple2<UUID, Buffer<Bar>>> onInitEvent;
 
     private ConcurrentHashMap<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> barMap;

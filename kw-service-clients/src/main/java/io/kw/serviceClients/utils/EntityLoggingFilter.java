@@ -23,14 +23,14 @@ public class EntityLoggingFilter implements ClientRequestFilter, ClientResponseF
         System.out.println(sb);
     }
 
-    private InputStream logInboundEntity(final StringBuilder b, InputStream stream, final Charset charset) throws IOException {
+    private InputStream logInboundEntity(final StringBuilder b, InputStream stream) throws IOException {
         if (!stream.markSupported()) {
             stream = new BufferedInputStream(stream);
         }
         stream.mark(maxEntitySize + 1);
         final byte[] entity = new byte[maxEntitySize + 1];
         final int entitySize = stream.read(entity);
-        b.append(new String(entity, 0, Math.min(entitySize, maxEntitySize), charset));
+        b.append(new String(entity, 0, Math.min(entitySize, maxEntitySize), EntityLoggingFilter.DEFAULT_CHARSET));
         if (entitySize > maxEntitySize) {
             b.append("...more...");
         }
@@ -40,7 +40,7 @@ public class EntityLoggingFilter implements ClientRequestFilter, ClientResponseF
     }
 
     @Override
-    public void filter(ClientRequestContext requestContext) throws IOException {
+    public void filter(ClientRequestContext requestContext) {
         if (requestContext.hasEntity()) {
             final OutputStream stream = new LoggingStream(requestContext.getEntityStream());
             requestContext.setEntityStream(stream);
@@ -53,11 +53,9 @@ public class EntityLoggingFilter implements ClientRequestFilter, ClientResponseF
                        ClientResponseContext responseContext) throws IOException {
         final StringBuilder sb = new StringBuilder();
         if (responseContext.hasEntity()) {
-            responseContext.setEntityStream(logInboundEntity(sb, responseContext.getEntityStream(),
-                    DEFAULT_CHARSET));
+            responseContext.setEntityStream(logInboundEntity(sb, responseContext.getEntityStream()));
             log(sb);
         }
-
     }
 
     @Override
@@ -66,36 +64,33 @@ public class EntityLoggingFilter implements ClientRequestFilter, ClientResponseF
         final LoggingStream stream = (LoggingStream) context.getProperty(ENTITY_STREAM_PROPERTY);
         context.proceed();
         if (stream != null) {
-            log(stream.getStringBuilder(DEFAULT_CHARSET));
+            log(stream.getStringBuilder());
         }
     }
 
     private class LoggingStream extends FilterOutputStream {
 
         private final StringBuilder sb = new StringBuilder();
-        private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        private final ByteArrayOutputStream b = new ByteArrayOutputStream();
 
         LoggingStream(OutputStream out) {
             super(out);
         }
 
-        StringBuilder getStringBuilder(Charset charset) {
-            // write entity to the builder
-            final byte[] entity = baos.toByteArray();
-
-            sb.append(new String(entity, 0, entity.length, charset));
+        StringBuilder getStringBuilder() {
+            final byte[] entity = b.toByteArray();
+            sb.append(new String(entity, 0, entity.length, EntityLoggingFilter.DEFAULT_CHARSET));
             if (entity.length > maxEntitySize) {
                 sb.append("...more...");
             }
             sb.append('\n');
-
             return sb;
         }
 
         @Override
         public void write(final int i) throws IOException {
-            if (baos.size() <= maxEntitySize) {
-                baos.write(i);
+            if (b.size() <= maxEntitySize) {
+                b.write(i);
             }
             out.write(i);
         }

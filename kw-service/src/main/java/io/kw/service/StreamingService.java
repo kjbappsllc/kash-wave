@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
-public class TickStreamService {
+public class StreamingService {
 
     @Inject
     @RestClient
@@ -38,7 +38,7 @@ public class TickStreamService {
     private ExecutorService priceFeedExecutor;
     private HashMap<String, CurrencyPair> currencies;
 
-    public TickStreamService() {
+    public StreamingService() {
         priceFeedExecutor = Executors.newSingleThreadExecutor();
         currencies = new HashMap<>();
     }

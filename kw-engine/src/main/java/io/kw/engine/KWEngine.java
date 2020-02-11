@@ -5,7 +5,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import io.kw.engine.system.StreamingActor;
 import io.kw.service.OrderService;
-import io.kw.service.TickStreamService;
+import io.kw.service.StreamingService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -17,7 +17,7 @@ public class KWEngine {
     OrderService orderService;
 
     @Inject
-    TickStreamService tickStreamService;
+    StreamingService tickStreamService;
 
     String apiKey = "Bearer a3f580b7f2357b31d139561a220b4aec-ff520f9ef1b1babf60781cd4ed8c014f";
     String accountID = "101-001-9159383-001";
@@ -31,6 +31,11 @@ public class KWEngine {
     }
 
     public void makeTrade() {
-        orderService.createMarketOrder(apiKey, accountID, "EUR_USD", 1000);
+        int tradeID  = orderService.createMarketOrder(apiKey, accountID, "EUR_USD", -15000);
+        if (tradeID == -1) {
+            System.out.println("make Trade failed ...");
+            return;
+        }
+        System.out.println("Made Trade - ID: " + tradeID);
     }
 }

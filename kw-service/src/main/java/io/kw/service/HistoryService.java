@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class HistoricalPricesService {
+public class HistoryService {
 
     @Inject
     @RestClient
