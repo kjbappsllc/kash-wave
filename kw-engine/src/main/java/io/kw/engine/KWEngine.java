@@ -10,10 +10,8 @@ import javax.inject.Inject;
 
 @ApplicationScoped
 public class KWEngine {
-    public static final String KW_SYSTEM = "kw-engine";
 
-    @Inject
-    OrderService orderService;
+    public static final String KW_SYSTEM = "kw-engine";
 
     @Inject
     @Actor(type = StreamingActor.class, associatedSystem = KWEngine.KW_SYSTEM)
@@ -24,14 +22,5 @@ public class KWEngine {
 
     public void startUp() {
         streamingActor.tell("CDI", ActorRef.noSender());
-    }
-
-    public void makeTrade() {
-        int tradeID  = orderService.createMarketOrder(apiKey, accountID, "EUR_USD", -15000);
-        if (tradeID == -1) {
-            System.out.println("make Trade failed ...");
-            return;
-        }
-        System.out.println("Made Trade - ID: " + tradeID);
     }
 }

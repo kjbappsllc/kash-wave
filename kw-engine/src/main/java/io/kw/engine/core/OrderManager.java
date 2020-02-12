@@ -1,3 +1,14 @@
 package io.kw.engine.core;
 
-public class OrderManager {}
+import io.kw.service.OrderService;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+@ApplicationScoped
+public class OrderManager {
+
+    @Inject
+    OrderService orderService;
+
+}

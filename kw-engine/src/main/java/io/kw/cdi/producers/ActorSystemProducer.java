@@ -24,9 +24,16 @@ public class ActorSystemProducer {
     }
 
     protected ActorSystem getActorSystem(String name) {
-        if (actorSystemMap.containsKey(name))
+        System.out.println("Getting Actor System...");
+        if (actorSystemMap.containsKey(name)) {
+            System.out.println("Actor System exists in map");
             return actorSystemMap.get(name);
-        return actorSystemMap.put(name, akka.actor.ActorSystem.create(name));
+        }
+        System.out.println("Actor System does not exists in map");
+        actorSystemMap.put(name, ActorSystem.create(name));
+        ActorSystem newSystem = actorSystemMap.get(name);
+        System.out.println("New System: " + newSystem.getClass().getSimpleName());
+        return newSystem;
     }
 
     @PreDestroy

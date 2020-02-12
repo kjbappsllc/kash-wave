@@ -1,3 +1,10 @@
 package io.kw.engine.core;
 
-public class HistoricalManager {}
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public class HistoricalManager {
+    public void process() {
+        System.out.println("Historical Manager Processed");
+    }
+}
