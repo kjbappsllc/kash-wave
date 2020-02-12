@@ -15,6 +15,6 @@ public class App {
 
     void onAppStart(@Observes StartupEvent e) {
         System.out.println("App Started");
-        engine.makeTrade();
+        engine.startUp();
     }
 }

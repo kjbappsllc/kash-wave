@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Retention(RUNTIME)
 @Target({TYPE, CONSTRUCTOR, FIELD, METHOD})
-public @interface ActorSystem {
+public @interface ActorSystemName {
     @Nonbinding String name();
     String DEFAULT_NAME = "system";
 }
