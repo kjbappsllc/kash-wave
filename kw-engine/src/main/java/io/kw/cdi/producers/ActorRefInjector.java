@@ -16,13 +16,11 @@ public class ActorRefInjector implements IndirectActorProducer {
 
     @Override
     public Actor produce() {
-        System.out.println(actorInstance);
         return actorInstance.get();
     }
 
     @Override
     public Class<? extends Actor> actorClass() {
-        System.out.println(actorClass);
         return actorClass;
     }
 }
