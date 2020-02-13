@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import static io.kw.service.BaseContext.*;
 
 @Dependent
-public class OandaOrderCommand implements Command {
+public class OandaOrderCommand extends OrderCommand {
 
     @Inject
     @RestClient
@@ -22,10 +22,10 @@ public class OandaOrderCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
-        if (!(context instanceof OrderContext)) return false;
-        OrderContext orderContext = (OrderContext) context;
-        if (orderContext.baseContext().broker() != Broker.OANDA) return false;
+        OrderContext orderContext = getOrderContext(context);
+        if (orderContext == null || orderContext.baseContext().broker() != Broker.OANDA) return false;
         int tradeOrder = executeOrder(orderContext);
+        System.out.println("Trade ID: " + tradeOrder);
         return true;
     }
 

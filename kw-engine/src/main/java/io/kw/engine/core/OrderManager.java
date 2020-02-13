@@ -1,5 +1,7 @@
 package io.kw.engine.core;
 
+import io.kw.service.order.OrderService;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
