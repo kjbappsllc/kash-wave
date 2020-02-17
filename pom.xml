@@ -28,7 +28,7 @@
         <surefire.version>3.0.0-M4</surefire.version>
         <apache.math.version>3.6.1</apache.math.version>
         <apache.lang.version>3.9</apache.lang.version>
-        <akka.version>2.6.1</akka.version>
+        <akka.version>2.6.3</akka.version>
     </properties>
 
     <dependencyManagement>
@@ -87,7 +87,7 @@
             </dependency>
             <dependency>
                 <groupId>com.typesafe.akka</groupId>
-                <artifactId>akka-actor_2.12</artifactId>
+                <artifactId>akka-actor_2.13</artifactId>
                 <version>${akka.version}</version>
             </dependency>
         </dependencies>
@@ -117,7 +117,7 @@
         </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-actor_2.12</artifactId>
+            <artifactId>akka-actor_2.13</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-chain</groupId>

@@ -4,14 +4,13 @@ import io.kw.serviceClients.trade.oanda.OandaTradeClient;
 import io.kw.serviceClients.trade.oanda.requests.CreateOrderRequest;
 import io.kw.serviceClients.trade.oanda.responses.CreateOrderResponse;
 import io.vavr.control.Try;
-import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import static io.kw.service.BaseContext.*;
+import static io.kw.service.BaseContext.Broker;
 
 @Dependent
 public class OandaOrderCommand extends OrderCommand {
