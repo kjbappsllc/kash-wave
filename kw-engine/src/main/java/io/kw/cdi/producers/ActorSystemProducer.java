@@ -30,9 +30,10 @@ public class ActorSystemProducer {
             return actorSystemMap.get(name);
         }
         System.out.println("Actor System does not exists in map");
-        actorSystemMap.put(name, ActorSystem.create(name));
-        ActorSystem newSystem = actorSystemMap.get(name);
-        System.out.println("New System: " + newSystem.getClass().getSimpleName());
+        System.out.println(name);
+        ActorSystem newSystem = ActorSystem.create(name);
+        System.out.println("Created System: " + newSystem.getClass().getSimpleName());
+        actorSystemMap.put(name, newSystem);
         return newSystem;
     }
 

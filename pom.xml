@@ -87,7 +87,7 @@
             </dependency>
             <dependency>
                 <groupId>com.typesafe.akka</groupId>
-                <artifactId>akka-actor_2.13</artifactId>
+                <artifactId>akka-actor_2.12</artifactId>
                 <version>${akka.version}</version>
             </dependency>
         </dependencies>
@@ -117,7 +117,7 @@
         </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-actor_2.13</artifactId>
+            <artifactId>akka-actor_2.12</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-chain</groupId>

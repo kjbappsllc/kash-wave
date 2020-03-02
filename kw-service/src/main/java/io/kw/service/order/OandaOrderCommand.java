@@ -20,9 +20,10 @@ public class OandaOrderCommand extends OrderCommand {
     OandaTradeClient tradeClient;
 
     @Override
-    public boolean execute(Context context) {
+    public boolean execute(Context context) throws Exception {
         OrderContext orderContext = getOrderContext(context);
-        if (orderContext == null || orderContext.baseContext().broker() != Broker.OANDA) return false;
+        if (orderContext == null || orderContext.baseContext().broker() != Broker.OANDA)
+            return false;
         int tradeOrder = executeOrder(orderContext);
         System.out.println("Trade ID: " + tradeOrder);
         return true;

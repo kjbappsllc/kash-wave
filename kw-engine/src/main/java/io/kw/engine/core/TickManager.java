@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
-public class TickAggregator {
+public class TickManager {
 
     @Inject
     HistoryService historicalPricesService;
@@ -34,7 +34,7 @@ public class TickAggregator {
 
     private ConcurrentHashMap<Tuple2<CurrencyPair, Timeframe>, Buffer<Bar>> barMap;
 
-    TickAggregator() {
+    TickManager() {
         barMap = new ConcurrentHashMap<>();
     }
 

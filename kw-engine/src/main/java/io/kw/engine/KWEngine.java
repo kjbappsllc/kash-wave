@@ -47,7 +47,7 @@ public class KWEngine {
                 .build();
         System.out.println(context);
         Try.of(() -> orderService.execute(context))
-                .onSuccess(code -> System.out.println("No Errors, Code: " + code))
+                .onSuccess(wasTrueSuccess -> System.out.println("Was True Success: " + wasTrueSuccess))
                 .onFailure(throwable -> System.out.println("Failed Trade: " + throwable.getLocalizedMessage()));
 
     }

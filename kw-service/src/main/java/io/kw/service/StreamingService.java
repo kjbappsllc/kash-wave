@@ -45,7 +45,7 @@ public class StreamingService {
 
     public void startStream(String apiToken, String accountId, CurrencyPair ...pairs) {
         Arrays.stream(pairs).forEach(currencyPair -> currencies.put(currencyPair.name('_'), currencyPair));
-        InputStream pricingStream = oandaPriceStreamingClient.getPrices(
+        InputStream pricingStream = oandaPriceStreamingClient.getStream(
                 apiToken,
                 accountId,
                 pairs[0].name('_')
