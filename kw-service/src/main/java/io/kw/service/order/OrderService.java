@@ -11,11 +11,11 @@ import javax.inject.Inject;
 public class OrderService extends ChainBase {
 
     @Inject
-    Instance<OrderCommand> oandaOrder;
+    Instance<OrderCommand> oandaOrderCommands;
 
     @PostConstruct
     public void init() {
-        for (OrderCommand orderCommand : oandaOrder) {
+        for (OrderCommand orderCommand : oandaOrderCommands) {
             System.out.println("Adding Command: " + orderCommand);
             addCommand(orderCommand);
         }

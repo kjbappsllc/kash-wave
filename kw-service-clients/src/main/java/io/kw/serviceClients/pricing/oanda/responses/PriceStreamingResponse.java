@@ -23,7 +23,7 @@ public class PriceStreamingResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
-    public static class PriceBucket implements Serializable {
+    public static class PriceBucket {
         private String price;
         private int liquidity;
     }
