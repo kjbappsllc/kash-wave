@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 @ApplicationScoped
 public class StreamingService extends ChainBase {
+
     @Inject
     Instance<StreamingCommand> streamingCommands;
 

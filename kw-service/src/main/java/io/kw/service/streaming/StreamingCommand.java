@@ -24,6 +24,7 @@ public abstract class StreamingCommand implements Command {
     protected void runAsyncFeed(Runnable feedRunner) {
         priceFeedExecutor.submit(feedRunner);
     }
+
     protected void endExecutor() {
         Try.run(() -> {
             priceFeedExecutor.shutdown();

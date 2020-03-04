@@ -31,18 +31,24 @@ public class OandaStreamingCommand extends StreamingCommand {
     @Override
     public boolean execute(Context context) throws Exception {
         StreamingContext streamingContext = getStreamingContext(context);
-        if (streamingContext == null || streamingContext.baseContext().broker() != Broker.OANDA)
+        System.out.println("Here in oanda execute");
+        System.out.println(streamingContext);
+        if (streamingContext == null || streamingContext.baseContext().broker() != Broker.OANDA) {
+            System.out.println("Not Valid Command For: " + this.getClass().getSimpleName());
             return false;
+        }
         InputStream pricingStream = oandaPriceStreamingClient.getStream(
                 streamingContext.baseContext().apiToken(),
                 streamingContext.baseContext().accountID(),
                 streamingContext.currencies().get(0).name('_')
         );
+        System.out.println("Here in oanda execute");
         runAsyncFeed(runOandaStreaming(pricingStream));
-        return false;
+        return true;
     }
 
     private Runnable runOandaStreaming(InputStream stream) {
+        System.out.println("Running Oanda Stream");
         return () -> {
             AtomicBoolean serverIsHealthy = new AtomicBoolean(true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
