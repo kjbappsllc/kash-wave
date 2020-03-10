@@ -17,6 +17,6 @@ public class App {
         System.out.println("App Started");
         engine.startStream();
 //        engine.startUp();
-//        engine.makeTrade();
+        engine.makeTrade();
     }
 }

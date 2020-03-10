@@ -3,6 +3,7 @@ package io.kw.engine;
 import akka.actor.ActorRef;
 import io.kw.cdi.qualifiers.Actor;
 import io.kw.engine.system.StreamingActor;
+import io.kw.exceptions.TradeExecutionFailedException;
 import io.kw.model.Currency;
 import io.kw.model.CurrencyPair;
 import io.kw.model.Tick;
@@ -10,6 +11,7 @@ import io.kw.service.BaseContext;
 import io.kw.service.order.OrderContext;
 import io.kw.service.order.OrderService;
 import io.kw.service.order.OrderType;
+import io.kw.service.order.TradeStatus;
 import io.kw.service.streaming.StreamingContext;
 import io.kw.service.streaming.StreamingService;
 import io.vavr.control.Try;
@@ -68,7 +70,12 @@ public class KWEngine {
         System.out.println(context);
         Try.of(() -> orderService.execute(context))
                 .onSuccess(wasTrueSuccess -> System.out.println("Was True Success: " + wasTrueSuccess))
-                .onFailure(throwable -> System.out.println("Failed Trade: " + throwable.getLocalizedMessage()));
+                .onFailure(
+                        TradeExecutionFailedException.class,
+                        throwable -> {
+                            TradeStatus status = throwable.getFailureStatus();
+                            System.out.println("Failed Trade: " + status.getStatusCode());
+                        });
 
     }
 
