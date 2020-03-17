@@ -75,7 +75,8 @@ public class KWEngine {
                         throwable -> {
                             TradeStatus status = throwable.getFailureStatus();
                             System.out.println("Failed Trade: " + status.getStatusCode());
-                        });
+                        })
+                .onFailure(throwable -> System.out.println("Unknown Error: " + throwable.getLocalizedMessage()));
 
     }
 
@@ -97,6 +98,6 @@ public class KWEngine {
     }
 
     public void tickCB(Tick tick) {
-        System.out.println("Received Tick From Callback");
+        System.out.println("Received Tick From Callback: " + tick);
     }
 }
