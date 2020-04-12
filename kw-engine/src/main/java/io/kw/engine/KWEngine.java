@@ -30,9 +30,6 @@ public class KWEngine {
     @Actor(type = RootActor.class, associatedSystem = KWEngine.KW_SYSTEM)
     ActorRef rootActor;
 
-    @Inject
-    OrderService orderService;
-
     public void startUp(BaseContext context) {
         rootActor.tell(new RootActor.InitMessage(
                 List.of(CurrencyPair.builder()
