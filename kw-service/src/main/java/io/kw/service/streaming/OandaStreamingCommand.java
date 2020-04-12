@@ -40,7 +40,7 @@ public class OandaStreamingCommand extends StreamingCommand {
         InputStream pricingStream = oandaPriceStreamingClient.getStream(
                 streamingContext.baseContext().apiToken(),
                 streamingContext.baseContext().accountID(),
-                streamingContext.currencies().get(0).name('_')
+                streamingContext.currencies().get(0).name()
         );
         System.out.println("Here in oanda execute");
         runAsyncFeed(runOandaStreaming(pricingStream));

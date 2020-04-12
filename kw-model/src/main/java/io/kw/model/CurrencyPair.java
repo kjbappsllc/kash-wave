@@ -11,10 +11,11 @@ import lombok.experimental.Accessors;
 public class CurrencyPair {
     @NonNull Currency base;
     @NonNull Currency quote;
+    @NonNull String delimiter;
     int precision;
     int pipLocation;
     double marginRate;
-    public String name(char delimiter) {
-        return base.toString() + delimiter + quote.toString();
+    public String name() {
+        return base.toString() + delimiter() + quote.toString();
     }
 }
