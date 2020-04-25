@@ -1,6 +1,7 @@
 package io.kw.engine;
 
 import akka.actor.ActorRef;
+import static akka.pattern.Patterns.ask;
 import io.kw.cdi.qualifiers.Actor;
 import io.kw.engine.system.RootActor;
 import io.kw.exceptions.TradeExecutionFailedException;
@@ -18,6 +19,7 @@ import io.vavr.control.Try;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import static io.kw.service.BaseContext.Broker;
 
@@ -30,7 +32,7 @@ public class KWEngine {
     @Actor(type = RootActor.class, associatedSystem = KWEngine.KW_SYSTEM)
     ActorRef rootActor;
 
-    public void startUp(BaseContext context) {
+    public void start(BaseContext context) {
         rootActor.tell(new RootActor.InitMessage(
                 List.of(CurrencyPair.builder()
                         .base(Currency.EUR)
