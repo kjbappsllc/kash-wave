@@ -12,6 +12,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/accounts")
 @RegisterRestClient(configKey = "api-base")
@@ -22,7 +23,7 @@ public interface OandaTradeClient {
     @GET
     @Path("/{accountID}/openPositions")
     @Produces(MediaType.APPLICATION_JSON)
-    OpenPositionsResponse getOpenPositions(
+    String getOpenPositions(
             @HeaderParam("Authorization") String apiToken,
             @PathParam("accountID") String accountID
     );

@@ -17,9 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RootActor extends AbstractActor {
 
-    @Inject
-    HistoricalManager historicalManager;
-
     @AllArgsConstructor
     @Value
     public static class InitMessage {
@@ -30,7 +27,9 @@ public class RootActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return new ReceiveBuilder()
-                .match(InitMessage.class, System.out::println)
+                .match(InitMessage.class, (initMessage) -> {
+                    System.out.println("Root Actor Received Init Message");
+                })
                 .build();
     }
 }
