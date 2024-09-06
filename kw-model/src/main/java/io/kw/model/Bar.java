@@ -16,5 +16,6 @@ public class Bar {
     double close;
     double high;
     double low;
+    double value;
     @NonNull Instant timestamp;
 }
