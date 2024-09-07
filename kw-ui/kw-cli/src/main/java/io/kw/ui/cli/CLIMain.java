@@ -29,7 +29,7 @@ public class CLIMain implements QuarkusApplication {
 
     @Override
     public int run(String... args) throws Exception {
-        System.out.println("App Started");
+        System.out.println("App Started..");
         BaseContext baseContext = BaseContext.builder()
                 .accountID(accountID)
                 .apiToken(apiKey)
